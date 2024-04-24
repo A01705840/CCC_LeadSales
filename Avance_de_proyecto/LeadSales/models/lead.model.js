@@ -97,7 +97,11 @@ module.exports = class Lead {
     }
 
     static async obtenerCantidadLeadsEmbudos() {
-        return db.execute('SELECT Embudo, COUNT(*) AS TotalLeads FROM leads GROUP BY Embudo')
+        return db.execute('SELECT Embudo, COUNT(*) AS TotalLeads FROM leads GROUP BY Embudo;')
+    }
+
+    static async obtenerCantidadLeadsStatus() {
+        return db.execute('SELECT Status, COUNT(*) AS TotalLeads FROM leads GROUP BY Status;')
     }
 
     static async fetchLeadsPorAgente(rangeAgent) {
