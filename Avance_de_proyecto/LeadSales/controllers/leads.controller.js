@@ -85,11 +85,11 @@ exports.get_analitica_agent = async (request, response, next) => {
 exports.get_analiticaPRESET = async (request, response, next) => {
     const rangeAgent = '1'; // Siempre usa '1' (semana) como valor predeterminado
     const result = await Lead.fetchLeadsByDay(rangeAgent); // Obtener los leads por día
+    const cantidadLeadsAgente = await Lead.obtenerCantidadLeadsPorAgente(); // Obtener la cantidad de leads por agente
     const cantidadLeads = await Lead.obtenerCantidadLeads(); // Obtener la cantidad total de leads
     const cantidadLeadsOrganicos = await Lead.obtenerCantidadLeadsOrganicos(); // Obtener la cantidad de leads orgánicos
     const cantidadLeadsEmbudos = await Lead.obtenerCantidadLeadsEmbudos(); // Obtener la cantidad de leads en embudos
     const cantidadLeadsStatus = await Lead.obtenerCantidadLeadsStatus(); // Obtener la cantidad de leads por status
-    const cantidadLeadsAgente = await Lead.obtenerCantidadLeadsPorAgente(); // Obtener la cantidad de leads por agente
     const leadsPorAgenteResult = await Lead.fetchLeadsPorAgente(rangeAgent); // Obtener los leads por agente
     const leadsPorAgente = leadsPorAgenteResult[0]; // Solo usar el primer elemento del array para evitar duplicados 
     const nombreDeVersione= await Version.Nombres(); // Obtener el nombre de la versión
@@ -108,11 +108,11 @@ exports.get_analiticaPRESET = async (request, response, next) => {
     //console.log(cantidadLeadsAgente);
     response.render('Analitica', {
         username: request.session.username || '',
+        cantidadLeadsAgente: cantidadLeadsAgente,
         leadsPerDay: leadsConDiasSinLeads, 
         cantidadTotalLeads: cantidadLeads,
         cantidadLeadsOrganicos: cantidadLeadsOrganicos,
         cantidadLeadsEmbudos: cantidadLeadsEmbudos,
-        cantidadLeadsAgente: cantidadLeadsAgente,
         cantidadLeadsStatus: cantidadLeadsStatus ,
         fechas: fechas,
         datasets: datasetsPorAgente,
