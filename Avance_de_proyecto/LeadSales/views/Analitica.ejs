@@ -1,44 +1,72 @@
-<%- include('includes/head.ejs', {username: username}) %>
-<%- include('mx') %>
+<%- include('includes/head.ejs', {username: username})%>
 <div class="p-4 sm:ml-20 sm:mr-10 font-sans">
     <div class="shadow-lg flex flex-col justify-right p-4 border-2 border-gray-200 rounded-lg dark:border-gray-700 bg-slate-200">
-        <div class="inline-flex justify-between items-center">
-          <span style='font-size:30px;'>📊 Analíticas</span>
-        </div>
-    <div class="mt-2 lex flex-col justify-right p-4 border-2 border-gray-200 rounded-lg bg-b bg-white" style="height:970px; overflow-y:visible;">
-        
-        <div class="flex flex-col items-center h-full">
-            <div class="max-w-2x1" style="width: 50%; height: 50%; background-color: #ffffff; border: 0px solid #444; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); padding: 20px; border-radius: 15px;">
-                <select id="dateRange" class=" bg-grey-600 rounded-md shadow-sm focus:outline-none text-ellipsis" style=" margin-bottom: 0px; position:relative; left: 656px;">
-                    <option value="1">Una semana</option>
-                    <option value="2">Un mes</option>
-                    <option value="3">Un semestre</option>
-                    <option value="4">Un año</option>
-                  </select>
-                  <canvas id="leadsChart"></canvas>
+        <div class="inline-flex justify-between items-center mb-4 mr-4">
+            <span style='font-size:30px;'>📊 Analíticas</span>
+                <div class="flex space-x-2 items-center ">
+                    <p class="text-lg"><b>Visualizando datos de la version:</b></p>
+                    <% %>
+                    <select class="border text-lg border-grey-100 bg-grey-600 px-4 py-2 rounded-full shadow-sm focus:outline-none text-ellipsis">
+                        <% for (let nombreDeVersion of nombreDeVersiones) { %>
+                            <option value="1"><%= nombreDeVersion.NombreVersion %></option>
+                        <% } %>
+                    </select>
+                <button id="openModalButton"  class="bg-white hover:bg-indigo-600 hover:text-white py-2 px-4 rounded-full flex items-center">
+                    <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="mr-2">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M2.83331 2.33335C2.37308 2.33335 1.99998 2.70645 1.99998 3.16669V14.8334C1.99998 15.2936 2.37308 15.6667 2.83331 15.6667H11.1666C11.6269 15.6667 12 15.2936 12 14.8334L12 6.8452L7.48814 2.33335H2.83331ZM0.333313 3.16669C0.333313 1.78598 1.4526 0.666687 2.83331 0.666687H7.48814C7.93016 0.666687 8.35409 0.842282 8.66665 1.15484L13.1785 5.66669C13.4911 5.97925 13.6666 6.40317 13.6666 6.8452V14.8334C13.6666 16.2141 12.5474 17.3334 11.1666 17.3334H2.83331C1.4526 17.3334 0.333313 16.2141 0.333313 14.8334V3.16669ZM6.99998 6.50002C7.46022 6.50002 7.83331 6.87312 7.83331 7.33335V10.3215L8.91072 9.2441C9.23616 8.91866 9.7638 8.91866 10.0892 9.2441C10.4147 9.56954 10.4147 10.0972 10.0892 10.4226L7.58923 12.9226C7.2638 13.248 6.73616 13.248 6.41072 12.9226L3.91072 10.4226C3.58529 10.0972 3.58529 9.56954 3.91072 9.2441C4.23616 8.91866 4.7638 8.91866 5.08923 9.2441L6.16665 10.3215V7.33335C6.16665 6.87312 6.53974 6.50002 6.99998 6.50002Z" fill="#4A5567"/>
+                    </svg>
+                    Descargar reporte
+                </button>
             </div>
         </div>
-            <canvas id="pieChartEmbudo"></canvas>
-            <canvas id="pieChartEstatus"></canvas>
-
-            <div class="max-w-2x1" style="width: 50%; height: 50%; background-color: #ffffff; border: 0px solid #444; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); padding: 20px; border-radius: 15px;">
-                <select id="dateRangeLeadsPorAgente" class=" bg-grey-600 rounded-md shadow-sm focus:outline-none text-ellipsis" style=" margin-bottom: 0px; position:relative; left: 656px;">
-                    <option value="1">Una semana</option>
-                    <option value="2">Un mes</option>
-                    <option value="3">Un semestre</option>
-                    <option value="4">Un año</option>
-                </select>
-                <canvas id="leadsPorAgenteChart"></canvas>
+            <div class="flex h-full text-center">
+                <div class="w-1/2 mr-4 rounded-xl bg-white">
+                    <p class="text-2xl mb-2 mt-4"><b>Total de Leads</b></p>
+                    <div class="flex justify-end mr-10 mb-4">
+                    <p class="mr-4 text-sm">Elige el período de análisis: </p>
+                    <select id="dateRange" class=" border border-grey-100 text-sm bg-grey-600 rounded-md shadow-sm focus:outline-none text-ellipsis">
+                        <option value="1">Última semana</option>
+                        <option value="2">Último mes</option>
+                        <option value="3">Últimos 6 meses</option>
+                        <option value="4">Último año</option>
+                    </select>
+                    </div>
+                    <canvas id="leadsChart" class="ml-8 mr-8 mb-4"></canvas>
+                </div>
+                <div class="w-1/2 rounded-xl mr-4 bg-white">
+                    <p class="text-2xl mb-2 mt-4"><b>Total de Leads por Agente</b></p>
+                    <div class="flex justify-end mr-10 mb-4">
+                    <p class="mr-4 text-sm">Elige el período de análisis: </p>
+                    <select id="dateRangeLeadsPorAgente" class="border border-grey-100 text-sm bg-grey-600 rounded-md shadow-sm focus:outline-none text-ellipsis">
+                        <option value="1">Última semana</option>
+                        <option value="2">Último mes</option>
+                        <option value="3">Últimos 6 meses</option>
+                        <option value="4">Último año</option>
+                    </select>
+                    </div>
+                    <canvas id="leadsPorAgenteChart" class="ml-8 mr-8 mb-4"></canvas>
+                    <div class="ml-8 mr-8 mb-4 text-sm">
+                        <span id="totalLeadsPorAgente"></span>
+                    </div>
+                </div>
             </div>
-
-        <div  style="width: 32%; height: 20%; background-color: #ffffff; border: 0px solid #444; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); padding: 20px; border-radius: 15px;">
-            <h2 class="text-4xl mb-4">Total de Leads: <span id="totalLeads" class="font-bold"><%= cantidadTotalLeads %></span></h2>
-            <h2 class="text-4xl mb-4">El <span id="porcentajeLeadsOrganicos"></span> de los leads son orgánicos.</h2>
+            <div class="flex mt-4 text-center">
+                <div class="flex flex-col w-1/3 mr-4 mb-4 bg-white rounded-xl justify-center items-center">
+                    <p class="text-2xl h-full mb-4 mt-4"><b>Distribución de embudos</b></p>  
+                    <div class="flex mb-4 rounded-xl h-full w-full justify-center items-center">
+                        <canvas id="pieChartEmbudo"></canvas>
+                    </div>
+                </div>
+                <div class="justify-center w-1/3 rounded-xl mr-4 bg-white">
+                    <h2 class="text-2xl mb-4">Total de Leads: <span id="totalLeads" class="font-bold"><%= cantidadTotalLeads %></span></h2>
+                    <h2 class="text-2xl mb-4">El <span id="porcentajeLeadsOrganicos"></span> de los leads son orgánicos.</h2>
+                </div>
+                <div class="w-1/3 rounded-xl mr-4 bg-white">  
+                    <p class="text-2xl mb-2 mt-4"><b>........</b></p> 
+                </div>
+            </div>
+            </div>
         </div>
-        <div style="width: 32%; height: 20%; background-color: #ffffff; border: 0px solid #444; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); padding: 20px; border-radius: 15px;">
-            <h2 class="text-4xl mb-4">Total de Leads por Agente: <span id="totalLeadsPorAgente" class="font-bold"></span></h2>
-        </div>
-    </div>
   </div>
 </div>
 
@@ -213,12 +241,12 @@
                 label: getLabelText(selectedRange), // Usar la función getLabelText
                 data: leadsPerDay.map(lead => lead.CantidadLeads), // Mapear leadsPerDay a un array de cantidades de leads
                 backgroundColor: 'rgba(23, 16, 198, 0.2)',
-                pointStyle: 'star', // Cambiar la forma de los puntos a triángulos
+                pointStyle: 'circle', // Cambiar la forma de los puntos a triángulos
                 borderColor: 'rgba(23, 16, 198, 0.8)',
                 borderWidth: 5,
                 pointRadius: 5,
                 pointBackgroundColor: 'rgba(23, 16, 198, 0.8)',
-                tension: 0.3,
+                tension: 0.5,
                 fill: true,
                 point: {
                     onHover: (event, point, dataset, context) => {
@@ -328,12 +356,20 @@
                     grid: {
                         drawBorder: false,
                         drawOnChartArea: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Leads'
                     }
                 },
                 x: {
                     grid: {
                         drawBorder: false,
                         drawOnChartArea: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Perido de tiempo'
                     }
                 }
             },
@@ -373,6 +409,15 @@
                 tension: 0.4 // Añadir curvas a las líneas
             };
         });
+
+            // Calcular el total de Leads por Agente
+            const totalLeadsPorAgente = datasets.map(dataset => {
+            const totalLeads = dataset.data.reduce((a, b) => a + b, 0);
+            return `${dataset.label}: ${totalLeads}`;
+        });
+
+        // Actualizar el contenido del elemento HTML con el total de Leads por Agente
+        document.getElementById('totalLeadsPorAgente').textContent = totalLeadsPorAgente.join(', ');
 
         // Actualizar la gráfica con los nuevos datos
         leadsPorAgenteChart.data.labels = fechas.map(fecha => formatDate(fecha, selectedRangeAgent));

@@ -1,5 +1,6 @@
 const { request } = require('express');
 
+const Version= require('../models/version.model');
 const Lead = require('../models/lead.model');
 const Usuario = require('../models/usuario.model');
 const utils = require('../controllers/util');
@@ -32,7 +33,6 @@ exports.get_analitica = async (request, response, next) => {
         response.json({
             leadsPerDay: leadsConMesesSinLeads,
         }); 
-        console.log("FECHAS",fechas);
     } else if (range === '1' || range === '2') {
         // Si el rango es una semana o un mes, calcular el rango de fechas y generar las fechas
         const rangoFechas = utils.calcularRangoFechas(range);
@@ -90,6 +90,9 @@ exports.get_analiticaPRESET = async (request, response, next) => {
     const cantidadLeadsEmbudos = await Lead.obtenerCantidadLeadsEmbudos();
     const leadsPorAgenteResult = await Lead.fetchLeadsPorAgente(rangeAgent);
     const leadsPorAgente = leadsPorAgenteResult[0]; // Solo usar el primer elemento del array
+    const nombreDeVersione= await Version.Nombres();
+    const nombreDeVersiones= nombreDeVersione[0]
+    console.log("Nombre de versiones "+nombreDeVersiones);
 
     // Calcular el rango de fechas y generar las fechas
     const rangoFechas = utils.calcularRangoFechas(rangeAgent);
@@ -101,7 +104,7 @@ exports.get_analiticaPRESET = async (request, response, next) => {
     const gruposPorAgente = utils.agruparLeadsPorAgente(leadsPorAgente);
     const datasetsPorAgente = utils.generarDatasetsPorAgente(gruposPorAgente, fechas);
 
-    response.render('analitica', {
+    response.render('Analitica', {
         username: request.session.username || '',
         leadsPerDay: leadsConDiasSinLeads, 
         cantidadTotalLeads: cantidadLeads,
@@ -109,6 +112,7 @@ exports.get_analiticaPRESET = async (request, response, next) => {
         cantidadLeadsEmbudos: cantidadLeadsEmbudos,
         fechas: fechas,
         datasets: datasetsPorAgente,
+        nombreDeVersiones: nombreDeVersiones
     });
 };
 

@@ -9,7 +9,7 @@ router.post('/eliminar', rolesController.post_eliminar);
 router.get('/agregar', rolesController.get_agregarRol);
 router.post('/agregar', rolesController.post_agregarRol);
 router.get('/equipo', rolesController.get_equipo);
-router.post('/eliminarUsuario', rolesController.post_eliminarUsuario);
+router.post('/eliminarUsuario/:q', rolesController.post_eliminarUsuario);
 router.post('/cambiarRol', rolesController.post_cambiarRol);
 router.get('/buscar/:q', rolesController.get_buscar);
 router.get('/buscar', rolesController.get_buscar);

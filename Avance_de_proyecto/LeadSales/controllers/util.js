@@ -5,13 +5,13 @@ exports.calcularRangoFechas = function(seleccion) {
     //console.log("SELECCION",seleccion);
     var ahora = new Date(2023, 0, 1); // Fecha actual
     var inicio;
-    var fin = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate() - 1); // Un día antes del último día
+    var fin = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate()); // Un día antes del último día
 
     //Convertir seleccion a entero
     seleccion = parseInt(seleccion);
     switch (seleccion) {
         case 1:
-            inicio = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate() - 7);
+            inicio = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate() - 6);
             break;
         case 2:
             inicio = new Date(ahora.getFullYear(), ahora.getMonth() - 1, ahora.getDate());
@@ -23,10 +23,8 @@ exports.calcularRangoFechas = function(seleccion) {
             inicio = new Date(ahora.getFullYear() - 1, ahora.getMonth(), ahora.getDate());
             break;
         default:
-            inicio = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate() - 7);
+            inicio = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate() - 6);
     }
-    //console.log("INICIO",inicio);
-    //console.log("FIN",fin);
     return { inicio: inicio, fin: fin };
 };
 
@@ -41,7 +39,6 @@ exports.generarFechas = function(inicio, fin) {
         fechas.push(new Date(fechaActual));
         fechaActual.setDate(fechaActual.getDate() + 1);
     }
-    console.log("FECHAS",fechas);
     return fechas;
 };
 
@@ -67,6 +64,26 @@ exports.agruparLeadsPorAgente = function(leadsPorAgente) {
     }, {});
 };
 
+/* GRUPOS {
+  'Paulina Garcia': [
+    {
+      Fecha: 2022-12-25T06:00:00.000Z,
+      Agente: 'Paulina Garcia',
+      CantidadLeads: 2
+    },
+    {
+      Fecha: 2022-12-26T06:00:00.000Z,
+      Agente: 'Paulina Garcia',
+      CantidadLeads: 2
+    },
+    {
+      Fecha: 2022-12-27T06:00:00.000Z,
+      Agente: 'Paulina Garcia',
+      CantidadLeads: 6
+    }
+  ],
+ */
+
 // Función para crear un conjunto de datos para cada agente
 exports.generarDatasetsPorAgente = function(gruposPorAgente, fechas) {
     return Object.keys(gruposPorAgente).map(agente => {
@@ -78,6 +95,8 @@ exports.generarDatasetsPorAgente = function(gruposPorAgente, fechas) {
             });
             return item ? item.CantidadLeads : 0; // Si no hay item, asignar 0
         });
+        console.log("AGENTE", agente);
+        console.log("DATOS", datos);
         return {
             agente,
             datos,
@@ -85,6 +104,20 @@ exports.generarDatasetsPorAgente = function(gruposPorAgente, fechas) {
     });
 };
 
+/*
+
+AGENTE Paulina Garcia
+DATOS [
+  2, 6, 6, 2,
+  2, 0, 0
+]
+AGENTE Alex Serrano
+DATOS [
+  4, 0, 0, 0,
+  2, 2, 0
+]
+
+*/
 
 exports.generarLeadsConDiasSinLeads = function(leadsPorDia, fechas) {
 

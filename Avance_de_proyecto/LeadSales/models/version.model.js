@@ -28,6 +28,9 @@ module.exports = class Version {
     static max(){
     return  db.execute( `SELECT MAX(IDVersion) FROM version;`)
     }
+    static async Nombres(){
+        return db.execute( `SELECT NombreVersion FROM version;`)
+    }
     static async deleteLast(){
     await db.execute(
         `DELETE FROM version_almacena_leads

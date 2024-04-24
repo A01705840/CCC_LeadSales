@@ -4,8 +4,8 @@
     <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
  
     <div id="modal" onclick="cerrarModal()" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.3);" class="flex items-center justify-center">
-        <div onclick="event.stopPropagation()" class="relative transform overflow-hidden rounded-lg bg-gray-100 text-left shadow-xl transition-all" style="width: 600px; height: 580px;">
-            <h1 class="text-xl font-sans text-ellipsis capitalize dark:text-white" style="padding-left: 25px; padding-top: 25px;">Modificar Lead</h1>
+        <div onclick="event.stopPropagation()" class="relative transform overflow-hidden rounded-lg bg-gray-50 text-left shadow-xl transition-all" style="width: 600px; height: 580px;">
+            <h1 class="text-xl font-sans text-ellipsis capitalize dark:text-white mb-4" style="padding-left: 25px; padding-top: 25px;">Modificar Lead</h1>
             <section class="max-w-4xl p-6 mx-auto bg-white shadow-md dark:bg-gray-800 ">
                 <form>
                     <div class="grid grid-cols-1 gap-6  sm:grid-cols-2">
@@ -100,24 +100,24 @@
     </div>
     
     <div id="modalCrear" onclick="cerrarModalCrear()" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.3);" class="flex items-center justify-center">
-        <div onclick="event.stopPropagation()" class="relative transform overflow-hidden rounded-lg bg-indigo-600 text-left shadow-xl transition-all" style="width: 600px; height: 580px;">
-            <h1 class="text-xl font-bold text-white capitalize dark:text-white" style="padding-left: 20px; padding-top: 20px;">CREAR LEAD</h1>
-            <section class="max-w-4xl p-6 mx-auto bg-indigo-600 rounded-md shadow-md dark:bg-gray-800 ">
+        <div onclick="event.stopPropagation()" class="relative transform overflow-hidden rounded-lg bg-gray-50 text-left shadow-xl transition-all" style="width: 600px; height: 580px;">
+            <h1 class="text-xl font-sans text-ellipsis capitalize dark:text-white mb-4" style="padding-left: 25px; padding-top: 25px;">Crear Lead</h1>
+            <section class="max-w-4xl p-6 mx-auto bg-white shadow-md dark:bg-gray-800 ">
                 <form>
-                    <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                         <div>
-                            <label class="text-white dark:text-gray-200" for="nombre">Nombre:</label>
-                            <input type="text" id="nombreCrear" name="nombre" required class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
-                            <span id="nombreErrorCrear" class="error text-red-200 text-xs italic" style="position:fixed;"></span>
+                            <label class="text-ellipsis" for="nombre">Nombre:</label>
+                            <input type="text" id="nombreCrear" name="nombre" required class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" placeholder="Kevin">
+                            <span id="nombreErrorCrear" class="error text-red-500 text-xs italic" style="position:fixed;"></span>
                         </div>
     
                         <div>
-                            <label class="text-white dark:text-gray-200" for="fecha">Fecha del Primer Mensaje:</label>
+                            <label class="text-ellipsis" for="fecha">Fecha del Primer Mensaje:</label>
                             <input type="date" id="fechaCrear" required class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
                         </div>
     
                         <div>
-                            <label class="text-white dark:text-gray-200" >Asignado a:</label>
+                            <label class="text-ellipsis" >Asignado a:</label>
                             <select id="asignado_aCrear" name="asignado_a" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
                                 <% 
                                 var asignadosUnicos = [...new Set(leads.map(lead => lead.asignado_a))];
@@ -129,7 +129,7 @@
                         </div>
 
                         <div>
-                            <label class="text-white dark:text-gray-200" >Embudo:</label>
+                            <label class="text-ellipsis" >Embudo:</label>
                             <select id="embudoCrear" name="embudo" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
                                 <% 
                                 var embudosUnicos = [...new Set(leads.map(lead => lead.Embudo))];
@@ -141,7 +141,7 @@
                         </div>
     
                         <div>
-                            <label class="text-white dark:text-gray-200" >Etapa:</label>
+                            <label class="text-ellipsis" >Etapa:</label>
                             <select id="etapaCrear" name="etapa" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
                                 <% 
                                 var etapasUnicas = [...new Set(leads.map(lead => lead.Etapa))];
@@ -153,7 +153,7 @@
                         </div>
     
                         <div>
-                            <label class="text-white dark:text-gray-200" >Status:</label>
+                            <label class="text-ellipsis" >Status:</label>
                             <select id="statusCrear" name="status" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
                                 <% 
                                 var statusUnicos = [...new Set(leads.map(lead => lead.Status))];
@@ -165,29 +165,29 @@
                         </div>
     
                         <div>
-                            <label class="text-white dark:text-gray-200" for="telefono">Teléfono:</label>
-                            <input type="text" id="telefonoCrear" name="telefono" required class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
-                            <span id="telefonoErrorCrear" class="error text-red-200 text-xs italic" style="position: absolute;"></span>
+                            <label class="text-ellipsis" for="telefono">Teléfono:</label>
+                            <input type="text" id="telefonoCrear" name="telefono" required class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" placeholder="445 254 8235">
+                            <span id="telefonoErrorCrear" class="error text-red-500 text-xs italic" style="position: absolute;"></span>
                         </div>
     
                         <div>
-                            <label class="text-white dark:text-gray-200" >Creado Manual:</label>
+                            <label class="text-ellipsis" >Creado Manual:</label>
                             <select id="creadomanualCrear" name="creadomanual" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
                                 <option value="NO">NO</option>
                                 <option value="SI">SI</option>
                             </select>
                         </div>
                         <div>
-                            <label class="text-white dark:text-gray-200" >Archivado:</label>
+                            <label class="text-ellipsis" >Archivado:</label>
                             <select id="archivadoCrear" name="archivado" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
                                 <option value="NO">NO</option>
                                 <option value="SI">SI</option>
                             </select>
-                            <button id="botonGuardarCrear"onclick="guardarCambioscrear()" class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-pink-500 rounded-md hover:bg-pink-700 focus:outline-none focus:bg-gray-600" style="position: relative; left: 338px; bottom: 36px;">Guardar cambios</button>
+                            <button id="botonGuardarCrear"onclick="guardarCambioscrear()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold" style="padding: 10px 24px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 40px auto 0px; cursor: pointer; position: relative;  left: 338px; bottom: 85px; transition: background-color 0.3s ease; border-radius: 10px;">Guardar cambios</button>
                         </div>
 
                         <div class="flex justify-end mt-6">
-                            <button type="button" onclick="cerrarModalCrear()" class="hover:text-black text-white" style="border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 25px; margin: 0; cursor: pointer; position: absolute; top: 10px; right: 20px; transition: background-color 0.3s ease; border-radius: 50%;">X</button>
+                            <button type="button" onclick="cerrarModalCrear()" class="hover:text-blue-700 text-ellipsis" style="border: none; padding: 0px 10px; text-align: center; text-decoration: none; display: inline-block; font-size: 35px; margin: 0; cursor: pointer; position: absolute; top: 5px; right: 20px; transition: background-color 0.3s ease; border-radius: 50%;">x</button>
                         </div>
                     </div>
                 </form>
@@ -464,6 +464,19 @@
         // Mostrar el modal
         $('#modal').show();
 
+        // Guardar el estado inicial de los campos de entrada
+        estadoInicial = {
+            nombre: $('#nombre').val(),
+            telefono: $('#telefono').val(),
+            embudo: $('#embudo').val(),
+            etapa: $('#etapa').val(),
+            status: $('#status').val(),
+            archivado: $('#archivado').val(),
+            creadomanual: $('#creadomanual').val(),
+            asignado_a: $('#asignado_a').val(),
+            fecha: $('#fecha').val()
+        };
+
         // Agregar los controladores de eventos
         agregarControladoresDeEventos();
   });
@@ -502,15 +515,53 @@ function agregarControladoresDeEventos() {
   }
 
 function cerrarModal() {
-  $('#modal').hide();
-  
-    // Resetear los campos de entrada
-    $('#nombre').val('');
-    $('#telefono').val('');
+    var estadoActual = {
+            nombre: $('#nombre').val(),
+            telefono: $('#telefono').val(),
+            embudo: $('#embudo').val(),
+            etapa: $('#etapa').val(),
+            status: $('#status').val(),
+            archivado: $('#archivado').val(),
+            creadomanual: $('#creadomanual').val(),
+            asignado_a: $('#asignado_a').val(),
+            fecha: $('#fecha').val()
+        };
 
-    // Eliminar los controladores de eventos existentes
-    $('#nombre').off('input');
-    $('#telefono').off('input');
+        if (JSON.stringify(estadoInicial) !== JSON.stringify(estadoActual)) {
+        // El usuario ha realizado cambios, preguntar si está seguro de que quiere salir
+        swal({
+            title: '¿Estás seguro?',
+            text: 'Si sales ahora, tus cambios se perderán.',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willClose) => {
+            if (willClose) {
+                // El usuario ha confirmado que quiere salir, cerrar el modal
+                $('#modal').hide();
+
+                // Resetear los campos de entrada
+                $('#nombre').val('');
+                $('#telefono').val('');
+
+                // Eliminar los controladores de eventos existentes
+                $('#nombre').off('input');
+                $('#telefono').off('input');
+            }
+        });
+    } else {
+        // El usuario no ha realizado cambios, cerrar el modal
+        $('#modal').hide();
+
+        // Resetear los campos de entrada
+        $('#nombre').val('');
+        $('#telefono').val('');
+
+        // Eliminar los controladores de eventos existentes
+        $('#nombre').off('input');
+        $('#telefono').off('input');
+    }
 }
 
 function crear() {
@@ -519,6 +570,19 @@ function crear() {
   $('#modalCrear').show();
   // Agregar los controladores de eventos
   agregarControladoresDeEventosCrear();
+
+  // Guardar el estado inicial de los campos de entrada
+  estadoInicial = {
+            nombre: $('#nombre').val(),
+            telefono: $('#telefono').val(),
+            embudo: $('#embudo').val(),
+            etapa: $('#etapa').val(),
+            status: $('#status').val(),
+            archivado: $('#archivado').val(),
+            creadomanual: $('#creadomanual').val(),
+            asignado_a: $('#asignado_a').val(),
+            fecha: $('#fecha').val()
+        };
 
   document.getElementById('botonGuardarCrear').addEventListener('clicks', guardarCambioscrear);
 }
@@ -555,15 +619,53 @@ function agregarControladoresDeEventosCrear() {
 
 
 function cerrarModalCrear() {
-  $('#modalCrear').hide();
-  
-    // Resetear los campos de entrada
-    $('#nombreCrear').val('');
-    $('#telefonoCrear').val('');
+    var estadoActual = {
+            nombre: $('#nombreCrear').val(),
+            telefono: $('#telefonoCrear').val(),
+            embudo: $('#embudoCrear').val(),
+            etapa: $('#etapaCrear').val(),
+            status: $('#statusCrear').val(),
+            archivado: $('#archivadoCrear').val(),
+            creadomanual: $('#creadomanualCrear').val(),
+            asignado_a: $('#asignado_aCrear').val(),
+            fecha: $('#fechaCrear').val()
+        };
 
-    // Eliminar los controladores de eventos existentes
-    $('#nombreCrear').off('input');
-    $('#telefonoCrear').off('input');
+        if (JSON.stringify(estadoInicial) !== JSON.stringify(estadoActual)) {
+        // El usuario ha realizado cambios, preguntar si está seguro de que quiere salir
+        swal({
+            title: '¿Estás seguro?',
+            text: 'Si sales ahora, tus cambios se perderán.',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willClose) => {
+            if (willClose) {
+                // El usuario ha confirmado que quiere salir, cerrar el modal
+                $('#modalCrear').hide();
+
+                // Resetear los campos de entrada
+                $('#nombreCrear').val('');
+                $('#telefonoCrear').val('');
+
+                // Eliminar los controladores de eventos existentes
+                $('#nombreCrear').off('input');
+                $('#telefonoCrear').off('input');
+            }
+        });
+    } else {
+        // El usuario no ha realizado cambios, cerrar el modal
+        $('#modalCrear').hide();
+
+        // Resetear los campos de entrada
+        $('#nombreCrear').val('');
+        $('#telefonoCrear').val('');
+
+        // Eliminar los controladores de eventos existentes
+        $('#nombreCrear').off('input');
+        $('#telefonoCrear').off('input');
+    }
 }
 
 function guardarCambios() {
