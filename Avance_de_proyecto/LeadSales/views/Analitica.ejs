@@ -7,7 +7,7 @@
                     <p class="text-lg"><b>Visualizando datos de la version:</b></p>
                     <% %>
                     <select class="border text-lg border-grey-100 bg-grey-600 px-4 py-2 rounded-full shadow-sm focus:outline-none text-ellipsis">
-                        <% for (let nombreDeVersion of nombreDeVersiones) { %>
+                        <% data.forEach(function(nombreDeVersion) { %>
                             <option value="1"><%= nombreDeVersion.NombreVersion %></option>
                         <% } %>
                     </select>
