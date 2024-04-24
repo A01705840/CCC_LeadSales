@@ -58,11 +58,16 @@
                     </div>
                 </div>
                 <div class="justify-center w-1/3 rounded-xl mr-4 bg-white">
-                    <h2 class="text-2xl mb-4">Total de Leads: <span id="totalLeads" class="font-bold"><%= cantidadTotalLeads %></span></h2>
-                    <h2 class="text-2xl mb-4">El <span id="porcentajeLeadsOrganicos"></span> de los leads son orgánicos.</h2>
+                    <b><p class="text-2xl mb-2 mt-4">
+                        Distribución de status
+                    </p></b>
+                    <div class="flex mb-4 rounded-xl h-full w-full justify-center items-center">
+                        <canvas id="pieChartStatus"></canvas>
+                    </div>
                 </div>
                 <div class="w-1/3 rounded-xl mr-4 bg-white">  
-                    <p class="text-2xl mb-2 mt-4"><b>........</b></p> 
+                    <h2 class="text-2xl mb-4 mt-4">Total de Leads: <span id="totalLeads" class="font-bold"><%= cantidadTotalLeads %></span></h2>
+                    <h2 class="text-2xl mb-4">El <span id="porcentajeLeadsOrganicos"></span> de los leads son orgánicos.</h2>
                 </div>
             </div>
             </div>

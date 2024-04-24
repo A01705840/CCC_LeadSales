@@ -88,10 +88,11 @@ exports.get_analiticaPRESET = async (request, response, next) => {
     const cantidadLeads = await Lead.obtenerCantidadLeads();
     const cantidadLeadsOrganicos = await Lead.obtenerCantidadLeadsOrganicos();
     const cantidadLeadsEmbudos = await Lead.obtenerCantidadLeadsEmbudos();
+    const cantidadLeadsStatus = await Lead.obtenerCantidadLeadsStatus();
     const leadsPorAgenteResult = await Lead.fetchLeadsPorAgente(rangeAgent);
     const leadsPorAgente = leadsPorAgenteResult[0]; // Solo usar el primer elemento del array
     const nombreDeVersione= await Version.Nombres();
-    const nombreDeVersiones= nombreDeVersione[0]
+    const nombreDeVersiones= nombreDeVersione[0];
     console.log("Nombre de versiones "+nombreDeVersiones);
 
     // Calcular el rango de fechas y generar las fechas
@@ -110,6 +111,7 @@ exports.get_analiticaPRESET = async (request, response, next) => {
         cantidadTotalLeads: cantidadLeads,
         cantidadLeadsOrganicos: cantidadLeadsOrganicos,
         cantidadLeadsEmbudos: cantidadLeadsEmbudos,
+        cantidadLeadsStatus: cantidadLeadsStatus ,
         fechas: fechas,
         datasets: datasetsPorAgente,
         nombreDeVersiones: nombreDeVersiones
