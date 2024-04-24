@@ -198,7 +198,7 @@ module.exports = class Lead {
         return db.execute('DELETE FROM leads WHERE IDLead = ?', [id]);
     }
 
-    static obtenerCantidadLeadsPorAgente() {
+    static async obtenerCantidadLeadsPorAgente() {
         return db.execute('SELECT asignado_a AS Seller, COUNT(*) AS TotalLeads FROM leads GROUP BY asignado_a ORDER BY TotalLeads DESC LIMIT 3;');
     }
     
