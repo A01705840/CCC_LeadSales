@@ -8,7 +8,7 @@
                     <% %>
                     <select class="border text-lg border-grey-100 bg-grey-600 px-4 py-2 rounded-full shadow-sm focus:outline-none text-ellipsis">
                         <% for (let nombreDeVersion of nombreDeVersiones) { %>
-                            <option value="1"><%= nombreDeVersion.NombreVersion %></option>
+                            <option value="nombreDeVersion.NombreVersion"><%= nombreDeVersion.NombreVersion %></option>
                         <% } %>
                     </select>
                 <button id="openModalButton"  class="bg-white hover:bg-indigo-600 hover:text-white py-2 px-4 rounded-full flex items-center">
@@ -57,12 +57,17 @@
                         <canvas id="pieChartEmbudo"></canvas>
                     </div>
                 </div>
-                <div class="justify-center w-1/3 rounded-xl mr-4 bg-white">
-                    <h2 class="text-2xl mb-4">Total de Leads: <span id="totalLeads" class="font-bold"><%= cantidadTotalLeads %></span></h2>
-                    <h2 class="text-2xl mb-4">El <span id="porcentajeLeadsOrganicos"></span> de los leads son orgánicos.</h2>
+                <div class="flex flex-col w-1/3 mr-4 mb-4 bg-white rounded-xl justify-center items-center">
+                    <b><p class="text-2xl mt-4">
+                        Distribución de status
+                    </p></b>
+                    <div class="flex mb-4 rounded-xl h-full w-full justify-center items-center">
+                        <canvas id="pieChartStatus"></canvas>
+                    </div>
                 </div>
-                <div class="w-1/3 rounded-xl mr-4 bg-white">  
-                    <p class="text-2xl mb-2 mt-4"><b>........</b></p> 
+                <div class="flex flex-col w-1/3 mr-4 mb-4 bg-white rounded-xl justify-center items-center">  
+                    <h2 class="text-2xl mb-4 mt-4">Total de Leads: <span id="totalLeads" class="font-bold"><%= cantidadTotalLeads %></span></h2>
+                    <h2 class="text-2xl mb-4">El <span id="porcentajeLeadsOrganicos"></span> de los leads son orgánicos.</h2>
                 </div>
             </div>
             </div>
@@ -114,8 +119,76 @@
         document.getElementById('dateRangeLeadsPorAgente').value = selectedRangeAgente; // Establecer la opción seleccionada
     }
 
+
+    //------------------------Código gráfica Status------------------------------------------//
+    const datosStatus= <%- JSON.stringify(cantidadLeadsStatus) %>[0];
+    console.log(datosStatus);
+
+    const status=[];
+    const totalesLeadsStatus=[];
+
+     // Iterar sobre cada objeto en el array
+     datosStatus.forEach(statu => {
+        // Obtener el nombre del embudo y el total de leads
+        const nombreStatus = statu.Status;
+        const totalLeadsStatus = parseInt(statu.TotalLeads);
+        
+        // Agregar el nombre del embudo y el total de leads a los arrays correspondientes
+        status.push(nombreStatus);
+        totalesLeadsStatus.push(totalLeadsStatus);
+    });
+    console.log(status);
+    console.log(totalesLeadsStatus);
+
+    const backgroundColorsStatus = status.map(() => getRandomPastelColor());
+
+    const pieDataStatus = {
+        labels: status, // Usar los nombres de los embudos como etiquetas
+        datasets: [{
+            label: '1',
+            data:  totalesLeadsStatus,
+            backgroundColor: backgroundColorsStatus,
+            hoverOffset: 4
+        }]
+    };
+
+    // Obtener el contexto del canvas para la gráfica de donut
+    const pieCt = document.getElementById('pieChartStatus').getContext('2d');
+
+    // Configuración de la gráfica de donut
+    let pieChartStatus = new Chart(pieCt, {
+        type: 'doughnut',
+        data: pieDataStatus,
+        options: {
+            responsive: true,
+            plugins: {
+                datalabels: {
+                    formatter: (value, ctx) => {
+                        const total = ctx.chart.data.datasets[0].data.reduce((acc, curr) => acc + curr, 0);
+                        const percentage = ((value / total) * 100).toFixed(2) + '%';
+                        return percentage;
+                    },
+                    color: '#fff',
+                    font: {
+                        weight: 'bold'
+                    }
+                }
+            },
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Gráfica de Pay Status'
+            }
+        }
+    });
+
+
+    //------------------------Código gráfica Embdos------------------------------------------//
     // Datos de ejemplo para la gráfica de donut
     const datos = <%- JSON.stringify(cantidadLeadsEmbudos) %>[0];
+
 
     // Crear arrays para almacenar las etiquetas y los totales de leads
     const embudos = [];
