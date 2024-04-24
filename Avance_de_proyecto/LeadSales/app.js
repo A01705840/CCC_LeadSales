@@ -77,6 +77,20 @@ app.use('/Roles', rutasRoles);
 const rutasLeads = require('./routes/leads.routes');
 app.use('/Lead', rutasLeads);
 
+app.get('/analitica', function(req, res) {
+  let cantidadLeadsAgente = // Fetch or calculate your data here
+
+  res.render('Analitica', { username: request.session.username || '',
+                            leadsPerDay: leadsConDiasSinLeads, 
+                            cantidadTotalLeads: cantidadLeads,
+                            cantidadLeadsOrganicos: cantidadLeadsOrganicos,
+                            cantidadLeadsEmbudos: cantidadLeadsEmbudos,
+                            cantidadLeadsAgente: cantidadLeadsAgente,
+                            cantidadLeadsStatus: cantidadLeadsStatus ,
+                            fechas: fechas,
+                            datasets: datasetsPorAgente,
+                            nombreDeVersiones: nombreDeVersiones });
+});
 
 app.use((request, response, next) => {
   response.status(404);
