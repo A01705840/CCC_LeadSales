@@ -104,10 +104,10 @@
     });
 </script>
 <script>
-    const cantidadLeadsAgente = <%- JSON.stringify(cantidadLeadsAgente) %>;
+    const cantidadLeadsAgente = JSON.parse('<%- JSON.stringify(cantidadLeadsAgente) %>');
     // Obtener la cantidad total de leads y la cantidad de leads orgánicos de los elementos HTML
     const cantidadTotalLeads = Number(document.getElementById('totalLeads').textContent);
-    const cantidadLeadsOrganicos = <%- JSON.stringify(cantidadLeadsOrganicos) %>;
+    const cantidadLeadsOrganicos = JSON.parse('<%- JSON.stringify(cantidadLeadsOrganicos) %>');
 
     // Función para obtener el color en función del porcentaje
     function getColorForPercentage(porcentaje) {
