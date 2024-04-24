@@ -95,8 +95,6 @@ exports.generarDatasetsPorAgente = function(gruposPorAgente, fechas) {
             });
             return item ? item.CantidadLeads : 0; // Si no hay item, asignar 0
         });
-        console.log("AGENTE", agente);
-        console.log("DATOS", datos);
         return {
             agente,
             datos,
