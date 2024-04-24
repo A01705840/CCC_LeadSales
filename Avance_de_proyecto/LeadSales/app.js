@@ -77,6 +77,10 @@ app.use('/Roles', rutasRoles);
 const rutasLeads = require('./routes/leads.routes');
 app.use('/Lead', rutasLeads);
 
+app.get('/your-route', (req, res) => {
+  let nombreDeVersiones = // fetch or define your data here
+  res.render('Analitica', { nombreDeVersiones: nombreDeVersiones });
+});
 
 app.use((request, response, next) => {
   response.status(404);
