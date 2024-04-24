@@ -84,15 +84,16 @@ exports.get_analitica_agent = async (request, response, next) => {
 
 exports.get_analiticaPRESET = async (request, response, next) => {
     const rangeAgent = '1'; // Siempre usa '1' (semana) como valor predeterminado
-    const result = await Lead.fetchLeadsByDay(rangeAgent);
-    const cantidadLeads = await Lead.obtenerCantidadLeads();
-    const cantidadLeadsOrganicos = await Lead.obtenerCantidadLeadsOrganicos();
-    const cantidadLeadsEmbudos = await Lead.obtenerCantidadLeadsEmbudos();
-    const cantidadLeadsStatus = await Lead.obtenerCantidadLeadsStatus();
-    const leadsPorAgenteResult = await Lead.fetchLeadsPorAgente(rangeAgent);
-    const leadsPorAgente = leadsPorAgenteResult[0]; // Solo usar el primer elemento del array
-    const nombreDeVersione= await Version.Nombres();
-    const nombreDeVersiones= nombreDeVersione[0];
+    const result = await Lead.fetchLeadsByDay(rangeAgent); // Obtener los leads por día
+    const cantidadLeads = await Lead.obtenerCantidadLeads(); // Obtener la cantidad total de leads
+    const cantidadLeadsOrganicos = await Lead.obtenerCantidadLeadsOrganicos(); // Obtener la cantidad de leads orgánicos
+    const cantidadLeadsEmbudos = await Lead.obtenerCantidadLeadsEmbudos(); // Obtener la cantidad de leads en embudos
+    const cantidadLeadsStatus = await Lead.obtenerCantidadLeadsStatus(); // Obtener la cantidad de leads por status
+    const cantidadLeadsAgente = await Lead.obtenerCantidadLeadsPorAgente(); // Obtener la cantidad de leads por agente
+    const leadsPorAgenteResult = await Lead.fetchLeadsPorAgente(rangeAgent); // Obtener los leads por agente
+    const leadsPorAgente = leadsPorAgenteResult[0]; // Solo usar el primer elemento del array para evitar duplicados 
+    const nombreDeVersione= await Version.Nombres(); // Obtener el nombre de la versión
+    const nombreDeVersiones= nombreDeVersione[0]; // Solo usar el primer elemento del array para evitar duplicados
     console.log("Nombre de versiones "+nombreDeVersiones);
 
     // Calcular el rango de fechas y generar las fechas
@@ -104,13 +105,14 @@ exports.get_analiticaPRESET = async (request, response, next) => {
 
     const gruposPorAgente = utils.agruparLeadsPorAgente(leadsPorAgente);
     const datasetsPorAgente = utils.generarDatasetsPorAgente(gruposPorAgente, fechas);
-
+    console.log(cantidadLeadsAgente);
     response.render('Analitica', {
         username: request.session.username || '',
         leadsPerDay: leadsConDiasSinLeads, 
         cantidadTotalLeads: cantidadLeads,
         cantidadLeadsOrganicos: cantidadLeadsOrganicos,
         cantidadLeadsEmbudos: cantidadLeadsEmbudos,
+        cantidadLeadsAgente: cantidadLeadsAgente,
         cantidadLeadsStatus: cantidadLeadsStatus ,
         fechas: fechas,
         datasets: datasetsPorAgente,
