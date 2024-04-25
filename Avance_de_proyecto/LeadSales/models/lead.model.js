@@ -52,10 +52,10 @@ module.exports = class Lead {
     }
 
     static async fetchLeadsByDay(range) {
-        const endDate = new Date(2023, 0, 1);// Fecha actual
+        const endDate = new Date(2023, 0, 1); 
         let startDate = new Date(endDate); // Crea una copia de endDate
         let groupBy;
-    
+
         switch (parseInt(range)) {
             case 1:
                 startDate.setDate(endDate.getDate() - 7); // Una semana antes de la fecha actual

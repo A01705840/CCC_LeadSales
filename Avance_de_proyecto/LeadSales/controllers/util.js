@@ -27,9 +27,12 @@ exports.calcularRangoFechas = function(seleccion) {
     }
     return { inicio: inicio, fin: fin };
 };
+/*
 
-// convertirRangoFechas ejemplo de output: INICIO 2022-12-25T06:00:00.000Z, FIN 2022-12-31T06:00:00.000Z
+convertirRangoFechas ejemplo de output: 
+INICIO 2022-12-25T06:00:00.000Z, FIN 2022-12-31T06:00:00.000Z
 
+*/
 
 // Función para generar un array de fechas que representen todos los días en el rango de fechas seleccionado
 exports.generarFechas = function(inicio, fin) {
@@ -95,8 +98,6 @@ exports.generarDatasetsPorAgente = function(gruposPorAgente, fechas) {
             });
             return item ? item.CantidadLeads : 0; // Si no hay item, asignar 0
         });
-        console.log("AGENTE", agente);
-        console.log("DATOS", datos);
         return {
             agente,
             datos,
