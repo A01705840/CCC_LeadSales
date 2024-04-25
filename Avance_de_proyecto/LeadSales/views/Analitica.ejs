@@ -68,6 +68,17 @@
                 <div class="flex flex-col w-1/3 mr-4 mb-4 bg-white rounded-xl justify-center items-center">  
                     <h2 class="text-2xl mb-4 mt-4">Total de Leads: <span id="totalLeads" class="font-bold"><%= cantidadTotalLeads %></span></h2>
                     <h2 class="text-2xl mb-4">El <span id="porcentajeLeadsOrganicos"></span> de los leads son orgánicos.</h2>
+                    <div id="modalBackground" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;"  class="flex items-center justify-center bg-gray-500 bg-opacity-75"></div>
+                    <div id="contenedorMapa" style="cursor: pointer;">
+                        <div id="mapaContenedor">
+                          <div id="titulo" class="text-2xl mb-2 mt-4"></div>
+                          <button onclick="cerrarModal();" id="cerrarModal" style="position: absolute; right: 10px; top: 10px; cursor: pointer;">x</button>
+                          <div id="mapa" class="flex" style="height: 250px; width: 380px; pointer-events: none;">
+                            <%- include('mx.ejs', {estados: estados});%>
+                          </div>
+                        </div>
+                    </div>
+                    
                 </div>
                 <div class="flex flex-col w-1/3 mr-4 mb-4 bg-white rounded-xl justify-center items-center">
                     <h2 class="text-2xl mb-4 mt-4">Top Seller:</h2>
@@ -81,6 +92,8 @@
         </div>
   </div>
 </div>
+
+
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
@@ -104,6 +117,79 @@
     });
 </script>
 <script>
+    //------------MAPA DE MÉXICO-----------------//
+// Evento al hacer clic en el contenedorMapa
+document.getElementById('contenedorMapa').addEventListener('click', function() {
+  var mapaContenedor = document.getElementById('mapaContenedor');
+  var mapa = document.getElementById('mapa');
+  var titulo = document.getElementById('titulo');
+  var modalBackground = document.getElementById('modalBackground');
+
+  // Hace que el mapa sea interactivo
+  mapa.style.pointerEvents = 'auto';
+
+  // Cambia el cursor a default
+  contenedorMapa.style.cursor = 'default';
+
+  // Cambia el tamaño del contenedor y el mapa
+  mapaContenedor.style.position = 'fixed';
+  mapaContenedor.style.top = '15%';
+  mapaContenedor.style.left = '15%';
+  mapaContenedor.style.width = '65%';
+  mapaContenedor.style.height = '70%';
+  mapaContenedor.style.zIndex = '10000';
+  mapaContenedor.style.backgroundColor = 'white';
+  mapaContenedor.style.boxShadow = '0 4px 6px 0 hsla(0, 0%, 0%, 0.2)';
+  mapaContenedor.style.borderRadius = '15px';
+
+  mapa.style.width = '100%';
+  mapa.style.height = 'calc(100% - 2em)'; // Resta el espacio para el título
+  mapa.style.marginLeft = '54px';
+
+  // Agrega un título al mapa
+  titulo.innerHTML = '<b>Leads por Estado</b>';
+
+  // Muestra el fondo del modal
+  modalBackground.style.display = 'block';
+});
+
+// Función para cerrar el modal
+function cerrarModal() {
+  var mapaContenedor = document.getElementById('mapaContenedor');
+  var mapa = document.getElementById('mapa');
+  var titulo = document.getElementById('titulo');
+  var modalBackground = document.getElementById('modalBackground');
+
+  // Hace que el mapa no sea interactivo
+  mapa.style.pointerEvents = 'none';
+
+  // Cambia el cursor a pointer
+  contenedorMapa.style.cursor = 'pointer';
+
+  // Restaura el tamaño y la posición del contenedor
+  mapaContenedor.style.position = 'static';
+  mapaContenedor.style.width = 'auto';
+  mapaContenedor.style.height = 'auto';
+  mapaContenedor.style.backgroundColor = 'transparent';
+  mapaContenedor.style.boxShadow = 'none';
+  mapaContenedor.style.borderRadius = '0';
+
+  // Restaura el tamaño y la posición del mapa
+  mapa.style.width = '380px';
+  mapa.style.height = '250px';
+  mapa.style.marginLeft = '0px'; 
+
+  // Quita el título
+  titulo.innerHTML = '';
+
+  // Oculta el fondo del modal
+  modalBackground.style.display = 'none';
+}
+
+// Evento al hacer clic en el fondo del modal
+document.getElementById('modalBackground').addEventListener('click', cerrarModal);
+
+
     const cantidadLeadsAgente = <%- JSON.stringify(cantidadLeadsAgente) %>;
     // Obtener la cantidad total de leads y la cantidad de leads orgánicos de los elementos HTML
     const cantidadTotalLeads = Number(document.getElementById('totalLeads').textContent);
@@ -454,8 +540,6 @@
 
     // Actualizar el contenido del elemento HTML con el total de Leads por Agente
     document.getElementById('totalLeadsPorAgente').textContent = totalLeadsPorAgente.join(', ');
-   
-    // Formatear las fechas antes de usarlas en la gráfica
    
 
     // Obtener el contexto del segundo canvas

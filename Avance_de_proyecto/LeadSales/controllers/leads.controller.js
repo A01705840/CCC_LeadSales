@@ -106,6 +106,45 @@ exports.get_analiticaPRESET = async (request, response, next) => {
     const gruposPorAgente = utils.agruparLeadsPorAgente(leadsPorAgente);
     const datasetsPorAgente = utils.generarDatasetsPorAgente(gruposPorAgente, fechas);
     console.log(cantidadLeadsAgente);
+    // Ejemplo de lo que contendría el objeto de estados
+    // [{MXQRO: 10, MXMEX: 20, MXGDL: 30, MXMTY: 40, MXAGS: 50}]
+    const estados = [
+        {
+        MXSON: 10,
+        MXBCN: 20,
+        MXCHH: 30,
+        MXCOA: 40,
+        MXTAM: 50,
+        MXNLE: 60,
+        MXROO: 70,
+        MXCAM: 80,
+        MXTAB: 90,
+        MXCHP: 100,
+        MXCOL: 110,
+        MXNAY: 120,
+        MXBCS: 130,
+        MXSIN: 140,
+        MXYUC: 150,
+        MXVER: 160,
+        MXJAL: 170,
+        MXMIC: 180,
+        MXGRO: 190,
+        MXOAX: 200,
+        MXMEX: 210,
+        MXPUE: 220,
+        MXMOR: 230,
+        MXQUE: 240,
+        MXHID: 250,
+        MXGUA: 260,
+        MXSLP: 270,
+        MXZAC: 280,
+        MXAGU: 290,
+        MXDUR: 300,
+        MXTLA: 310,
+        MXDIF: 320,
+        }
+    ];
+
     response.render('Analitica', {
         username: request.session.username || '',
         leadsPerDay: leadsConDiasSinLeads, 
@@ -116,7 +155,8 @@ exports.get_analiticaPRESET = async (request, response, next) => {
         cantidadLeadsStatus: cantidadLeadsStatus ,
         fechas: fechas,
         datasets: datasetsPorAgente,
-        nombreDeVersiones: nombreDeVersiones
+        nombreDeVersiones: nombreDeVersiones,
+        estados: estados
     });
 };
 

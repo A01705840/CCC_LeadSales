@@ -3,7 +3,7 @@
     permisos: permisos}) %>
     <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
  
-    <div id="modal" onclick="cerrarModal()" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.3);" class="flex items-center justify-center">
+    <div id="modal" onclick="cerrarModal()" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index:10000;" class="flex items-center justify-center bg-gray-500 bg-opacity-75">
         <div onclick="event.stopPropagation()" class="relative transform overflow-hidden rounded-lg bg-gray-50 text-left shadow-xl transition-all" style="width: 600px; height: 580px;">
             <h1 class="text-xl font-sans text-ellipsis capitalize dark:text-white mb-4" style="padding-left: 25px; padding-top: 25px;">Modificar Lead</h1>
             <section class="max-w-4xl p-6 mx-auto bg-white shadow-md dark:bg-gray-800 ">
@@ -99,7 +99,7 @@
         </div>
     </div>
     
-    <div id="modalCrear" onclick="cerrarModalCrear()" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.3);" class="flex items-center justify-center">
+    <div id="modalCrear" onclick="cerrarModalCrear()" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index:10000;" class="flex items-center justify-center bg-gray-500 bg-opacity-75">
         <div onclick="event.stopPropagation()" class="relative transform overflow-hidden rounded-lg bg-gray-50 text-left shadow-xl transition-all" style="width: 600px; height: 580px;">
             <h1 class="text-xl font-sans text-ellipsis capitalize dark:text-white mb-4" style="padding-left: 25px; padding-top: 25px;">Crear Lead</h1>
             <section class="max-w-4xl p-6 mx-auto bg-white shadow-md dark:bg-gray-800 ">
@@ -573,15 +573,15 @@ function crear() {
 
   // Guardar el estado inicial de los campos de entrada
   estadoInicial = {
-            nombre: $('#nombre').val(),
-            telefono: $('#telefono').val(),
-            embudo: $('#embudo').val(),
-            etapa: $('#etapa').val(),
-            status: $('#status').val(),
-            archivado: $('#archivado').val(),
-            creadomanual: $('#creadomanual').val(),
-            asignado_a: $('#asignado_a').val(),
-            fecha: $('#fecha').val()
+            nombre: $('#nombreCrear').val(),
+            telefono: $('#telefonoCrear').val(),
+            embudo: $('#embudoCrear').val(),
+            etapa: $('#etapaCrear').val(),
+            status: $('#statusCrear').val(),
+            archivado: $('#archivadoCrear').val(),
+            creadomanual: $('#creadomanualCrear').val(),
+            asignado_a: $('#asignado_aCrear').val(),
+            fecha: $('#fechaCrear').val()
         };
 
   document.getElementById('botonGuardarCrear').addEventListener('clicks', guardarCambioscrear);

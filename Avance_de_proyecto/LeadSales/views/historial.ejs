@@ -1,6 +1,6 @@
 <%- include('includes/head.ejs', {username: username}) %>
 <meta charset="UTF-8">
-<div id="modal" onclick="cerrarModal()" class="relative z-10" style="display: none;">
+<div id="modal" onclick="cerrarModal()" class="relative z-10" style="display: none; z-index:10000;">
     <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
     <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -175,7 +175,7 @@
     const openModalButton = document.getElementById('openModalButton');
 openModalButton.addEventListener('click', function() {
   const modalContent = `
-    <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div onclick="location.href = 'historial';" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true" style="z-index:10000; ">
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
         <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
