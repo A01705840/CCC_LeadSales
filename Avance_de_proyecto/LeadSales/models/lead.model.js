@@ -99,6 +99,10 @@ static async obtenerCantidadLeadsEmbudos() {
     return db.execute('SELECT Embudo, COUNT(*) AS TotalLeads FROM leads GROUP BY Embudo')
 }
 
+static async obtenerUltimaFechaLead() {
+    return db.execute('SELECT MAX(FechaPrimerMensaje) AS UltimaFecha FROM leads;')
+}
+
 static async fetchLeadsPorAgente(rangeAgent) {
     const endDate = new Date(2023, 0, 1); // Fecha actual
     let startDate = new Date(endDate); // Crea una copia de endDate

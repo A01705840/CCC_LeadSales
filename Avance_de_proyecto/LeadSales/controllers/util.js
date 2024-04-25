@@ -41,7 +41,7 @@ exports.generarFechas = function(inicio, fin) {
         fechas.push(new Date(fechaActual));
         fechaActual.setDate(fechaActual.getDate() + 1);
     }
-    console.log("FECHAS",fechas);
+    // console.log("FECHAS",fechas);
     return fechas;
 };
 

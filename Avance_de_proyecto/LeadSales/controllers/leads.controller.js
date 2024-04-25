@@ -88,6 +88,7 @@ exports.get_analiticaPRESET = async (request, response, next) => {
     const cantidadLeads = await Lead.obtenerCantidadLeads();
     const cantidadLeadsOrganicos = await Lead.obtenerCantidadLeadsOrganicos();
     const cantidadLeadsEmbudos = await Lead.obtenerCantidadLeadsEmbudos();
+    const ultimaFechaLead = await Lead.obtenerUltimaFechaLead();
     const leadsPorAgenteResult = await Lead.fetchLeadsPorAgente(rangeAgent);
     const leadsPorAgente = leadsPorAgenteResult[0]; // Solo usar el primer elemento del array
 
@@ -107,6 +108,7 @@ exports.get_analiticaPRESET = async (request, response, next) => {
         cantidadTotalLeads: cantidadLeads,
         cantidadLeadsOrganicos: cantidadLeadsOrganicos,
         cantidadLeadsEmbudos: cantidadLeadsEmbudos,
+        ultimaFechaLead: ultimaFechaLead,
         fechas: fechas,
         datasets: datasetsPorAgente,
     });

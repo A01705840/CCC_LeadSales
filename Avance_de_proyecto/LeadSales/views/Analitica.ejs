@@ -44,7 +44,8 @@
                 </div>
                 <div class="justify-center w-1/3 rounded-xl mr-4 bg-white">
                     <h2 class="text-2xl mb-4">Total de Leads: <span id="totalLeads" class="font-bold"><%= cantidadTotalLeads %></span></h2>
-                    <h2 class="text-2xl mb-4">El <span id="porcentajeLeadsOrganicos"></span> de los leads son orgánicos.</h2>
+                    <h2 class="text-2xl mb-4">El <span id="porcentajeLeadsOrganicos"></span><%= cantidadTotalLeads %> de los leads son orgánicos.</h2>
+                    <h2 class="text-2xl mb-4"> La fecha de tu ultimo lead fue el<span id="ultimaFechaLead"></span></h2>
                 </div>
                 <div class="w-1/3 rounded-xl mr-4 bg-white">  
                     <p class="text-2xl mb-2 mt-4"><b>........</b></p> 
@@ -65,9 +66,47 @@
     const cantidadTotalLeads = Number(document.getElementById('totalLeads').textContent);
     const cantidadLeadsOrganicos = <%- JSON.stringify(cantidadLeadsOrganicos) %>;
 
+    
+    // Calcular la fecha del último lead y actualizar el texto
+
+    var ultimaFechaLead = <%- JSON.stringify(ultimaFechaLead) %> [0];
+
+
+    //Esto convierte las fechas en objetos Date
+    // fechas = ultimaFechaLead.map(fecha => new Date(fecha));
+    // console.log("FECHAS",fechas);
+    // Obtener el primer elemento en fechas
+    const firstDate = ultimaFechaLead[0];
+    //Formateamos firstDate
+    const firstDateFormateada = moment(firstDate.UltimaFecha).format('D [de] MMMM [de] YYYY');
+    console.log("FIRSTDATE",firstDateFormateada);
+    const ultimaFechaLeadElement = document.getElementById('ultimaFechaLead');
+    ultimaFechaLeadElement.textContent = firstDateFormateada;
+
+
+    
+    // const ultimaFechaLeadData = <%- JSON.stringify(ultimaFechaLead)%>;
+    // console.log("ULTIMAFECHA",ultimaFechaLeadData);
+    // const fechaUltimoLead = new Date(ultimaFechaLeadData);
+    // console.log("FECHA",fechaUltimoLead);
+    // const ultimaFechaLeadFormateada = moment(fechaUltimoLead).format('D [de] MMMM [de] YYYY');
+    // console.log("ULTIMAFECHA_formateada",ultimaFechaLeadFormateada);
+    // const ultimaFechaLeadElement = document.getElementById('ultimaFechaLead');
+    // console.log("ULTIMAFECHA_element",ultimaFechaLeadElement);
+    // if (ultimaFechaLeadElement) {
+    //     ultimaFechaLeadElement.textContent = ultimaFechaLeadFormateada;
+    // } else {
+    //     console.error("No se encontró el elemento con ID 'ultimaFechaLead'");
+    // }
+
+
+    // ultimaFechaLeadElement.textContent = moment (ultimaFechaLead). format('D [de] MMMM [de] YYYY');
+    
+    
+
     // Función para obtener el color en función del porcentaje
     function getColorForPercentage(porcentaje) {
-        if (porcentaje >= 75) {
+        if (porcentaje >= 75) { 
             return 'text-blue-700';
         } else if (porcentaje >= 50) {
             return 'text-blue-500';
