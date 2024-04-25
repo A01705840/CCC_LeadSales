@@ -77,9 +77,6 @@ app.use('/Roles', rutasRoles);
 const rutasLeads = require('./routes/leads.routes');
 app.use('/Lead', rutasLeads);
 
-app.get('/analitica', function(req, res) {
-  let cantidadLeadsAgente = // Fetch or calculate your data here
-
 
 app.use((request, response, next) => {
   response.status(404);

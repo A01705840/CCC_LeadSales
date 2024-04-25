@@ -66,16 +66,15 @@
                     </div>
                 </div>
                 <div class="flex flex-col w-1/3 mr-4 mb-4 bg-white rounded-xl justify-center items-center">  
-                    <h2 class="text-2xl mb-4 mt-4">Total de Leads: <span id="totalLeads" class="font-bold"><%= cantidadTotalLeads %></span></h2>
-                    <h2 class="text-2xl mb-4">El <span id="porcentajeLeadsOrganicos"></span> de los leads son orgánicos.</h2>
-                </div>
-                <div class="flex flex-col w-1/3 mr-4 mb-4 bg-white rounded-xl justify-center items-center">
-                    <h2 class="text-2xl mb-4 mt-4">Top Seller:</h2>
-                    <h2 id="topseller" class="text-lg mb-4 mt-4"></h2>
+                    <h2 class="text-2xl mb-4 mt-4"><b>Total de Leads:</b> <span id="totalLeads" class="font-bold"><%= cantidadTotalLeads %></span></h2>
+                    <h2 class="text-xl mb-4">El <span id="porcentajeLeadsOrganicos"></span> de los leads son orgánicos.</h2>
+                    <h2 id="topseller" class="text-lg mb-4 mr-8 ml-8 mt-4 p-0.5"></h2>
                     <div>
                         <button id="celebration" class="flex items-center bg-white shadow-md cursor-pointer border-spacing-2.5 m-1 p-0.5 text-xl transition-transform active:scale-150 ">🎉</button>
                     </div>
-                </div>
+                <!-- </div>
+                <div class="flex flex-col w-1/3 mr-4 mb-4 bg-white rounded-xl justify-center items-center">
+                </div> -->
             </div>
             </div>
         </div>
@@ -144,13 +143,13 @@
         const br = document.createElement('br');
 
         if (i == 0){
-            span.textContent = '1er Lugar 🥇: ' + topSellerData[i].Seller + ', with ' + topSellerData[i].TotalLeads + ' leads' + '\n';
+            span.textContent = '1er Lugar 🥇: ' + topSellerData[i].Seller + ', con ' + topSellerData[i].TotalLeads + ' leads' + '\n';
         }
         if (i == 1){
-            span.textContent = '2do Lugar 🥈: ' + topSellerData[i].Seller + ', with ' + topSellerData[i].TotalLeads + ' leads' + '\n';
+            span.textContent = '2do Lugar 🥈: ' + topSellerData[i].Seller + ', con ' + topSellerData[i].TotalLeads + ' leads' + '\n';
         }
         if (i == 2){
-            span.textContent = '3er Lugar 🥉: ' + topSellerData[i].Seller + ', with ' + topSellerData[i].TotalLeads + ' leads' + '\n';
+            span.textContent = '3er Lugar 🥉: ' + topSellerData[i].Seller + ', con ' + topSellerData[i].TotalLeads + ' leads' + '\n';
         }
 
         // Append the span element to the 'topseller' element
