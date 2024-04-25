@@ -128,6 +128,7 @@ module.exports = class Lead {
             FROM leads 
             WHERE FechaPrimerMensaje >= ? AND FechaPrimerMensaje < ?
             GROUP BY Fecha, asignado_a, ${groupBy}(FechaPrimerMensaje)
+            ORDER BY Fecha DESC
         `;
         return await db.execute(query, [startDate, endDate]);
     }
