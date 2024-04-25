@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const isAuth = require('./util/isAuth');
 
 require('dotenv').config();
 
@@ -62,20 +63,19 @@ const fileStorage = multer.diskStorage({
 app.use(multer({ storage: fileStorage}).single('csv')); 
 
 const rutasUsuarios = require('./routes/usuarios.routes');
-app.use('/Usuario', rutasUsuarios);
-app.use('/', rutasUsuarios);
-
-const rutasSignup = require('./routes/usuarios.routes');
-app.use('/Usuario', rutasSignup);
+app.use('/usuario', rutasUsuarios)
 
 const rutasPrivilegios= require('./routes/privilegios.routes');
-app.use('/privilegios', rutasPrivilegios);
+app.use('/privilegios', isAuth,  rutasPrivilegios);
 
 const rutasRoles = require('./routes/roles.routes');
-app.use('/Roles', rutasRoles);
+app.use('/Roles', isAuth, rutasRoles);
 
 const rutasLeads = require('./routes/leads.routes');
-app.use('/Lead', rutasLeads);
+app.use('/Lead', isAuth, rutasLeads);
+
+;
+
 
 
 app.use((request, response, next) => {
