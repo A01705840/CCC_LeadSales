@@ -139,7 +139,14 @@
     // Obtener el top seller y actualizar el texto
     const topSeller = document.getElementById('topseller');
     // Parse the JSON string back to an object
-    const topSellerData = JSON.parse('<%- JSON.stringify(cantidadLeadsAgente[0]) %>');
+    const topSellerData = [
+        [
+            { Seller: 'Paulina Garcia', TotalLeads: 508 },
+            { Seller: 'Alex Serrano', TotalLeads: 433 },
+            { Seller: 'Monse Serrano', TotalLeads: 268 }
+        ],
+        [ `Seller` VARCHAR(30) NOT NULL, `TotalLeads` BIGINT(21) NOT NULL ]
+        ];
     console.log('HOLA',topSellerData);
     // Create a string that contains all the data
     let topSellerText = '';
