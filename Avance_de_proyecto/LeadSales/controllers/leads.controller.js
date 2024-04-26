@@ -112,12 +112,14 @@ exports.get_analiticaPRESET = async (request, response, next) => {
         cantidadTotalLeads: cantidadLeads,
         cantidadLeadsOrganicos: cantidadLeadsOrganicos,
         cantidadLeadsEmbudos: cantidadLeadsEmbudos,
-        cantidadLeadsAgente: cantidadLeadsAgente,
+        'cantidadLeadsAgente': cantidadLeadsAgente,
         cantidadLeadsStatus: cantidadLeadsStatus ,
         fechas: fechas,
         datasets: datasetsPorAgente,
         nombreDeVersiones: nombreDeVersiones
     });
+
+    response.writeHead(200, {'cantidadLeadsAgente': cantidadLeadsAgente});
 };
 
 //
