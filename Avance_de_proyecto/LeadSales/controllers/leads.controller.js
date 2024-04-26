@@ -156,7 +156,7 @@ exports.get_analiticaPRESET = async (request, response, next) => {
         fechas: fechas,
         datasets: datasetsPorAgente,
         nombreDeVersiones: nombreDeVersiones,
-        estados: estados
+        estados: estados,
     });
 };
 
@@ -175,8 +175,10 @@ exports.get_root = (request, response, next) => {
     });
 };
 
-exports.get_leads = (request, res, next)  => {
+exports.get_leads = async (request, res, next)  => {
     console.log('GET LEADS');
+    const nombreDeVersione= await Version.Nombres(); // Obtener el nombre de la versión
+    const nombreDeVersiones= nombreDeVersione[0]; // Solo usar el primer elemento del array para evitar duplicados
     Lead.fetch(request.params.IDLead)
         .then(([rows,fieldData]) => {
             //console.log(NombreLead);
@@ -187,6 +189,7 @@ exports.get_leads = (request, res, next)  => {
                 leads: rows,
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
+                nombreDeVersiones: nombreDeVersiones,
             });
         })
         .catch((error) => {
@@ -239,7 +242,7 @@ exports.post_modificar_lead = async (request, response, next) => {
         await Lead.update(request.body);
 
         // Envía una respuesta al cliente indicando que la operación fue exitosa
-        return response.status(200).json({ message: 'Lead actualizado con éxito' });
+        return response.json({ message: 'Lead actualizado con éxito' });
     } catch (error) {
         // Maneja cualquier error que pueda ocurrir
         console.error(error);

@@ -73,14 +73,13 @@
                     <div id="modalBackground" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;"  class="flex items-center justify-center bg-gray-500 bg-opacity-75"></div>
                     <div id="contenedorMapa" style="cursor: pointer;">
                         <div id="mapaContenedor">
+                          <div id="cerrarModal" style="position: absolute; right: 10px; top: 10px; cursor: pointer; display:none; z-index: 10000;">x</div>
                           <div id="titulo" class="text-2xl mb-2 mt-4"></div>
-                          <button onclick="cerrarModal();" id="cerrarModal" style="position: absolute; right: 10px; top: 10px; cursor: pointer;">x</button>
                           <div id="mapa" class="flex" style="height: 250px; width: 380px; pointer-events: none;">
                             <%- include('mx.ejs', {estados: estados});%>
                           </div>
                         </div>
                     </div>
-                    
                 </div>
                 <div class="flex flex-col w-1/3 mr-4 mb-4 bg-white rounded-xl justify-center items-center">
                     <h2 class="text-2xl mb-4 mt-4">Top Seller:</h2>
@@ -126,9 +125,12 @@ document.getElementById('contenedorMapa').addEventListener('click', function() {
   var mapa = document.getElementById('mapa');
   var titulo = document.getElementById('titulo');
   var modalBackground = document.getElementById('modalBackground');
-
+  var cerrarModalBoton = document.getElementById('cerrarModal');
   // Hace que el mapa sea interactivo
   mapa.style.pointerEvents = 'auto';
+
+  // Muestra el botón de cierre
+  cerrarModalBoton.style.display = 'block';  
 
   // Cambia el cursor a default
   contenedorMapa.style.cursor = 'default';
@@ -161,9 +163,12 @@ function cerrarModal() {
   var mapa = document.getElementById('mapa');
   var titulo = document.getElementById('titulo');
   var modalBackground = document.getElementById('modalBackground');
-
+  var cerrarModalBoton = document.getElementById('cerrarModal');
   // Hace que el mapa no sea interactivo
   mapa.style.pointerEvents = 'none';
+
+    // Muestra el botón de cierre
+  cerrarModalBoton.style.display = 'none'; 
 
   // Cambia el cursor a pointer
   contenedorMapa.style.cursor = 'pointer';
@@ -187,7 +192,7 @@ function cerrarModal() {
   // Oculta el fondo del modal
   modalBackground.style.display = 'none';
 }
-
+document.getElementById('cerrarModal').addEventListener('click', cerrarModal);
 // Evento al hacer clic en el fondo del modal
 document.getElementById('modalBackground').addEventListener('click', cerrarModal);
 
