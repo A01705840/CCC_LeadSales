@@ -83,7 +83,6 @@ exports.get_analitica_agent = async (request, response, next) => {
 };
 
 exports.get_analiticaPRESET = async (request, response, next) => {
-    try{
     const rangeAgent = '1'; // Siempre usa '1' (semana) como valor predeterminado
     const result = await Lead.fetchLeadsByDay(rangeAgent); // Obtener los leads por día
     const cantidadLeads = await Lead.obtenerCantidadLeads(); // Obtener la cantidad total de leads
@@ -106,10 +105,6 @@ exports.get_analiticaPRESET = async (request, response, next) => {
 
     const gruposPorAgente = utils.agruparLeadsPorAgente(leadsPorAgente);
     const datasetsPorAgente = utils.generarDatasetsPorAgente(gruposPorAgente, fechas);
-    } catch (error) {
-        console.error(error);
-        response.status(500).send('An error occurred');
-    }
     console.log(cantidadLeadsAgente);
     response.render('Analitica', {
         username: request.session.username || '',
