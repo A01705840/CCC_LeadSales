@@ -102,7 +102,14 @@
         fire(0.1, { spread: 360, startVelocity: 30, decay: 0.92, scalar: 1.2});
         fire(0.2, { spread: 360, startVelocity: 45});
     });
-    //const cantidadLeadsAgente = <%- JSON.stringify(cantidadLeadsAgente) %>;
+    const cantidadLeadsAgente = [
+    [
+        { Seller: 'Paulina Garcia', TotalLeads: 508 },
+        { Seller: 'Alex Serrano', TotalLeads: 433 },
+        { Seller: 'Monse Serrano', TotalLeads: 268 }
+    ],
+    [ `Seller` VARCHAR(30) NOT NULL, `TotalLeads` BIGINT(21) NOT NULL ]
+    ];
     // Obtener la cantidad total de leads y la cantidad de leads orgánicos de los elementos HTML
     const cantidadTotalLeads = Number(document.getElementById('totalLeads').textContent);
     const cantidadLeadsOrganicos = <%- JSON.stringify(cantidadLeadsOrganicos) %>;
