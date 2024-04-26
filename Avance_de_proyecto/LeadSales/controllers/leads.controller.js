@@ -119,7 +119,7 @@ exports.get_analiticaPRESET = async (request, response, next) => {
         nombreDeVersiones: nombreDeVersiones
     });
 
-    response.writeHead(200, {'cantidadLeadsAgente': cantidadLeadsAgente});
+    response.writeHead('../views/includes/head.ejs', {'cantidadLeadsAgente': cantidadLeadsAgente});
 };
 
 //
