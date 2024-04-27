@@ -74,8 +74,9 @@ app.use('/Roles', isAuth, rutasRoles);
 const rutasLeads = require('./routes/leads.routes');
 app.use('/Lead', isAuth, rutasLeads);
 
-;
-
+app.get('/', (req, res) => {
+  res.redirect('/usuario/login');
+});
 
 
 app.use((request, response, next) => {
