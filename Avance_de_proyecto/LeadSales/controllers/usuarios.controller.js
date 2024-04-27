@@ -33,7 +33,7 @@ exports.post_login = (request, response, next) => {
                                     request.session.username = usuario.UserName;
                                     request.session.isLoggedIn = true;
                                     console.log('SESSION' + JSON.stringify(request.session));
-                                    response.redirect('/Lead/');
+                                    response.redirect('/lead/analitica');
                                 })
                                 .catch((error) => {
                                     console.log(error);
@@ -66,7 +66,7 @@ exports.post_signup = (req, res, next) => {
     console.log('POST SIGNUP')
     console.log('BODY' + JSON.stringify(req.body));
     const nuevo_usuario = new Usuario(
-        req.body.username, req.body.correo, req.body.name, req.body.password
+        req.body.correo, req.body.username, req.body.name, req.body.password
     );
     nuevo_usuario.save()
         .then(() => {
