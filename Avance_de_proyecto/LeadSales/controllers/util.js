@@ -25,6 +25,7 @@ exports.calcularRangoFechas = function(seleccion) {
         default:
             inicio = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate() - 6);
     }
+    console.log(inicio, fin);
     return { inicio: inicio, fin: fin };
 };
 /*
@@ -63,6 +64,14 @@ exports.agruparLeadsPorAgente = function(leadsPorAgente) {
         var grupo = grupos[item.Agente] || [];
         grupo.push(item);
         grupos[item.Agente] = grupo;
+        return grupos;
+    }, {});
+};
+exports.agruparLeadsPorEmbudo = function(leadsporEmbudo) {
+    return leadsporEmbudo.reduce((grupos, item) => {
+        var grupo = grupos[item.Embudo] || [];
+        grupo.push(item);
+        grupos[item.Embudo] = grupo;
         return grupos;
     }, {});
 };
@@ -105,6 +114,23 @@ exports.generarDatasetsPorAgente = function(gruposPorAgente, fechas) {
     });
 };
 
+
+exports.generarDatasetsPorEmbudo = function(gruposPorEmbudo, fechas) {
+    return Object.keys(gruposPorEmbudo).map(embudo => {
+        var grupo = gruposPorEmbudo[embudo];
+        var datos = fechas.map(fecha => {
+            var item = grupo.find(item => {
+                var fechaItem = new Date(item.Fecha);
+                return fechaItem.getTime() === fecha.getTime();
+            });
+            return item ? item.cant_leads : 0; // Si no hay item, asignar 0
+        });
+        return {
+            embudo,
+            datos,
+        };
+    });
+};
 /*
 
 AGENTE Paulina Garcia

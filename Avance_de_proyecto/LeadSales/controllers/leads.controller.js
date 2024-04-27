@@ -88,23 +88,35 @@ exports.get_analiticaPRESET = async (request, response, next) => {
     const cantidadLeads = await Lead.obtenerCantidadLeads(); // Obtener la cantidad total de leads
     const cantidadLeadsOrganicos = await Lead.obtenerCantidadLeadsOrganicos(); // Obtener la cantidad de leads orgánicos
     const cantidadLeadsEmbudos = await Lead.obtenerCantidadLeadsEmbudos(); // Obtener la cantidad de leads en embudos
+    const leadsporEmbudoResult = await Lead.obtenerLeadsporDiaporEmbudo(rangeAgent); // Obtener la cantidad de leads por embudo
+    //console.log("Embudos" + JSON.stringify(leadsporEmbudoResult));
+    const leadsporEmbudo = leadsporEmbudoResult[0]; // Solo usar el primer elemento del array para evitar duplicados
+    console.log("Embudos" + JSON.stringify(leadsporEmbudo));
     const cantidadLeadsStatus = await Lead.obtenerCantidadLeadsStatus(); // Obtener la cantidad de leads por status
     const cantidadLeadsAgente = await Lead.obtenerCantidadLeadsPorAgente(); // Obtener la cantidad de leads por agente
     const leadsPorAgenteResult = await Lead.fetchLeadsPorAgente(rangeAgent); // Obtener los leads por agente
+    //console.log("Leads por agente" + JSON.stringify(leadsPorAgenteResult));
     const leadsPorAgente = leadsPorAgenteResult[0]; // Solo usar el primer elemento del array para evitar duplicados 
+    console.log("Leads por agente" + JSON.stringify(leadsPorAgente));
     const nombreDeVersione= await Version.Nombres(); // Obtener el nombre de la versión
     const nombreDeVersiones= nombreDeVersione[0]; // Solo usar el primer elemento del array para evitar duplicados
-    console.log("Nombre de versiones "+nombreDeVersiones);
-
+    console.log("Nombre de versiones "+ nombreDeVersiones);
+    //console.log("Embudos" + JSON.stringify(leadsporEmbudo));
     // Calcular el rango de fechas y generar las fechas
     const rangoFechas = utils.calcularRangoFechas(rangeAgent);
     const fechas = utils.generarFechas(rangoFechas.inicio, rangoFechas.fin);
-
+    console.log(fechas);
     // Generar los leads con días sin leads
     let leadsConDiasSinLeads = utils.generarLeadsConDiasSinLeads(result[0], fechas);
 
     const gruposPorAgente = utils.agruparLeadsPorAgente(leadsPorAgente);
     const datasetsPorAgente = utils.generarDatasetsPorAgente(gruposPorAgente, fechas);
+
+    const gruposporEmbudo = utils.agruparLeadsPorEmbudo(leadsporEmbudo);
+    //console.log(JSON.stringify(gruposporEmbudo));
+    const datasetsPorEmbudo = utils.generarDatasetsPorEmbudo(gruposporEmbudo, fechas);
+    console.log('AGENTE DATASET' + JSON.stringify(datasetsPorAgente));
+    console.log('EMBUDO DATASET' + JSON.stringify(datasetsPorEmbudo));
     console.log(cantidadLeadsAgente);
     response.render('Analitica', {
         username: request.session.username || '',
@@ -116,7 +128,9 @@ exports.get_analiticaPRESET = async (request, response, next) => {
         cantidadLeadsStatus: cantidadLeadsStatus ,
         fechas: fechas,
         datasets: datasetsPorAgente,
-        nombreDeVersiones: nombreDeVersiones
+        datasetEmbudo: datasetsPorEmbudo,
+        nombreDeVersiones: nombreDeVersiones,
+        leadsporEmbudo: leadsporEmbudo,
     });
 };
 

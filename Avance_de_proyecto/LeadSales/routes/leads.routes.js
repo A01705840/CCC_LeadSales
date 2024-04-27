@@ -11,6 +11,7 @@ const VersionController = require('../controllers/version.controller');
 router.get('/analitica', LeadsController.get_analiticaPRESET);
 router.get('/analitics/:date?', LeadsController.get_analitica);
 router.get('/analitics/agent/:date', LeadsController.get_analitica_agent);
+router.get('/analitics/embudo/:date', LeadsController.get_analitica_agent);
 
 router.get('/', LeadsController.get_root);
 

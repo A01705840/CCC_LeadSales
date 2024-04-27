@@ -201,5 +201,37 @@ module.exports = class Lead {
     static obtenerCantidadLeadsPorAgente() {
         return db.execute('SELECT asignado_a AS Seller, COUNT(*) AS TotalLeads FROM leads GROUP BY asignado_a ORDER BY TotalLeads DESC LIMIT 3;');
     }
+
+    static obtenerLeadsporDiaporEmbudo(range) {
+        const endDate = new Date(2023, 0, 1); 
+        let startDate = new Date(endDate); // Crea una copia de endDate
+        let groupBy;
+
+        switch (parseInt(range)) {
+            case 1:
+                startDate.setDate(endDate.getDate() - 7); // Una semana antes de la fecha actual
+                groupBy = 'DAY';
+                break;
+            case 2:
+                startDate.setMonth(endDate.getMonth() - 1); // Un mes antes de la fecha actual
+                groupBy = 'DAY';
+                break;
+            case 3:
+                startDate.setMonth(endDate.getMonth() - 6); // Seis meses antes de la fecha actual
+                groupBy = 'MONTH';
+                break;
+            case 4:
+                startDate.setFullYear(endDate.getFullYear() - 1); // Un año antes de la fecha actual
+                groupBy = 'MONTH';
+                break;
+            default:
+                throw new Error('Invalid range');
+        }
+        return db.execute(`SELECT DATE(FechaPrimerMensaje) AS Fecha, Embudo, COUNT(*) AS cant_leads
+                        FROM leads 
+                        WHERE FechaPrimerMensaje >= ? AND FechaPrimerMensaje < ? 
+                        GROUP BY Fecha, Embudo, ${groupBy}(FechaPrimerMensaje);`,
+                        [startDate, endDate]);
+    }
     
 }

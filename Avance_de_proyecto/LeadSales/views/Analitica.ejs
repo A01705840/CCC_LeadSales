@@ -76,6 +76,10 @@
                         <button id="celebration" class="flex items-center bg-white shadow-md cursor-pointer border-spacing-2.5 m-1 p-0.5 text-xl transition-transform active:scale-150 ">🎉</button>
                     </div>
                 </div>
+                <canvas id="lineChartEmbudo"></canvas>
+                <div>
+                    <span id="ChartEmbudoLegend"></span>
+                </div>
             </div>
             </div>
         </div>
@@ -347,7 +351,6 @@
         }
     }
 
-
     // Datos de ejemplo
     const leadsPerDay = <%- JSON.stringify(leadsPerDay) %>.map(item => ({
         ...item,
@@ -445,13 +448,13 @@
 
     var fechas = <%- JSON.stringify(fechas) %>;
     var datasets = <%- JSON.stringify(datasets) %>;
-
+    var datasetEmbudo = <%- JSON.stringify(datasetEmbudo) %>;
     // Calcular el total de Leads por Agente
     const totalLeadsPorAgente = datasets.map(dataset => {
         const totalLeads = dataset.datos.reduce((a, b) => a + b, 0);
-        return `${dataset.agente}: ${totalLeads}`;
+        return `${dataset.Embudo}: ${totalLeads}`;
     });
-
+    console.log('TOTALLEADSEMBUDOAGENTE' + totalLeadsPorAgente);
     // Actualizar el contenido del elemento HTML con el total de Leads por Agente
     document.getElementById('totalLeadsPorAgente').textContent = totalLeadsPorAgente.join(', ');
    
@@ -549,7 +552,68 @@
     })
     .catch(error => console.error('Error en la solicitud fetch: ', error));
 });
+// ------------------  FIN CAMBIO DE RANGO DE LEADS POR AGENTE  ------------------//
+// ------------------ Grafica de embudos ------------------//
+// Calcular el total de Leads por Agente
+const totalLeadsPorEmbudo = datasetEmbudo.map(dataset => {
+        const totalLeads = dataset.datos.reduce((a, b) => a + b, 0);
+        return `${dataset.Embudo}: ${totalLeads}`;
+});
 
+// Actualizar el contenido del elemento HTML con el total de Leads por Agente
+document.getElementById('ChartEmbudoLegend').textContent = totalLeadsPorEmbudo.join(', ');
+
+const ctxEmbudo = document.getElementById('lineChartEmbudo').getContext('2d');
+
+// Crear la gráfica de Leads por Agente
+const leadsPorEmbudoChart = new Chart(ctxEmbudo, {
+        type: 'line',
+        data: {
+        labels: fechas.map(fecha => formatDate(fecha, selectedRangeAgente)), // Usar la función formatDate
+        datasets: datasetEmbudo.map(dataset => ({
+            label: dataset.Embudo, // Asegurarse de incluir la propiedad label
+            data: dataset.datos, // Asegurarse de incluir la propiedad data
+            tension: 0.4 // Añadir curvas a las líneas
+        }))
+    },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        drawBorder: false,
+                        drawOnChartArea: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Leads'
+                    }
+                },
+                x: {
+                    grid: {
+                        drawBorder: false,
+                        drawOnChartArea: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Periodo de tiempo'
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    intersect: false,
+                    mode: 'index',
+                    displayColors: false,
+                    callbacks: {
+                        title: function(tooltipItem) {
+                            return getLabelText(selectedRange); // Actualizar el título del tooltip
+                        }
+                    }
+                }
+            }
+        }
+    });
 // -----------  CAMBIO DE RANGO DE LEADS POR DÍA  ------------------ 
 
     document.getElementById('dateRange').addEventListener('change', function(event) {
