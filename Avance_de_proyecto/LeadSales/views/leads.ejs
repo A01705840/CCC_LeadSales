@@ -3,7 +3,7 @@
     permisos: permisos}) %>
     <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
  
-    <div id="modal" onclick="cerrarModal()" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.3);" class="flex items-center justify-center">
+    <div id="modal" onclick="cerrarModal()" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index:10000;" class="flex items-center justify-center bg-gray-500 bg-opacity-75">
         <div onclick="event.stopPropagation()" class="relative transform overflow-hidden rounded-lg bg-gray-50 text-left shadow-xl transition-all" style="width: 600px; height: 580px;">
             <h1 class="text-xl font-sans text-ellipsis capitalize dark:text-white mb-4" style="padding-left: 25px; padding-top: 25px;">Modificar Lead</h1>
             <section class="max-w-4xl p-6 mx-auto bg-white shadow-md dark:bg-gray-800 ">
@@ -87,7 +87,7 @@
                                 <option value="NO">NO</option>
                                 <option value="SI">SI</option>
                             </select>
-                            <button id="botonGuardar"onclick="guardarCambios()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold" style="padding: 10px 24px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 40px auto 0px; cursor: pointer; position: relative;  left: 338px; bottom: 85px; transition: background-color 0.3s ease; border-radius: 10px;">Guardar cambios</button>
+                            <button id="botonGuardar"onclick="event.preventDefault(); guardarCambios()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold" style="padding: 10px 24px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 40px auto 0px; cursor: pointer; position: relative;  left: 338px; bottom: 85px; transition: background-color 0.3s ease; border-radius: 10px;">Guardar cambios</button>
                         </div>
 
                         <div class="flex justify-end mt-6">
@@ -99,7 +99,7 @@
         </div>
     </div>
     
-    <div id="modalCrear" onclick="cerrarModalCrear()" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.3);" class="flex items-center justify-center">
+    <div id="modalCrear" onclick="cerrarModalCrear()" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index:10000;" class="flex items-center justify-center bg-gray-500 bg-opacity-75">
         <div onclick="event.stopPropagation()" class="relative transform overflow-hidden rounded-lg bg-gray-50 text-left shadow-xl transition-all" style="width: 600px; height: 580px;">
             <h1 class="text-xl font-sans text-ellipsis capitalize dark:text-white mb-4" style="padding-left: 25px; padding-top: 25px;">Crear Lead</h1>
             <section class="max-w-4xl p-6 mx-auto bg-white shadow-md dark:bg-gray-800 ">
@@ -183,7 +183,7 @@
                                 <option value="NO">NO</option>
                                 <option value="SI">SI</option>
                             </select>
-                            <button id="botonGuardarCrear"onclick="guardarCambioscrear()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold" style="padding: 10px 24px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 40px auto 0px; cursor: pointer; position: relative;  left: 338px; bottom: 85px; transition: background-color 0.3s ease; border-radius: 10px;">Guardar cambios</button>
+                            <button id="botonGuardarCrear"onclick="event.preventDefault(); guardarCambioscrear()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold" style="padding: 10px 24px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 40px auto 0px; cursor: pointer; position: relative;  left: 338px; bottom: 85px; transition: background-color 0.3s ease; border-radius: 10px;">Guardar cambios</button>
                         </div>
 
                         <div class="flex justify-end mt-6">
@@ -204,6 +204,14 @@
         <div class="inline-flex justify-between items-center mb-4">
             <span style='font-size:30px;'>📋 Leads</span>
               <div class="flex space-x-2">
+                    <p class="text-lg mt-2"><b>Visualizando datos de la version:</b></p>
+                    <% %>
+                    <select id="versionSelect" class="border text-lg border-grey-100 bg-grey-600 px-4 py-2 rounded-full shadow-sm focus:outline-none text-ellipsis">
+                        <% for (let nombreDeVersion of nombreDeVersiones) { %>
+                            <option value="nombreDeVersion.NombreVersion"><%= nombreDeVersion.NombreVersion %></option>
+                        <% } %>
+                    </select>
+            
                   <button onclick="event.preventDefault(); crear()" class="bg-white hover:bg-indigo-600 hover:text-white py-2 px-4 rounded-full transition duration-300">
                     Crear Lead</button>
                   <button class="bg-white hover:bg-indigo-600 hover:text-white py-2 px-4 rounded-full transition duration-300">Descargar Leads</button>
@@ -262,7 +270,7 @@
                                             </button>
                                         </td>
                                         <td class="p-4 w-1/5">
-                                        <button id="save-changes" onclick="eliminar(<%=lead.IDLead%>)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
+                                        <button id="deleteButton" onclick="eliminar(<%=lead.IDLead%>)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
                                             Eliminar
                                         </button></td>
                                     </tr>
@@ -297,7 +305,7 @@
                                                 </button>
                                             </td>
                                             <td class="p-4 w-1/5">
-                                            <button id="save-changes" onclick="eliminar(<%=lead.IDLead%>)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
+                                            <button id="deleteButton" onclick="eliminar(<%=lead.IDLead%>)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
                                                 Eliminar
                                             </button></td>
                                         </tr>
@@ -370,7 +378,7 @@
                 </button>
             </td>
             <td class="p-4 w-1/5">
-                <button id="save-changes" onclick="eliminar(${lead.IDLead})" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
+                <button id="deleteButton" onclick="eliminar(${lead.IDLead})" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
                     Eliminar
                 </button>
             </td>
@@ -411,7 +419,7 @@
                 </button>
             </td>
             <td class="p-4 w-1/5">
-                <button id="save-changes" onclick="eliminar(${lead.IDLead})" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
+                <button id="deleteButton" onclick="eliminar(${lead.IDLead})" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
                     Eliminar
                 </button>
             </td>
@@ -480,8 +488,6 @@
         // Agregar los controladores de eventos
         agregarControladoresDeEventos();
   });
-
-  document.getElementById('botonGuardar').addEventListener('click', guardarCambios);
 }
 
 function agregarControladoresDeEventos() {
@@ -573,18 +579,16 @@ function crear() {
 
   // Guardar el estado inicial de los campos de entrada
   estadoInicial = {
-            nombre: $('#nombre').val(),
-            telefono: $('#telefono').val(),
-            embudo: $('#embudo').val(),
-            etapa: $('#etapa').val(),
-            status: $('#status').val(),
-            archivado: $('#archivado').val(),
-            creadomanual: $('#creadomanual').val(),
-            asignado_a: $('#asignado_a').val(),
-            fecha: $('#fecha').val()
+            nombre: $('#nombreCrear').val(),
+            telefono: $('#telefonoCrear').val(),
+            embudo: $('#embudoCrear').val(),
+            etapa: $('#etapaCrear').val(),
+            status: $('#statusCrear').val(),
+            archivado: $('#archivadoCrear').val(),
+            creadomanual: $('#creadomanualCrear').val(),
+            asignado_a: $('#asignado_aCrear').val(),
+            fecha: $('#fechaCrear').val()
         };
-
-  document.getElementById('botonGuardarCrear').addEventListener('clicks', guardarCambioscrear);
 }
 
 function agregarControladoresDeEventosCrear() {
@@ -696,30 +700,29 @@ function guardarCambios() {
 
 // Envía los datos al servidor
 
-$.ajax({
-    url: '/lead/modificar',
-    type: 'POST',
-    data: JSON.stringify(datos),
-    contentType: 'application/json',
-    success: function(respuesta) {
-        // Aquí puedes manejar la respuesta del servidor
-        console.log(respuesta);
-    }
-}).then(data => {
+    fetch('/lead/modificar', {
+    method: 'POST',
+    body: JSON.stringify(datos),
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    })
+    .then(response => response.json())
+    .then(respuesta => {
+    console.log(respuesta);
+
     swal('Lead modificado', 'El lead se ha modificado de forma exitosa.', 'success')
     .then((value) => {
         if (value) { // Verifica si el usuario hizo clic en "OK"
-            //hacemos que espere 5 segundos antes de redirigir
-            setTimeout(() => {
-                // Redirige al usuario a la página de leads
-                window.location.href = '/lead/Leads';
-            }, 10000);
+        // Redirige al usuario a la página de leads
+        window.location.href = '/lead/Leads';
         }
-    }).catch((error) => {
-        console.error('Error:', error);
-        swal('Error', 'Ocurrió un error al guardar los cambios.', 'error');
+    })
+    })
+    .catch((error) => {
+    console.error('Error:', error);
+    swal('Error', 'Ocurrió un error al guardar los cambios.', 'error');
     });
-});
 }
 
 
@@ -757,15 +760,24 @@ function guardarCambioscrear() {
         data: JSON.stringify(datos),
         contentType: 'application/json',
         success: function(respuesta) {
-            // Aquí puedes manejar la respuesta del servidor
-            console.log(respuesta);
-            console.log("AJAX");
-            
-
+           
+        swal({
+          title: 'Lead creado',
+          text: 'El lead se ha creado de forma exitosa.',
+          icon: 'success',
+        })
+        .then((value) => {
+          if (value) {
             // Redirige al usuario a la página de leads
             window.location.href = '/lead/Leads';
-        }
-    });
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          swal('Error', 'Ocurrió un error al crear el lead.', 'error');
+        });
+    }
+});
 }
 
 
