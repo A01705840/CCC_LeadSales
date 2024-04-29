@@ -246,8 +246,7 @@
                 <% if(leads.length === 0) {%>
                     <p class="text-2xl text-gray-500 mt-48 mb-48 flex items-center justify-center">Importa tus primeros leads, en el historial, para comenzar...</p>
                 <%  } else{ %> 
-                    <div class="flex flex-col items-center h-full w-full">
-
+                    <div class="flex flex-col h-full w-full">
                         <div class="flex w-full">
                             <table class="text-sm text-left text-gray-500 dark:text-gray-400 w-full">
                                 <thead class=" flex w-full text-xs text-gray-700 uppercase bg-gray-100 dark:text-gray-500">
@@ -336,21 +335,21 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div>
-                            <p id="rangoLeads" style="position:relative; right: 0px; left: 670px;top: 7px">Mostrando leads <span id="inicio"><%= inicio %></span> - <span id="fin"><%= fin %></span> de <span id="numeroTotalDeLeads"><%= numeroTotalDeLeads %></span></p>
-                        </div>
-                        
-                        <div>
-                            <ul class="flex list-none">
-                                <p style="position:relative; right: 650px;   bottom: 0px; bottom: 15px;">Páginas: </p>
+                        <div class="flex ml-4 mt-2 mb-2">
+                            <div class="w-1/2">
+                            <ul class="flex space-x-1">
+                                Página:
                                 <% for(let i = 1; i <= numeroTotalDePaginas; i++) { %>
                                     <li>
-                                        <a href="#" data-pagina="<%= i %>" class="mx-1 px-2 py-0.5 bg-white text-ellipsis hover:bg-blue-500 hover:text-white border border-black border-opacity-10 rounded-full transition duration-200 page-button" style="position:relative; right: 650px;   bottom: 12px;"><%= i %></a>
+                                        <a href="#" data-pagina="<%= i %>" class="mx-1 px-2 py-0.5 bg-white text-ellipsis hover:bg-blue-500 hover:text-white border border-black border-opacity-10 rounded-full transition duration-200 page-button"><%= i %></a>
                                     </li>
                                 <% } %>
                             </ul>
+                            </div>
+                            <div class="w-1/2 text-end mr-4">
+                            <p id="rangoLeads">Mostrando leads <span id="inicio"><%= inicio %></span> - <span id="fin"><%= fin %></span> de <span id="numeroTotalDeLeads"><%= numeroTotalDeLeads %></span></p>                             
+                            </div>
                         </div>
-                    </div>
 
                 <%  }%> 
             </div>
