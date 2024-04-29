@@ -70,6 +70,9 @@ exports.post_signup = (req, res, next) => {
     );
     nuevo_usuario.save()
         .then(() => {
+            return Usuario._tiene_rol(req.body.username);
+        })
+        .then(() => {
             res.redirect('/usuario/login');
         })
         .catch((error) => {
