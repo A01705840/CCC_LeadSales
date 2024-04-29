@@ -103,12 +103,21 @@ function updateNumeroTotalDePaginas(numeroTotalDePaginas) {
   console.log('ACTUALIZANDO NUMERO TOTAL DE PAGINAS', numeroTotalDePaginas);
 
   // Elimina los botones de página existentes
-  $('.page-button').remove();
+  $('#Lista23').empty();
 
-  // Agrega nuevos botones de página
+  $('#Lista23').empty();
+
+  // Crea una cadena HTML que represente la estructura completa del elemento <ul> con su contenido
+  let html = `<ul class="flex space-x-1">Página:`;
   for (let i = 1; i <= numeroTotalDePaginas; i++) {
-      $('ul.flex').append(`<li><a href="#" data-pagina="${i}" class="mx-1 px-2 py-0.5 bg-white text-ellipsis hover:bg-blue-500 hover:text-white border border-black border-opacity-10 rounded-full transition duration-200 page-button" style="position:relative; right: 650px; bottom: 12px;">${i}</a></li>`);
+      html += `<li><a href="#" data-pagina="${i}" class="mx-1 px-2 py-0.5 bg-white text-ellipsis hover:bg-blue-500 hover:text-white border border-black border-opacity-10 rounded-full transition duration-200 page-button">${i}</a></li>`;
   }
+  html += `</ul>`;
+  
+  // Agrega la cadena HTML al elemento con ID Lista23
+  $('#Lista23').append(html);
+  
+  
 }
 
 
