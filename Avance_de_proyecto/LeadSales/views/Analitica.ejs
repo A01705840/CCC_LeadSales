@@ -76,9 +76,17 @@
                         <button id="celebration" class="flex items-center bg-white shadow-md cursor-pointer border-spacing-2.5 m-1 p-0.5 text-xl transition-transform active:scale-150 ">🎉</button>
                     </div>
                 </div>
-                <canvas id="lineChartEmbudo"></canvas>
                 <div>
-                    <span id="ChartEmbudoLegend"></span>
+                    <select id="dateRangeLeadsPorEmbudo" class="border border-grey-100 text-sm bg-grey-600 rounded-md shadow-sm focus:outline-none text-ellipsis">
+                        <option value="1">Última semana</option>
+                        <option value="2">Último mes</option>
+                        <option value="3">Últimos 6 meses</option>
+                        <option value="4">Último año</option>
+                    </select>
+                    <canvas id="lineChartEmbudo"></canvas>
+                    <div>
+                        <span id="ChartEmbudoLegend"></span>
+                    </div>
                 </div>
             </div>
             </div>
