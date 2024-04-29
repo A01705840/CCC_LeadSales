@@ -2,6 +2,32 @@
     username: username,
     permisos: permisos}) %>
     <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+
+    <div id="modalDescargarLeads" onclick="cerrarModalDescargarLeads()" class="relative z-10" style="display: none;">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" ></div>
+        <div onclick="event.stopPropagation()" class="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0" >
+                <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                    <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Descargar Leads</h3>
+                                <div class="mt-2">
+                                    <p class="text-sm text-gray-500">Descargar leads de la versión seleccionada en CSV. Tome en cuenta que <b>se descargaran todos los leads de la versión.</b></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                        <button id="indescargarleads" class="inline-flex w-full justify-center rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">
+                            Descargar 
+                        </button>
+                        <button onclick="cerrarModalDescargarLeads()" type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
  
     <div id="modal" onclick="cerrarModal()" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index:10000;" class="flex items-center justify-center bg-gray-500 bg-opacity-75">
         <div onclick="event.stopPropagation()" class="relative transform overflow-hidden rounded-lg bg-gray-50 text-left shadow-xl transition-all" style="width: 600px; height: 580px;">
@@ -12,7 +38,6 @@
                         <div>
                             <label class="text-ellipsis" for="nombre">Nombre:</label>
                             <input type="text" id="nombre" name="nombre" required class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
-                            <span id="nombreError" class="error text-red-500 text-xs italic" style="position:fixed;"></span>
                         </div>
     
                         <div>
@@ -108,7 +133,6 @@
                         <div>
                             <label class="text-ellipsis" for="nombre">Nombre:</label>
                             <input type="text" id="nombreCrear" name="nombre" required class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" placeholder="Kevin">
-                            <span id="nombreErrorCrear" class="error text-red-500 text-xs italic" style="position:fixed;"></span>
                         </div>
     
                         <div>
@@ -163,7 +187,6 @@
                                 <% }); %>
                             </select>
                         </div>
-    
                         <div>
                             <label class="text-ellipsis" for="telefono">Teléfono:</label>
                             <input type="text" id="telefonoCrear" name="telefono" required class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" placeholder="445 254 8235">
@@ -207,14 +230,14 @@
                     <p class="text-lg mt-2"><b>Visualizando datos de la version:</b></p>
                     <% %>
                     <select id="versionSelect" class="border text-lg border-grey-100 bg-grey-600 px-4 py-2 rounded-full shadow-sm focus:outline-none text-ellipsis">
-                        <% for (let nombreDeVersion of nombreDeVersiones) { %>
-                            <option value="nombreDeVersion.NombreVersion"><%= nombreDeVersion.NombreVersion %></option>
-                        <% } %>
+                        <% versiones.forEach(function(version) { %>
+                            <option value="<%= version.id %>"><%= version.nombre %></option>
+                        <% }); %>
                     </select>
             
                   <button onclick="event.preventDefault(); crear()" class="bg-white hover:bg-indigo-600 hover:text-white py-2 px-4 rounded-full transition duration-300">
                     Crear Lead</button>
-                  <button class="bg-white hover:bg-indigo-600 hover:text-white py-2 px-4 rounded-full transition duration-300">Descargar Leads</button>
+                  <button id="descargarLeads" class="bg-white hover:bg-indigo-600 hover:text-white py-2 px-4 rounded-full transition duration-300">Descargar Leads</button>
               </div>
 
             </div>
@@ -312,6 +335,20 @@
                                     <% }row++} %>
                                 </tbody>
                             </table>
+                        </div>
+                        <div>
+                            <p id="rangoLeads" style="position:relative; right: 0px; left: 670px;top: 7px">Mostrando leads <span id="inicio"><%= inicio %></span> - <span id="fin"><%= fin %></span> de <span id="numeroTotalDeLeads"><%= numeroTotalDeLeads %></span></p>
+                        </div>
+                        
+                        <div>
+                            <ul class="flex list-none">
+                                <p style="position:relative; right: 650px;   bottom: 0px; bottom: 15px;">Páginas: </p>
+                                <% for(let i = 1; i <= numeroTotalDePaginas; i++) { %>
+                                    <li>
+                                        <a href="#" data-pagina="<%= i %>" class="mx-1 px-2 py-0.5 bg-white text-ellipsis hover:bg-blue-500 hover:text-white border border-black border-opacity-10 rounded-full transition duration-200 page-button" style="position:relative; right: 650px;   bottom: 12px;"><%= i %></a>
+                                    </li>
+                                <% } %>
+                            </ul>
                         </div>
                     </div>
 
@@ -441,8 +478,8 @@
   // Función para modificar un lead
   function modificar(id) {
       leadId = id;
-  console.log('modificar', id);
-  $.get(`/lead/modificar/${id}`, function(data) {
+      console.log('modificar', id);
+      $.get(`/lead/modificar/${id}`, function(data) {
       // Aquí, `data` es el lead que se obutvo del servidor. (Un botón de modificar)
       $('#nombre').val(data.NombreLead);
       
@@ -491,20 +528,6 @@
 }
 
 function agregarControladoresDeEventos() {
-    // Agregar un controlador de eventos 'input' al campo de nombre
-    $('#nombre').on('input', function() {
-        // Verificar que el nombre solo contenga letras, caracteres especiales y emojis
-        var regexNombre = /^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\s.,!?¿¡\p{P}\p{S}]*$/u;
-        if (!regexNombre.test(this.value)) {
-            // Mostrar el mensaje de error
-            $('#nombreError').text("Solo usar letras, caracteres especiales y emojis.");
-            this.value = this.value.slice(0, -1); // Eliminar el último carácter
-        } else {
-            // Ocultar el mensaje de error
-            $('#nombreError').text("");
-        }
-    });
-
     // Agregar un controlador de eventos 'input' al campo de teléfono
     $('#telefono').on('input', function() {
         // Verificar que el teléfono solo contenga números
@@ -592,20 +615,6 @@ function crear() {
 }
 
 function agregarControladoresDeEventosCrear() {
-    // Agregar un controlador de eventos 'input' al campo de nombre
-    $('#nombreCrear').on('input', function() {
-        // Verificar que el nombre solo contenga letras, caracteres especiales y emojis
-        var regexNombre = /^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\s.,!?¿¡\p{P}\p{S}]*$/u;
-        if (!regexNombre.test(this.value)) {
-            // Mostrar el mensaje de error
-            $('#nombreErrorCrear').text("Solo usar letras, caracteres especiales y emojis.");
-            this.value = this.value.slice(0, -1); // Eliminar el último carácter
-        } else {
-            // Ocultar el mensaje de error
-            $('#nombreErrorCrear').text("");
-        }
-    });
-
     // Agregar un controlador de eventos 'input' al campo de teléfono
     $('#telefonoCrear').on('input', function() {
         // Verificar que el teléfono solo contenga números
