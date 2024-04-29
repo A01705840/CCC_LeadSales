@@ -201,5 +201,17 @@ module.exports = class Lead {
     static obtenerCantidadLeadsPorAgente() {
         return db.execute('SELECT asignado_a AS Seller, COUNT(*) AS TotalLeads FROM leads GROUP BY asignado_a ORDER BY TotalLeads DESC LIMIT 3;');
     }
+
+    static fetchLeadsPorIDVersion(IDVersion, pagina) {
+        const tamañoPagina = 1000;
+        const offset = (pagina - 1) * tamañoPagina;
     
+        return db.execute(`
+            SELECT leads.*, version_almacena_leads.FechaVersionAlmacenaLead 
+            FROM version_almacena_leads 
+            INNER JOIN leads ON version_almacena_leads.IDLead = leads.IDLead 
+            WHERE version_almacena_leads.IDVersion = ? 
+            LIMIT ? OFFSET ?
+        `, [IDVersion, tamañoPagina, offset]);
+    }
 }
