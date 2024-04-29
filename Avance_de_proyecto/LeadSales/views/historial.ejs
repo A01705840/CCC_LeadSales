@@ -1,9 +1,12 @@
 <%- include('includes/head.ejs', {username: username}) %>
 <meta charset="UTF-8">
-<div id="modal" onclick="cerrarModal()" class="relative z-10" style="display: none; z-index:10000;">
-    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+<input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+
+
+<div id="modal" onclick="cerrarModal()" class="relative z-10" style="display: none;">
+    <div onclick="event.stopPropagation()" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" ></div>
     <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0" >
             <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                 <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
@@ -28,7 +31,7 @@
 </div>
 
 
-<input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+
 <div class="p-4 sm:ml-20 sm:mr-10 font-sans">
 
   <div class="shadow-lg flex flex-col justify-right p-4 border-2 border-gray-200 rounded-lg dark:border-gray-700 bg-slate-200">
@@ -175,9 +178,9 @@
     const openModalButton = document.getElementById('openModalButton');
 openModalButton.addEventListener('click', function() {
   const modalContent = `
-    <div onclick="location.href = 'historial';" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true" style="z-index:10000; ">
+    <div onclick="location.href = 'historial';" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div onclick="event.stopPropagation()" class="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                 <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                     <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">

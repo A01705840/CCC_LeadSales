@@ -1,4 +1,8 @@
 const { request } = require('express');
+const fastcsv = require('fast-csv');
+const fs = require('fs');
+const path = require('path');
+
 
 const Version= require('../models/version.model');
 const Lead = require('../models/lead.model');
@@ -178,20 +182,32 @@ exports.get_root = (request, response, next) => {
 };
 
 exports.get_leads = async (request, res, next)  => {
-    console.log('GET LEADS');
-    const nombreDeVersione= await Version.Nombres(); // Obtener el nombre de la versión
-    const nombreDeVersiones= nombreDeVersione[0]; // Solo usar el primer elemento del array para evitar duplicados
-    Lead.fetch(request.params.IDLead)
+    const versionInfo = await Version.fetchVersionInfo();
+    const versiones = versionInfo[0].map(row => ({id: row.IDVersion, nombre: row.NombreVersion}));
+    const IDVersion = versiones[0].id;
+    
+    
+    const tamañoPagina = 500;
+    const numeroTotalDeLeads = await Version.fetchNumeroTotalDeLeads(IDVersion);
+    const numeroTotalDePaginas = Math.ceil(numeroTotalDeLeads / tamañoPagina);
+    const pagina = 1;
+
+    const inicio = (pagina - 1) * tamañoPagina + 1;
+    const fin = inicio + tamañoPagina - 1;
+
+    Version.fetchLeadsPorIDVersion(IDVersion, pagina)
         .then(([rows,fieldData]) => {
-            //console.log(NombreLead);
-            //console.log(rows.length); 
             res.render ('leads', {
                 csrfToken: request.csrfToken,
                 registro: true,
                 leads: rows,
+                numeroTotalDeLeads: numeroTotalDeLeads,
+                numeroTotalDePaginas: numeroTotalDePaginas,
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
-                nombreDeVersiones: nombreDeVersiones,
+                inicio: inicio,
+                fin: fin,
+                versiones: versiones,
             });
         })
         .catch((error) => {
@@ -271,3 +287,77 @@ exports.post_crear_lead = async (request, response, next) => {
         return response.status(500).json({ message: 'Hubo un error al crear el lead' });
     }
 };
+
+exports.post_leads_por_version = async (request, response, next) => {
+    const IDVersion = request.body.version;
+    const pagina = 1; // Siempre empieza en la primera página cuando cambias de versión
+
+    console.log('POST LEADS POR VERSION', IDVersion, pagina);
+
+    const tamañoPagina = 500;
+    const numeroTotalDeLeads = await Version.fetchNumeroTotalDeLeads(IDVersion);
+    const numeroTotalDePaginas = Math.ceil(numeroTotalDeLeads / tamañoPagina);
+
+    const inicio = (pagina - 1) * tamañoPagina + 1;
+    const fin = Math.min(inicio + tamañoPagina - 1, numeroTotalDeLeads);
+
+    const leads = await Version.fetchLeadsPorIDVersion(IDVersion, pagina);
+
+    return response.status(200).json({
+        leads: leads,
+        numeroTotalDeLeads: numeroTotalDeLeads,
+        numeroTotalDePaginas: numeroTotalDePaginas,
+        inicio: inicio,
+        fin: fin,
+    });
+}
+
+
+exports.post_leads_por_pagina = async (request, response, next) => {
+    console.log('POST LEADS POR PAGINA BODYYYY', request.body);
+    const IDVersion = request.body.version;
+    const pagina = request.body.pagina;
+    console.log('POST LEADS POR PAGINA', IDVersion, pagina);
+
+    const tamañoPagina = 500;
+    const inicio = (pagina - 1) * tamañoPagina + 1;
+    const numeroTotalDeLeads = await Version.fetchNumeroTotalDeLeads(IDVersion);
+    const fin = Math.min(inicio + tamañoPagina - 1, numeroTotalDeLeads);
+
+    const leads = await Version.fetchLeadsPorIDVersion(IDVersion, pagina);
+    return response.status(200).json({
+        leads: leads,
+        inicio: inicio,
+        fin: fin,
+    });
+
+}
+
+
+exports.post_descargar_leads = async (req, res, next) => {
+    const IDVersion = req.body.version;
+    const nombreVersion = req.body.nombreVersion; // Recibe el nombre de la versión del cliente
+    const result = await Version.fetchAllLeadsPorIDVersion(IDVersion);
+    const leads = result[0]; // Asume que los leads están en la primera posición del array resultante
+
+    const csvStream = fastcsv.format({ headers: true, bom: true });
+    const writableStream = fs.createWriteStream(path.resolve(__dirname, `${nombreVersion}.csv`), { encoding: 'utf8' }); // Usa el nombre de la versión para el archivo
+
+    writableStream.on("finish", function() {
+        res.download(path.resolve(__dirname, `${nombreVersion}.csv`), `${nombreVersion}.csv`, (err) => { // Usa el nombre de la versión para la descarga
+            if (err) {
+                fs.unlinkSync(path.resolve(__dirname, `${nombreVersion}.csv`)); // Elimina el archivo localmente después de la descarga
+                next(err);
+            }
+
+            fs.unlinkSync(path.resolve(__dirname, `${nombreVersion}.csv`)); // Elimina el archivo localmente después de la descarga
+        });
+    });
+
+    csvStream.pipe(writableStream).on('end', () => console.log('CSV file successfully processed'));
+    leads.forEach((lead) => {
+        csvStream.write(lead);
+    });
+
+    csvStream.end();
+}
