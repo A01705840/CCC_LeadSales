@@ -104,6 +104,10 @@ module.exports = class Lead {
         return db.execute('SELECT Status, COUNT(*) AS TotalLeads FROM leads GROUP BY Status;')
     }
 
+    static async obtenerUltimaFechaLead() {
+        return db.execute('SELECT MAX(FechaPrimerMensaje) AS UltimaFecha FROM leads;')
+    }
+
     static async fetchLeadsPorAgente(rangeAgent) {
         const endDate = new Date(2023, 0, 1); // Fecha actual
         let startDate = new Date(endDate); // Crea una copia de endDate

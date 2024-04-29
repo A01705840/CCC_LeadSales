@@ -91,6 +91,7 @@ exports.get_analiticaPRESET = async (request, response, next) => {
     const cantidadLeadsStatus = await Lead.obtenerCantidadLeadsStatus(); // Obtener la cantidad de leads por status
     const cantidadLeadsAgente = await Lead.obtenerCantidadLeadsPorAgente(); // Obtener la cantidad de leads por agente
     const leadsPorAgenteResult = await Lead.fetchLeadsPorAgente(rangeAgent); // Obtener los leads por agente
+    const ultimaFechaLead = await Lead.obtenerUltimaFechaLead(); // Obtener la última fecha de un lead
     const leadsPorAgente = leadsPorAgenteResult[0]; // Solo usar el primer elemento del array para evitar duplicados 
     const nombreDeVersione= await Version.Nombres(); // Obtener el nombre de la versión
     const nombreDeVersiones= nombreDeVersione[0]; // Solo usar el primer elemento del array para evitar duplicados
@@ -153,6 +154,7 @@ exports.get_analiticaPRESET = async (request, response, next) => {
         cantidadLeadsEmbudos: cantidadLeadsEmbudos,
         cantidadLeadsAgente: cantidadLeadsAgente,
         cantidadLeadsStatus: cantidadLeadsStatus ,
+        ultimaFechaLead: ultimaFechaLead,
         fechas: fechas,
         datasets: datasetsPorAgente,
         nombreDeVersiones: nombreDeVersiones,
