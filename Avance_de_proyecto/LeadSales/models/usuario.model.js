@@ -3,9 +3,9 @@ const bcrypt = require('bcryptjs');
 
 module.exports = class Usuario {
     //Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
-    constructor(mi_username, mi_nombre, mi_password, mi_correo) {
-        this.username = mi_username;
+    constructor(mi_correo, mi_username, mi_nombre, mi_password) {
         this.correo = mi_correo;
+        this.username = mi_username;
         this.nombre = mi_nombre;
         this.password = mi_password;
         this.correo = mi_correo;

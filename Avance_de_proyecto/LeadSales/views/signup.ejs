@@ -1,5 +1,4 @@
-<%- include('includes/head.ejs', {
-    username: username}) %>
+
 
 <head>
   <meta charset="UTF-8">
@@ -21,12 +20,11 @@
         </clipPath>
       </defs>
     </svg>
-    <form action="/usuario/<% if (registro) { %>signup<% } else { %>login<% } %>" class="max-w-sm mx-auto" method="POST">
+    <form id="signup-form" action="/usuario/<% if (registro) { %>signup<% } else { %>login<% } %>" class="max-w-sm mx-auto" method="POST">
       <% if (registro) {%>
       <a href="/usuario/login" class="underline text-blue-700 hover:text-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-blue-600 dark:hover:text-blue-700 dark:focus:ring-blue-800 brightness-110 ml-200">
         Ingresa a tu Cuenta
       </a>
-      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <label for="email-address-icon" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Email</label>
       <div class="relative mb-5">
         <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
@@ -53,19 +51,18 @@
         <input type="text" id="name" name="name" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required />
       </div>
       <div class="mb-5">
-        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your password</label>
+        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
         <input type="password" id="password" name="password" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required />
       </div>
       <div class="mb-5">
         <label for="repeat-password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Repeat password</label>
         <input type="password" id="repeat-password" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required />
-      </div>
+      </div>    
       <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Registrar Cuenta</button>
       <% } else { %>
       <a href="/usuario/signup" class="underline text-blue-700 hover:text-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-blue-600 dark:hover:text-blue-700 dark:focus:ring-blue-800 brightness-110 ml-200">
         Crea una Cuenta
       </a>
-      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <div class="mb-5">
         <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
         <div class="flex">
@@ -86,3 +83,18 @@
     </form>
   </div>
 </body>
+
+<script>
+  document.getElementById("signup-form").addEventListener("submit", function(event) {
+    // Obtener el valor de la contraseña
+    var password = document.getElementById("password").value;
+    // Expresión regular para validar la contraseña
+    var passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{8,})/;
+    // Verificar si la contraseña cumple con los criterios
+    if (!passwordRegex.test(password)) {
+        // Si no cumple, mostrar un mensaje de error y prevenir el envío del formulario
+        alert("La contraseña debe tener al menos 8 caracteres, una mayúscula y un carácter especial (!@#$%^&*)");
+        event.preventDefault(); // Evitar que se envíe el formulario
+    }
+});
+</script>

@@ -104,6 +104,10 @@ module.exports = class Lead {
         return db.execute('SELECT Status, COUNT(*) AS TotalLeads FROM leads GROUP BY Status;')
     }
 
+    static async obtenerUltimaFechaLead() {
+        return db.execute('SELECT MAX(FechaPrimerMensaje) AS UltimaFecha FROM leads;')
+    }
+
     static async fetchLeadsPorAgente(rangeAgent) {
         const endDate = new Date(2023, 0, 1); // Fecha actual
         let startDate = new Date(endDate); // Crea una copia de endDate
@@ -201,5 +205,17 @@ module.exports = class Lead {
     static obtenerCantidadLeadsPorAgente() {
         return db.execute('SELECT asignado_a AS Seller, COUNT(*) AS TotalLeads FROM leads GROUP BY asignado_a ORDER BY TotalLeads DESC LIMIT 3;');
     }
+
+    static fetchLeadsPorIDVersion(IDVersion, pagina) {
+        const tamañoPagina = 1000;
+        const offset = (pagina - 1) * tamañoPagina;
     
+        return db.execute(`
+            SELECT leads.*, version_almacena_leads.FechaVersionAlmacenaLead 
+            FROM version_almacena_leads 
+            INNER JOIN leads ON version_almacena_leads.IDLead = leads.IDLead 
+            WHERE version_almacena_leads.IDVersion = ? 
+            LIMIT ? OFFSET ?
+        `, [IDVersion, tamañoPagina, offset]);
+    }
 }
