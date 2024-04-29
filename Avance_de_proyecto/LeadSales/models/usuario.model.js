@@ -32,6 +32,18 @@ module.exports = class Usuario {
             [nombre_usuario,nombre_usuario]
         );
     }
+    static async _tiene_rol(nombre_usuario){
+        return await db.execute(
+            `
+            INSERT INTO usuario_tiene_rol (IDUsuario, IDRol, FechaUsuarioRol, FechaUsuarioRolActualizacion)
+            SELECT usuario.IDUsuario, rol.IDRol, CURDATE(), CURDATE()
+            FROM usuario, rol
+            WHERE usuario.UserName = ? AND rol.IDRol = 3
+            `,
+            [nombre_usuario]
+        );
+    }
+    
     static fetchOne(username) {
         return db.execute('Select * from usuario WHERE UserName = ?', [username]);
     }
