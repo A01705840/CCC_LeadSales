@@ -64,14 +64,17 @@ exports.post_historial = async (req, res, next) => {
                 if (fila > 0) {
                     if(todosPresentes){
                     try {
-                        if (rowData[posiciones[8]] === "TRUE") {
+                        if (rowData[posiciones[8]] === 'TRUE') {
                             rowData[posiciones[8]] = 1;
-                        } else if (rowData[posiciones[8]] === "FALSE") {
+                        } else if (rowData[posiciones[8]] == 'FALSE') {
                             rowData[posiciones[8]] = 0;
-                        } else if (rowData[posiciones[7]] === "Si") {
+                        } if (rowData[posiciones[7]] =='Si') {
                             rowData[posiciones[7]] = 1;
-                        } else if (rowData[7] === "No") {
+                        } else if (rowData[posiciones[7]] == 'No') {
                             rowData[posiciones[7]] = 0;
+                        }
+                        if (rowData[posiciones[1]]==''){
+                            rowData[posiciones[1]]=null;
                         }
                         rowData[posiciones[3]] = convertirFecha(rowData[posiciones[3]]);
                         // Ejecutar ambas consultas y esperar a que se completen
