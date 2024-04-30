@@ -15,21 +15,58 @@ exports.post_eliminar = (request, response, next) => {
 };
 
 
-exports.post_eliminarUsuario = (request, response, next) => {
-    console.log(request.body.IDUsuario)
-    Rol.deleteUsuario(request.body.IDUsuario)
-        .then(([rows,fieldData]) => {
-            Console.log("Registro eliminado exitosamente")
-            response.redirect ('/Roles/equipo');
-        }).catch((error) => {
-            console.log(error)
-            response.redirect ('/Roles/equipo');
+exports.post_eliminarUsuario = (req, res, next) => {
+    const id = req.params.q;
+
+    Rol.deleteUsuario(id)
+        .then(() => {
+            res.json({ message: 'Usuario eliminado con éxito' });
         })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).json({ error: 'Hubo un error al eliminar el usuario' });
+        });
+};
+
+
+exports.get_modificarUsuario = (request, response, next) => {
+    const id = request.params.q;
+    Usuario.fetchById(id)
+    .then(([rows, fieldData]) => {
+        response.json(rows[0]);
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+}
+
+exports.post_modificarUsuario = function(req, res) {
+    var id = req.body.id; // Asegúrate de que estás enviando el ID del usuario desde el cliente
+    var username = req.body.username;
+    var correo = req.body.correo;
+    var rol = req.body.rol;
+    var nombre = req.body.nombre;
+    var password = req.body.password;
+
+    // Primero, actualiza el usuario
+    Usuario.updateUsuario(id, username, correo, nombre, password)
+        .then(() => {
+            // Luego, actualiza el rol del usuario
+            return Usuario.updateRolUsuario(id, rol);
+        })
+        .then(() => {
+            res.send('Usuario modificado con éxito');
+        })
+        .catch((error) => {
+            console.log(error);
+            res.send('Hubo un error al modificar el usuario');
+        });
 };
 
 exports.get_buscar = (req, res, next) => {
     Rol.buscar(req.params.q || '')
         .then(([rows, fieldData]) => {
+            console.log(rows);
             // Mapea los resultados para formatear la fecha
             const data = rows.map(row => {
                 let fecha = new Date(row.FechaUsuarioRolActualizacion);
@@ -42,14 +79,22 @@ exports.get_buscar = (req, res, next) => {
                 return row;
             });
 
-            // Devuelve los datos como JSON
-            res.status(200).json({data: data});
+            // Obtiene todos los roles
+            Rol.fetchAll()
+                .then(([roles, fieldData]) => {
+                    // Devuelve los datos y los roles como JSON
+                    res.status(200).json({data: data, roles: roles});
+                })
+                .catch((error) => {
+                    console.log(error);
+                    res.status(500).json({error: error});
+                });
         })
         .catch((error) => {
             console.log(error);
             res.status(500).json({error: error});
         });
-};   
+};
 
 
 exports.get_mostrarRoles = (req, res, next) => {
@@ -169,12 +214,13 @@ exports.post_agregarEmpleado = async (request, response, next) => {
             request.body.nombre || '', 
             request.body.password || '', 
             request.body.correo || '',
+            request.body.Eliminado || 0, 
         );
         await nuevo_usuario.save(request.body);
         console.log(nuevo_usuario)
         //Rol.fetchAll();
         const idusuario = await Usuario.fetchOneID(request.body.username);
-        console.log('Usuario creado');
+        console.log('Usuario creado', idusuario[0][0].IDUsuario);
         //const idRol = await Rol.fetchOneID(request.body.rol);
         console.log(request.body.rol);
         await Usuario.establecer_rol(idusuario[0][0].IDUsuario, request.body.rol);

@@ -12,6 +12,9 @@ router.get('/agregar', rolesController.get_agregarRol);
 router.post('/agregar', rolesController.post_agregarRol);
 router.get('/equipo', rolesController.get_equipo);
 router.post('/eliminarUsuario/:q', rolesController.post_eliminarUsuario);
+router.get('/modificarUsuario/:q', rolesController.get_modificarUsuario);
+router.post('/modificarUsuario', rolesController.post_modificarUsuario);
+
 router.post('/cambiarRol', rolesController.post_cambiarRol);
 router.get('/buscar/:q', rolesController.get_buscar);
 router.get('/buscar', rolesController.get_buscar);
