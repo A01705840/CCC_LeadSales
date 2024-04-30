@@ -60,8 +60,10 @@ module.exports = class Version {
         const offset = (pagina - 1) * tamañoPagina;
     
         return db.execute(`
-            SELECT leads.*, version_almacena_leads.FechaVersionAlmacenaLead 
-            FROM version_almacena_leads 
+            SELECT leads.IDLead,leads.asignado_a,leads.Telefono, 
+            leads.NombreLead,leads.FechaPrimerMensaje, leads.Embudo, 
+            leads.Etapa, leads.Status, leads.Archivado,leads.CreadoManual,
+            version_almacena_leads.FechaVersionAlmacenaLead FROM version_almacena_leads 
             INNER JOIN leads ON version_almacena_leads.IDLead = leads.IDLead 
             WHERE version_almacena_leads.IDVersion = ? 
             LIMIT ? OFFSET ?
