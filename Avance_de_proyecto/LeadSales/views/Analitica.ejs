@@ -180,6 +180,11 @@
     if (selectedRangeAgente) {
         document.getElementById('dateRangeLeadsPorAgente').value = selectedRangeAgente; // Establecer la opción seleccionada
     }
+    
+    const selectedRangeEmbudo = localStorage.getItem('selectedRangeEmbudo') || '1'; // Obtener el rango seleccionado
+    if (selectedRangeEmbudo) {
+        document.getElementById('dateRangeLeadsPorEmbudo').value = selectedRangeEmbudo; // Establecer la opción seleccionada
+    }
 
 
     //------------------------Código gráfica Status------------------------------------------//
@@ -460,7 +465,7 @@
     // Calcular el total de Leads por Agente
     const totalLeadsPorAgente = datasets.map(dataset => {
         const totalLeads = dataset.datos.reduce((a, b) => a + b, 0);
-        return `${dataset.Embudo}: ${totalLeads}`;
+        return `${dataset.agente}: ${totalLeads}`;
     });
     console.log('TOTALLEADSEMBUDOAGENTE' + totalLeadsPorAgente);
     // Actualizar el contenido del elemento HTML con el total de Leads por Agente
@@ -565,7 +570,7 @@
 // Calcular el total de Leads por Agente
 const totalLeadsPorEmbudo = datasetEmbudo.map(dataset => {
         const totalLeads = dataset.datos.reduce((a, b) => a + b, 0);
-        return `${dataset.Embudo}: ${totalLeads}`;
+        return `${dataset.label}: ${totalLeads}`;
 });
 
 // Actualizar el contenido del elemento HTML con el total de Leads por Agente
@@ -579,7 +584,7 @@ const leadsPorEmbudoChart = new Chart(ctxEmbudo, {
         data: {
         labels: fechas.map(fecha => formatDate(fecha, selectedRangeAgente)), // Usar la función formatDate
         datasets: datasetEmbudo.map(dataset => ({
-            label: dataset.Embudo, // Asegurarse de incluir la propiedad label
+            label: dataset.embudo || 'Erizoo Mexico', // Asegurarse de incluir la propiedad label
             data: dataset.datos, // Asegurarse de incluir la propiedad data
             tension: 0.4 // Añadir curvas a las líneas
         }))
