@@ -1,27 +1,27 @@
-<%- include('includes/head.ejs', {username: username})%>
-<div class="p-4 sm:ml-20 sm:mr-10 font-sans">
-    <div class="shadow-lg flex flex-col justify-right p-4 border-2 border-gray-200 rounded-lg dark:border-gray-700 bg-slate-200">
-        <div class="inline-flex justify-between items-center mb-4 mr-4">
-            <span style='font-size:30px;'>📊 Analíticas</span>
-                <div class="flex space-x-2 items-center ">
-                    <p class="text-lg"><b>Visualizando datos de la version:</b></p>
-                    <% %>
-                    <select class="border text-lg border-grey-100 bg-grey-600 px-4 py-2 rounded-full shadow-sm focus:outline-none text-ellipsis">
-                        <% for (let nombreDeVersion of nombreDeVersiones) { %>
-                            <option value="nombreDeVersion.NombreVersion"><%= nombreDeVersion.NombreVersion %></option>
-                        <% } %>
-                    </select>
-                <button id="openModalButton"  class="bg-white hover:bg-indigo-600 hover:text-white py-2 px-4 rounded-full flex items-center">
-                    <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="mr-2">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M2.83331 2.33335C2.37308 2.33335 1.99998 2.70645 1.99998 3.16669V14.8334C1.99998 15.2936 2.37308 15.6667 2.83331 15.6667H11.1666C11.6269 15.6667 12 15.2936 12 14.8334L12 6.8452L7.48814 2.33335H2.83331ZM0.333313 3.16669C0.333313 1.78598 1.4526 0.666687 2.83331 0.666687H7.48814C7.93016 0.666687 8.35409 0.842282 8.66665 1.15484L13.1785 5.66669C13.4911 5.97925 13.6666 6.40317 13.6666 6.8452V14.8334C13.6666 16.2141 12.5474 17.3334 11.1666 17.3334H2.83331C1.4526 17.3334 0.333313 16.2141 0.333313 14.8334V3.16669ZM6.99998 6.50002C7.46022 6.50002 7.83331 6.87312 7.83331 7.33335V10.3215L8.91072 9.2441C9.23616 8.91866 9.7638 8.91866 10.0892 9.2441C10.4147 9.56954 10.4147 10.0972 10.0892 10.4226L7.58923 12.9226C7.2638 13.248 6.73616 13.248 6.41072 12.9226L3.91072 10.4226C3.58529 10.0972 3.58529 9.56954 3.91072 9.2441C4.23616 8.91866 4.7638 8.91866 5.08923 9.2441L6.16665 10.3215V7.33335C6.16665 6.87312 6.53974 6.50002 6.99998 6.50002Z" fill="#4A5567"/>
-                    </svg>
-                    Descargar reporte
-                </button>
+    <%- include('includes/head.ejs', {username: username})%>
+    <div class="p-4 sm:ml-20 sm:mr-10 font-sans">
+        <div id="analiticas" class="shadow-lg flex flex-col justify-right p-4 border-2 border-gray-200 rounded-lg dark:border-gray-700 bg-slate-200">
+            <div class="inline-flex justify-between items-center mb-4 mr-4">
+                <span style='font-size:30px;'>📊 Analíticas</span>
+                    <div class="flex space-x-2 items-center ">
+                        <p class="text-lg"><b>Visualizando datos de la version:</b></p>
+                        <% %>
+                        <select class="border text-lg border-grey-100 bg-grey-600 px-4 py-2 rounded-full shadow-sm focus:outline-none text-ellipsis">
+                            <% for (let nombreDeVersion of nombreDeVersiones) { %>
+                                <option value="nombreDeVersion.NombreVersion"><%= nombreDeVersion.NombreVersion %></option>
+                            <% } %>
+                        </select>
+                    <button id="openModalButtonPDF"  class="bg-white hover:bg-indigo-600 hover:text-white py-2 px-4 rounded-full flex items-center">
+                        <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="mr-2">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M2.83331 2.33335C2.37308 2.33335 1.99998 2.70645 1.99998 3.16669V14.8334C1.99998 15.2936 2.37308 15.6667 2.83331 15.6667H11.1666C11.6269 15.6667 12 15.2936 12 14.8334L12 6.8452L7.48814 2.33335H2.83331ZM0.333313 3.16669C0.333313 1.78598 1.4526 0.666687 2.83331 0.666687H7.48814C7.93016 0.666687 8.35409 0.842282 8.66665 1.15484L13.1785 5.66669C13.4911 5.97925 13.6666 6.40317 13.6666 6.8452V14.8334C13.6666 16.2141 12.5474 17.3334 11.1666 17.3334H2.83331C1.4526 17.3334 0.333313 16.2141 0.333313 14.8334V3.16669ZM6.99998 6.50002C7.46022 6.50002 7.83331 6.87312 7.83331 7.33335V10.3215L8.91072 9.2441C9.23616 8.91866 9.7638 8.91866 10.0892 9.2441C10.4147 9.56954 10.4147 10.0972 10.0892 10.4226L7.58923 12.9226C7.2638 13.248 6.73616 13.248 6.41072 12.9226L3.91072 10.4226C3.58529 10.0972 3.58529 9.56954 3.91072 9.2441C4.23616 8.91866 4.7638 8.91866 5.08923 9.2441L6.16665 10.3215V7.33335C6.16665 6.87312 6.53974 6.50002 6.99998 6.50002Z" fill="#4A5567"/>
+                        </svg>
+                        Descargar reporte
+                    </button>
+                </div>
             </div>
-        </div>
-            <div class="flex h-full text-center">
-                <div class="w-1/2 mr-4 rounded-xl bg-white">
-                    <svg class=" m-4 w-5 h-5 ms-2 text-gray-400 hover:text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>
+                <div class="flex h-full text-center">
+                    <div class="w-1/2 mr-4 rounded-xl bg-white">
+                        <svg class=" m-4 w-5 h-5 ms-2 text-gray-400 hover:text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>
                     <div data-popover id="popover-description" role="tooltip" class="absolute z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-72 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
                         <div class="p-3 space-y-2">
                             <h3 class="font-semibold text-gray-900 dark:text-white">'¿Qué es un Lead?</h3>
@@ -37,92 +37,140 @@
                         </div>
                         <div data-popper-arrow></div>
                     </div>
-                    <p class="text-2xl mb-2 mt-4"><b>Total de Leads</b></p>
-                    <div class="flex justify-end mr-10 mb-4">
-                    <p class="mr-4 text-sm">Elige el período de análisis: </p>
-                    <select id="dateRange" class=" border border-grey-100 text-sm bg-grey-600 rounded-md shadow-sm focus:outline-none text-ellipsis">
-                        <option value="1">Última semana</option>
-                        <option value="2">Último mes</option>
-                        <option value="3">Últimos 6 meses</option>
-                        <option value="4">Último año</option>
-                    </select>
+                    <p id="totalLeadsText" class="text-2xl mb-2 mt-4"><b>Total de Leads</b></p>
+                        <div class="flex justify-end mr-10 mb-4">
+                        <p class="mr-4 text-sm">Elige el período de análisis: </p>
+                        <select id="dateRange" class=" border border-grey-100 text-sm bg-grey-600 rounded-md shadow-sm focus:outline-none text-ellipsis">
+                            <option value="1">Última semana</option>
+                            <option value="2">Último mes</option>
+                            <option value="3">Últimos 6 meses</option>
+                            <option value="4">Último año</option>
+                        </select>
+                        </div>
+                        <canvas id="leadsChart" class="ml-8 mr-8 mb-4"></canvas>
                     </div>
-                    <canvas id="leadsChart" class="ml-8 mr-8 mb-4"></canvas>
-                </div>
-                <div class="w-1/2 rounded-xl mr-4 bg-white">
-                    <p class="text-2xl mb-2 mt-4"><b>Total de Leads por Agente</b></p>
-                    <div class="flex justify-end mr-10 mb-4">
-                    <p class="mr-4 text-sm">Elige el período de análisis: </p>
-                    <select id="dateRangeLeadsPorAgente" class="border border-grey-100 text-sm bg-grey-600 rounded-md shadow-sm focus:outline-none text-ellipsis">
-                        <option value="1">Última semana</option>
-                        <option value="2">Último mes</option>
-                        <option value="3">Últimos 6 meses</option>
-                        <option value="4">Último año</option>
-                    </select>
-                    </div>
-                    <canvas id="leadsPorAgenteChart" class="ml-8 mr-8 mb-4"></canvas>
-                    <div class="ml-8 mr-8 mb-4 text-sm">
-                        <span id="totalLeadsPorAgente"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="flex mt-4 text-center">
-                <div class="flex flex-col w-1/3 mr-4 mb-4 bg-white rounded-xl justify-center items-center">
-                    <b><p class="text-2xl mt-4">
-                        Distribución de Embudos
-                    </p></b>                    
-                    <div class="flex mb-4 rounded-xl h-full w-full justify-center items-center">
-                        <canvas id="pieChartEmbudo"></canvas>
-                    </div>
-                </div>
-                <div class="flex flex-col w-1/3 mr-4 mb-4 bg-white rounded-xl justify-center items-center">
-                    <b><p class="text-2xl mt-4">
-                        Distribución de status
-                    </p></b>
-                    <div class="flex mb-4 rounded-xl h-full w-full justify-center items-center">
-                        <canvas id="pieChartStatus"></canvas>
-                    </div>
-                </div>
-                <div class="flex flex-col w-1/3 mr-4 mb-4 bg-white rounded-xl justify-center items-center">  
-                    <h2 class="text-2xl mb-4 mt-4">Total de Leads: <span id="totalLeads" class="font-bold"><%= cantidadTotalLeads %></span></h2>
-                    <h2 class="text-2xl mb-4">El <span id="porcentajeLeadsOrganicos"></span> de los leads son orgánicos.</h2>
-                    <div id="modalBackground" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;"  class="flex items-center justify-center bg-gray-500 bg-opacity-75"></div>
-                    <div id="contenedorMapa" style="cursor: pointer;">
-                        <div id="mapaContenedor">
-                          <div id="cerrarModal" style="position: absolute; right: 10px; top: 10px; cursor: pointer; display:none; z-index: 10000;">x</div>
-                          <div id="titulo" class="text-2xl mb-2 mt-4"></div>
-                          <div id="mapa" class="flex" style="height: 250px; width: 380px; pointer-events: none;">
-                            <%- include('mx.ejs', {estados: estados});%>
-                          </div>
+                    <div class="w-1/2 rounded-xl mr-4 bg-white">
+                        <p class="text-2xl mb-2 mt-4"><b>Total de Leads por Agente</b></p>
+                        <div class="flex justify-end mr-10 mb-4">
+                        <p class="mr-4 text-sm">Elige el período de análisis: </p>
+                        <select id="dateRangeLeadsPorAgente" class="border border-grey-100 text-sm bg-grey-600 rounded-md shadow-sm focus:outline-none text-ellipsis">
+                            <option value="1">Última semana</option>
+                            <option value="2">Último mes</option>
+                            <option value="3">Últimos 6 meses</option>
+                            <option value="4">Último año</option>
+                        </select>
+                        </div>
+                        <canvas id="leadsPorAgenteChart" class="ml-8 mr-8 mb-4"></canvas>
+                        <div class="ml-8 mr-8 mb-4 text-sm">
+                            <span id="totalLeadsPorAgente"></span>
                         </div>
                     </div>
-                    <h2 class="text-2xl mb-4"> La fecha de tu ultimo lead fue el<span id="ultimaFechaLead"></span></h2>
                 </div>
-                <div class="flex flex-col w-1/3 mr-4 mb-4 bg-white rounded-xl justify-center items-center">
-                    <h2 class="text-2xl mb-4 mt-4">Top Seller:</h2>
-                    <h2 id="topseller" class="text-lg mb-4 mt-4"></h2>
-                    <div>
-                        <button id="celebration" class="flex items-center bg-white shadow-md cursor-pointer border-spacing-2.5 m-1 p-0.5 text-xl transition-transform active:scale-150 ">🎉</button>
+                <div class="flex mt-4 text-center">
+                    <div class="flex flex-col w-1/3 mr-4 mb-4 bg-white rounded-xl justify-center items-center">
+                        <b><p class="text-2xl mt-4">
+                            Distribución de Embudos
+                        </p></b>                    
+                        <div class="flex mb-4 rounded-xl h-full w-full justify-center items-center">
+                            <canvas id="pieChartEmbudo"></canvas>
+                        </div>
+                    </div>
+                    <div class="flex flex-col w-1/3 mr-4 mb-4 bg-white rounded-xl justify-center items-center">
+                        <b><p class="text-2xl mt-4">
+                            Distribución de status
+                        </p></b>
+                        <div class="flex mb-4 rounded-xl h-full w-full justify-center items-center">
+                            <canvas id="pieChartStatus"></canvas>
+                        </div>
+                    </div>
+                    <div class="flex flex-col w-1/3 mr-4 mb-4 bg-white rounded-xl justify-center items-center">  
+                        <h2 class="text-2xl mb-4 mt-4">Total de Leads: <span id="totalLeads" class="font-bold"><%= cantidadTotalLeads %></span></h2>
+                        <h2 class="text-2xl mb-4">El <span id="porcentajeLeadsOrganicos"></span> de los leads son orgánicos.</h2>
+                        <div id="modalBackground" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;"  class="flex items-center justify-center bg-gray-500 bg-opacity-75"></div>
+                        <div id="contenedorMapa" style="cursor: pointer;">
+                            <div id="mapaContenedor">
+                            <div id="cerrarModal" style="position: absolute; right: 10px; top: 10px; cursor: pointer; display:none; z-index: 10000;">x</div>
+                            <div id="titulo" class="text-2xl mb-2 mt-4"></div>
+                            <div id="mapa" class="flex" style="height: 250px; width: 380px; pointer-events: none;">
+                                <%- include('mx.ejs', {estados: estados});%>
+                            </div>
+                            </div>
+                        </div>
+                        <h2 class="text-2xl mb-4"> La fecha de tu ultimo lead fue el<span id="ultimaFechaLead"></span></h2>
+                    </div>
+                    <div class="flex flex-col w-1/3 mr-4 mb-4 bg-white rounded-xl justify-center items-center">
+                        <h2 class="text-2xl mb-4 mt-4">Top Seller:</h2>
+                        <h2 id="topseller" class="text-lg mb-4 mt-4"></h2>
+                        <div>
+                            <button id="celebration" class="flex items-center bg-white shadow-md cursor-pointer border-spacing-2.5 m-1 p-0.5 text-xl transition-transform active:scale-150 ">🎉</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+                </div>
             </div>
         </div>
-  </div>
-</div>
+    </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-<!-- Agrega el script de html2canvas -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <!-- Agrega el script de html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
 
-<!-- Agrega el script de jspdf -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 
-<script>
+    <!-- Agrega el script de jspdf -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+
+    <script>
+        window.jsPDF = window.jspdf.jsPDF;
+        document.getElementById('openModalButtonPDF').addEventListener('click', () => {
+    // Crear un objeto PDF
+        const pdf = new jsPDF('p', 'mm', 'a4');
+
+        // Obtener las instancias de las gráficas
+        pdf.text("Total de Leads", 90, 15);
+        const pieChartEmbudoCanvas = document.getElementById('pieChartEmbudo');
+        const pieChartStatusCanvas = document.getElementById('pieChartStatus');
+        const leadsChartCanvas = document.getElementById('leadsChart');
+        const leadsPorAgenteChartCanvas = document.getElementById('leadsPorAgenteChart');
+
+        pdf.text("Total de Leads por Agente", 90, 150);
+        // Capturar cada gráfica como una imagen y agregarla al PDF
+        html2canvas(leadsChartCanvas).then(canvas => {
+            const imgDataLeadsChart = canvas.toDataURL('image/png');
+            pdf.addImage(imgDataLeadsChart, 'PNG', 10, 20, 180, 110);
+
+        html2canvas(leadsPorAgenteChartCanvas, { scale: 0.5}).then(canvas => {
+            const imgDataLeadsPorAgenteChart = canvas.toDataURL('image/png');
+            pdf.addImage(imgDataLeadsPorAgenteChart, 'PNG', 10, 160, 180, 110);
+            pdf.addPage()
+
+        html2canvas(pieChartEmbudoCanvas).then(canvas => {
+            const imgDataPieChartEmbudo = canvas.toDataURL('image/png');
+            pdf.addImage(imgDataPieChartEmbudo, 'PNG', 10, 20, 100, 0);
+
+        html2canvas(pieChartStatusCanvas).then(canvas => {
+            const imgDataPieChartStatus = canvas.toDataURL('image/png');
+            pdf.addImage(imgDataPieChartStatus, 'PNG', 110, 20, 90, 90);
+            pdf.addPage(); // Agregar una nueva página para la siguiente gráfica
+
+        
+
+            
+
+                
+
+                        // Descargar el PDF
+                        pdf.save('reporte.pdf');
+                    });
+                });
+            });
+        });
+    });
+
     const celebrationButton = document.getElementById('celebration');
 
     function fire(ratio, opt) {
@@ -709,22 +757,7 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
     .catch(error => console.error('Error en la solicitud fetch: ', error));
 });
 
-// Event listener para el botón de descargar PDF
-    document.getElementById('openModalButton').addEventListener('click', () => {
-        // Capturar la imagen de las gráficas utilizando html2canvas
-        html2canvas(document.querySelector('.shadow-lg')).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
 
-            // Crear un objeto PDF
-            const pdf = new jsPDF('p', 'mm', 'a4');
-
-            // Agregar la imagen de las gráficas al PDF
-            pdf.addImage(imgData, 'PNG', 10, 10, 180, 160);
-
-            // Descargar el PDF
-            pdf.save('reporte.pdf');
-        });
-    });
 
 
 </script>
