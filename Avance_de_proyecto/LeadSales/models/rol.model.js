@@ -9,7 +9,7 @@ module.exports = class Rol {
     }
     static fetchRolesWithUsers() {
         return db.execute(`
-            SELECT u.IDUsuario, utr.IDRol, utr.FechaUsuarioRolActualizacion, r.TipoRol, u.UserName
+            SELECT u.IDUsuario, utr.IDRol, utr.FechaUsuarioRolActualizacion, r.TipoRol, u.Nombre, u.Eliminado
             FROM usuario u
             LEFT JOIN usuario_tiene_rol utr ON utr.IDUsuario = u.IDUsuario
             LEFT JOIN rol r ON utr.IDRol = r.IDRol
@@ -20,11 +20,11 @@ module.exports = class Rol {
 
     static buscar(q) {
         return db.execute(`
-            SELECT u.IDUsuario, utr.IDRol, utr.FechaUsuarioRolActualizacion, r.TipoRol, u.UserName
+            SELECT u.IDUsuario, utr.IDRol, utr.FechaUsuarioRolActualizacion, r.TipoRol, u.Nombre
             FROM usuario u
             LEFT JOIN usuario_tiene_rol utr ON utr.IDUsuario = u.IDUsuario
             LEFT JOIN rol r ON utr.IDRol = r.IDRol
-            WHERE (u.UserName LIKE ? OR r.TipoRol LIKE ? OR DATE(utr.FechaUsuarioRolActualizacion) LIKE ?) AND (r.TipoRol <> 'owner' OR r.TipoRol IS NULL)
+            WHERE (u.Nombre LIKE ? OR r.TipoRol LIKE ? OR DATE(utr.FechaUsuarioRolActualizacion) LIKE ?) AND (r.TipoRol <> 'owner' OR r.TipoRol IS NULL) AND u.Eliminado = 0 AND u.Nombre <> ''
             ORDER BY utr.FechaUsuarioRolActualizacion DESC
         `, [`%${q}%`, `%${q}%`, `%${q}%`]);
     }
@@ -74,9 +74,10 @@ module.exports = class Rol {
 
     static deleteUsuario(IDUsuario) {
         return db.execute('DELETE FROM `usuario_tiene_rol` WHERE IDUsuario = ?;', [IDUsuario])
-        .then(() => {
-            return db.execute('DELETE FROM usuario WHERE IDUsuario = ?;', [IDUsuario])
-        })
+            .then(() => {
+                // Marca al usuario como eliminado en lugar de eliminarlo
+                return db.execute('UPDATE usuario SET Eliminado = 1 WHERE IDUsuario = ?', [IDUsuario])
+            })
             .catch((error) => {
                 console.log(error);
                 throw new Error('Usuario no encontrado');

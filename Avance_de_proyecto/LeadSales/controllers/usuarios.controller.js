@@ -29,7 +29,6 @@ exports.post_login = (request, response, next) => {
                             Usuario.getPermisos(usuario.UserName)
                                 .then(([permisos, fieldData]) => {
                                     request.session.permisos = permisos || [];
-                                    console.log(request.session.permisos);
                                     request.session.username = usuario.UserName;
                                     request.session.isLoggedIn = true;
                                     console.log('SESSION' + JSON.stringify(request.session));

@@ -10,12 +10,12 @@
       <form action="equipo/agregarEmpleado" method="post">
         <div class="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-1">
           <div>
-            <label class="text-gray-800 dark:text-gray-200" for="nombre">Usuario / Username:</label>
-            <input type="text" id="username" name="username" required class="mt-2 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-500" />
+            <label class="text-gray-800 dark:text-gray-200" for="nombre">Nombre Usuario:</label>
+            <input type="text" id="username" name="username" required class="mt-2 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-500" placeholder="mau_sh"  maxlength="30"/>
           </div>
           <div>
             <label class="text-gray-800 dark:text-gray-200" for="correo">Email:</label>
-            <input type="email" id="correo" name="correo" required class="mt-2 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-500" placeholder="name@mail.com" />
+            <input type="email" id="correo" name="correo" required class="mt-2 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-500" placeholder="ejemplo@gmail.com" maxlength="30"/>
           </div>
           <div>
             <label class="text-gray-800 dark:text-gray-200">Rol:</label>
@@ -27,15 +27,15 @@
           </div>
           <div>
             <label class="text-gray-800 dark:text-gray-200">Nombre Completo:</label>
-            <input id="nombre" name="nombre" class="mt-2 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-500" placeholder="Juan Peréz"></select>
+            <input id="nombre" name="nombre" class="mt-2 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-500" placeholder="Mauricio Sánchez Herrera" maxlength="30"></select>
           </div>
           <div>
             <label class="text-gray-800 dark:text-gray-200">Contraseña:</label>
-            <input type="password" id="password" name="password" class="mt-2 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-500"></select>
+            <input type="password" id="password" name="password" class="mt-2 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-500" placeholder="********" maxlength="20"></select>
           </div>
           <div>
             <label class="text-gray-800 dark:text-gray-200">Repetir contraseña:</label>
-            <input type="password" id="repeat-password" name="repeat-password" class="mt-2 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-500"></input>
+            <input type="password" id="repeat-password" name="repeat-password" class="mt-2 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-500" placeholder="********" maxlength="20"></input>
           </div>
           <div>
             <button type="submit" id="botonGuardar" onclick="" class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-indigo-500 rounded-md hover:bg-indigo-700 focus:outline-none focus:bg-gray-600">Guardar cambios</button>
@@ -49,11 +49,58 @@
   </div>
 </div>
 
+<div id="modalModificar" onclick="cerrarModalModificar()" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; " class="flex items-center justify-center bg-gray-500 bg-opacity-75">
+  <div onclick="event.stopPropagation()" class="relative overflow-y-auto transform overflow-hidden rounded-lg bg-gray-50 dark:bg-gray-800 text-left shadow-xl transition-all" style="width: 600px; height: 580px;">
+    <h1 class="text-xl font-bold capitalize text-gray-800 dark:text-white mb-4" style="padding-left: 20px; padding-top: 20px;">Account settings</h1>
+    <section class="mx-auto max-w-4xl rounded-md bg-white p-6 shadow-md dark:bg-gray-800">
+      <form action="equipo/agregarEmpleado" method="post">
+        <div class="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-1">
+          <div>
+            <label class="text-gray-800 dark:text-gray-200" for="nombre">Nombre Usuario:</label>
+            <input type="text" id="usernameModificar" name="username" required class="mt-2 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-500" placeholder="jos34ntoni0" maxlength="30"/>
+          </div>
+          <div>
+            <label class="text-gray-800 dark:text-gray-200" for="correo">Email:</label>
+            <input type="email" id="correoModificar" name="correo" required class="mt-2 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-500" placeholder="Tony@ejemplo.com" maxlength="30"/>
+          </div>
+          <div>
+            <label class="text-gray-800 dark:text-gray-200">Rol:</label>
+            <select id="rolModificar" name="rol" class="mt-2 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-500">
+              <% roles.forEach(function(rol) { %>
+              <option value="<%= rol.IDRol %>" <%= rol.IDRol == 'ROL' ? 'selected' : '' %>><%= rol.TipoRol %></option>
+              <% }); %>
+            </select>
+          </div>
+          <div>
+            <label class="text-gray-800 dark:text-gray-200">Nombre Completo:</label>
+            <input id="nombreModificar" name="nombre" class="mt-2 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-500" placeholder="Jose Antonio López Saldaña" maxlength="30"></select>
+          </div>
+          <div>
+            <label class="text-gray-800 dark:text-gray-200">Contraseña:</label>
+            <input type="password" id="passwordModificar" name="password" class="mt-2 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-500" placeholder="********"maxlength="20"></select>
+          </div>
+          <div>
+            <label class="text-gray-800 dark:text-gray-200">Repetir contraseña:</label>
+            <input type="password" id="repeat-passwordModificar" name="repeat-password" class="mt-2 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-500" placeholder="********"maxlength="20"></input>
+          </div>
+          <div>
+            <button type="submitModificar" id="botonGuardarModificar" onclick="" class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-indigo-500 rounded-md hover:bg-indigo-700 focus:outline-none focus:bg-gray-600">Guardar cambios</button>
+          </div>
+          <div class="mt-6 flex justify-end">
+            <button id="close-button" type="button" onclick="cerrarModalModificar()" class="text-gray-800 hover:text-black" style="border: none; padding: 0px 10px; text-align: center; text-decoration: none; display: inline-block; font-size: 35px; margin: 0; cursor: pointer; position: absolute; top: 5px; right: 20px; transition: background-color 0.3s ease; border-radius: 50%;">x</button>
+          </div>
+        </div>
+      </form>
+    </section>
+  </div>
+</div>
+
+
 <div class="p-4 sm:ml-20 sm:mr-10 font-sans">
   <div class="flex flex-col justify-right p-4 border-2 border-gray-200 rounded-lg dark:border-gray-700 bg-slate-200" style="height:970px; overflow-y:visible;">
     <div class="inline-flex justify-between items-center">
       <span style='font-size:30px;'>👥 Mi Equipo</span>
-      <input type="text" id="search" name="q" placeholder="Buscar usuario" class="search-bar py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" style="padding-left: 20px; padding-right: 350px; "><br><br>
+      <input type="text" id="search" name="q" placeholder="Buscar usuario" class="search-bar py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" style="padding-left: 20px; padding-right: 350px; " maxlength="40"><br><br>
       <div class="" style="padding-right: 0px;">
         <a href="/Roles/consultas">
           <button class="bg-white hover:bg-indigo-600 text-black hover:text-white py-2 px-4 rounded-full transition duration-300">Roles</button>
@@ -68,7 +115,7 @@
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 top-0">
               <tr>
                 <th scope="col" class="px-6 py-3">
-                  Nombre del Usuario
+                  Nombre 
                 </th>
                 <th scope="col" class="px-6 py-3">
                   Rol
@@ -86,8 +133,9 @@
             </thead>
             <tbody id="tabla">
               <% data.forEach(function(item) { %>
+              <% if (item.Nombre === "" || item.Eliminado === 1) { return; } %>
               <tr class="hover:bg-gray-100">
-                <td class="py-4 px-6 border-b border-gray-200"><%= item.UserName %></td>
+                <td class="py-4 px-6 border-b border-gray-200"><%= item.Nombre %></td>
                 <td class="py-4 border-b border-gray-200" style="padding-right: 40px;">
                   <select id="rol-<%= item.IDUsuario %>" onchange="cambiarRol('<%= item.IDUsuario %>')" class="px-4 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                     <% roles.forEach(function(rol) { %>
@@ -97,20 +145,14 @@
                 </td>
                 <td class="py-4 border-b border-gray-200" style="padding-left: 70px;"><%= item.FechaUsuarioRolActualizacion %></td>
                 <td class="py-4 px-6 border-b border-gray-200">
-                  <form action="/Roles/editar/<%= item.IDUsuario %>" method="GET">
-                    <input type="hidden" name="IDUsuario" value="<%= item.IDUsuario %>">
-                    <button type="submit" class="px-4 py-2 text-white font-bold bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                      Modificar
-                    </button>
-                  </form>
+                  <button type="button" onclick="abrirModalModificarUsuario('<%= item.IDUsuario %>')" class="px-4 py-2 text-white font-bold bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Modificar
+                  </button>
                 </td>
                 <td class="py-4 px-6 border-b border-gray-200">
-                  <form action="/Roles/eliminarUsuario/<%= item.IDUsuario %>" method="POST">
-                    <input type="hidden" name="IDUsuario" value="<%= item.IDUsuario %>">
-                    <button type="submit" class="px-4 py-2 text-white font-bold bg-red-500 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                      Eliminar
-                    </button>
-                  </form>
+                  <button type="button" onclick="eliminarUsuario('<%= item.IDUsuario %>')" class="px-4 py-2 text-white font-bold bg-red-500 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                    Eliminar
+                </button>
                 </td>
               </tr>
               <% }); %>

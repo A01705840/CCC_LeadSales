@@ -39,8 +39,8 @@ module.exports = class Lead {
         return db.execute(`SELECT MAX(IDLead) FROM leads;`)
     }  
         static async fetchAll() {
-            console.log(db.execute('SELECT * FROM leads'))
-            return await db.execute('SELECT * FROM leads')
+            console.log(db.execute('SELECT * FROM leads ORDER BY IDLead DESC'))
+            return await db.execute('SELECT * FROM leads ORDER BY IDLead DESC')
         }
         static fetch(id) {
         console.log(id)
