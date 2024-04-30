@@ -301,7 +301,7 @@ exports.post_leads_por_version = async (request, response, next) => {
     const inicio = (pagina - 1) * tamañoPagina + 1;
     const fin = Math.min(inicio + tamañoPagina - 1, numeroTotalDeLeads);
 
-    const leads = await Version.fetchLeadsPorIDVersion(IDVersion, pagina);
+    const leads = await Version.fetchLeadsPorIDVersion(IDVersion, pagina,0);
 
     return response.status(200).json({
         leads: leads,
