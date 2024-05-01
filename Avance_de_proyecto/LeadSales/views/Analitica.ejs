@@ -6,9 +6,9 @@
                     <div class="flex space-x-2 items-center ">
                         <p class="text-lg"><b>Visualizando datos de la version:</b></p>
                         <% %>
-                        <select class="border text-lg border-grey-100 bg-grey-600 px-4 py-2 rounded-full shadow-sm focus:outline-none text-ellipsis">
-                            <% for (let nombreDeVersion of nombreDeVersiones) { %>
-                                <option value="nombreDeVersion.NombreVersion"><%= nombreDeVersion.NombreVersion %></option>
+                        <select id="IDVersionSeleccionada" class="border text-lg border-grey-100 bg-grey-600 px-4 py-2 rounded-full shadow-sm focus:outline-none text-ellipsis">
+                            <% for (let version of versiones.reverse()) { %>
+                                <option value="<%= version.IDVersion %>"><%= version.NombreVersion %></option>
                             <% } %>
                         </select>
                     <button id="openModalButtonPDF"  class="bg-white hover:bg-indigo-600 hover:text-white py-2 px-4 rounded-full flex items-center">
@@ -186,88 +186,92 @@
         fire(0.1, { spread: 360, startVelocity: 30, decay: 0.92, scalar: 1.2});
         fire(0.2, { spread: 360, startVelocity: 45});
     });
-</script>
-<script>
+
     //------------MAPA DE MÉXICO-----------------//
-// Evento al hacer clic en el contenedorMapa
-document.getElementById('contenedorMapa').addEventListener('click', function() {
-  var mapaContenedor = document.getElementById('mapaContenedor');
-  var mapa = document.getElementById('mapa');
-  var titulo = document.getElementById('titulo');
-  var modalBackground = document.getElementById('modalBackground');
-  var cerrarModalBoton = document.getElementById('cerrarModal');
-  // Hace que el mapa sea interactivo
-  mapa.style.pointerEvents = 'auto';
-
-  // Muestra el botón de cierre
-  cerrarModalBoton.style.display = 'block';  
-
-  // Cambia el cursor a default
-  contenedorMapa.style.cursor = 'default';
-
-  // Cambia el tamaño del contenedor y el mapa
-  mapaContenedor.style.position = 'fixed';
-  mapaContenedor.style.top = '15%';
-  mapaContenedor.style.left = '15%';
-  mapaContenedor.style.width = '65%';
-  mapaContenedor.style.height = '70%';
-  mapaContenedor.style.zIndex = '10000';
-  mapaContenedor.style.backgroundColor = 'white';
-  mapaContenedor.style.boxShadow = '0 4px 6px 0 hsla(0, 0%, 0%, 0.2)';
-  mapaContenedor.style.borderRadius = '15px';
-
-  mapa.style.width = '100%';
-  mapa.style.height = 'calc(100% - 2em)'; // Resta el espacio para el título
-  mapa.style.marginLeft = '54px';
-
-  // Agrega un título al mapa
-  titulo.innerHTML = '<b>Leads por Estado</b>';
-
-  // Muestra el fondo del modal
-  modalBackground.style.display = 'block';
-});
-
-// Función para cerrar el modal
-function cerrarModal() {
-  var mapaContenedor = document.getElementById('mapaContenedor');
-  var mapa = document.getElementById('mapa');
-  var titulo = document.getElementById('titulo');
-  var modalBackground = document.getElementById('modalBackground');
-  var cerrarModalBoton = document.getElementById('cerrarModal');
-  // Hace que el mapa no sea interactivo
-  mapa.style.pointerEvents = 'none';
+    // Evento al hacer clic en el contenedorMapa
+    document.getElementById('contenedorMapa').addEventListener('click', function() {
+    var mapaContenedor = document.getElementById('mapaContenedor');
+    var mapa = document.getElementById('mapa');
+    var titulo = document.getElementById('titulo');
+    var modalBackground = document.getElementById('modalBackground');
+    var cerrarModalBoton = document.getElementById('cerrarModal');
+    // Hace que el mapa sea interactivo
+    mapa.style.pointerEvents = 'auto';
 
     // Muestra el botón de cierre
-  cerrarModalBoton.style.display = 'none'; 
+    cerrarModalBoton.style.display = 'block';  
 
-  // Cambia el cursor a pointer
-  contenedorMapa.style.cursor = 'pointer';
+    // Cambia el cursor a default
+    contenedorMapa.style.cursor = 'default';
 
-  // Restaura el tamaño y la posición del contenedor
-  mapaContenedor.style.position = 'static';
-  mapaContenedor.style.width = 'auto';
-  mapaContenedor.style.height = 'auto';
-  mapaContenedor.style.backgroundColor = 'transparent';
-  mapaContenedor.style.boxShadow = 'none';
-  mapaContenedor.style.borderRadius = '0';
+    // Cambia el tamaño del contenedor y el mapa
+    mapaContenedor.style.position = 'fixed';
+    mapaContenedor.style.top = '15%';
+    mapaContenedor.style.left = '15%';
+    mapaContenedor.style.width = '65%';
+    mapaContenedor.style.height = '70%';
+    mapaContenedor.style.zIndex = '10000';
+    mapaContenedor.style.backgroundColor = 'white';
+    mapaContenedor.style.boxShadow = '0 4px 6px 0 hsla(0, 0%, 0%, 0.2)';
+    mapaContenedor.style.borderRadius = '15px';
 
-  // Restaura el tamaño y la posición del mapa
-  mapa.style.width = '380px';
-  mapa.style.height = '250px';
-  mapa.style.marginLeft = '0px'; 
+    mapa.style.width = '100%';
+    mapa.style.height = 'calc(100% - 2em)'; // Resta el espacio para el título
+    mapa.style.marginLeft = '54px';
 
-  // Quita el título
-  titulo.innerHTML = '';
+    // Agrega un título al mapa
+    titulo.innerHTML = '<b>Leads por Estado</b>';
 
-  // Oculta el fondo del modal
-  modalBackground.style.display = 'none';
-}
-document.getElementById('cerrarModal').addEventListener('click', cerrarModal);
-// Evento al hacer clic en el fondo del modal
-document.getElementById('modalBackground').addEventListener('click', cerrarModal);
+    // Muestra el fondo del modal
+    modalBackground.style.display = 'block';
+    });
+
+    // Función para cerrar el modal
+    function cerrarModal() {
+    var mapaContenedor = document.getElementById('mapaContenedor');
+    var mapa = document.getElementById('mapa');
+    var titulo = document.getElementById('titulo');
+    var modalBackground = document.getElementById('modalBackground');
+    var cerrarModalBoton = document.getElementById('cerrarModal');
+    // Hace que el mapa no sea interactivo
+    mapa.style.pointerEvents = 'none';
+
+        // Muestra el botón de cierre
+    cerrarModalBoton.style.display = 'none'; 
+
+    // Cambia el cursor a pointer
+    contenedorMapa.style.cursor = 'pointer';
+
+    // Restaura el tamaño y la posición del contenedor
+    mapaContenedor.style.position = 'static';
+    mapaContenedor.style.width = 'auto';
+    mapaContenedor.style.height = 'auto';
+    mapaContenedor.style.backgroundColor = 'transparent';
+    mapaContenedor.style.boxShadow = 'none';
+    mapaContenedor.style.borderRadius = '0';
+
+    // Restaura el tamaño y la posición del mapa
+    mapa.style.width = '380px';
+    mapa.style.height = '250px';
+    mapa.style.marginLeft = '0px'; 
+
+    // Quita el título
+    titulo.innerHTML = '';
+
+    // Oculta el fondo del modal
+    modalBackground.style.display = 'none';
+    }
+    document.getElementById('cerrarModal').addEventListener('click', cerrarModal);
+    // Evento al hacer clic en el fondo del modal
+    document.getElementById('modalBackground').addEventListener('click', cerrarModal);
 
 
+    //------------MAPA DE MÉXICO fin-----------------//
+
+
+    //----------texto------//
     const cantidadLeadsAgente = <%- JSON.stringify(cantidadLeadsAgente) %>;
+    
     // Obtener la cantidad total de leads y la cantidad de leads orgánicos de los elementos HTML
     const cantidadTotalLeads = Number(document.getElementById('totalLeads').textContent);
     const cantidadLeadsOrganicos = <%- JSON.stringify(cantidadLeadsOrganicos) %>;
@@ -293,12 +297,14 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
     // Asignar una clase de color en función del porcentaje
     porcentajeLeadsOrganicosElement.className = getColorForPercentage(porcentajeLeadsOrganicos);
     porcentajeLeadsOrganicosElement.style.fontWeight = 'bold';
+    //----------texto------//
 
+
+    //---------------------------------Top seller-------------------------------------------------//
     // Obtener el top seller y actualizar el texto
     const topSeller = document.getElementById('topseller');
     // Parse the JSON string back to an object
     const topSellerData = JSON.parse('<%- JSON.stringify(cantidadLeadsAgente[0]) %>');
-    console.log('HOLA',topSellerData);
     // Create a string that contains all the data
     let topSellerText = '';
     for (let i = 0; i < topSellerData.length; i++) {
@@ -307,41 +313,52 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
         const br = document.createElement('br');
 
         if (i == 0){
-            span.textContent = '1er Lugar 🥇: ' + topSellerData[i].Seller + ', with ' + topSellerData[i].TotalLeads + ' leads' + '\n';
+            span.textContent = '1er Lugar 🥇: ' + topSellerData[i].Seller + ', con ' + topSellerData[i].TotalLeads + ' leads' + '\n';
         }
         if (i == 1){
-            span.textContent = '2do Lugar 🥈: ' + topSellerData[i].Seller + ', with ' + topSellerData[i].TotalLeads + ' leads' + '\n';
+            span.textContent = '2do Lugar 🥈: ' + topSellerData[i].Seller + ', con ' + topSellerData[i].TotalLeads + ' leads' + '\n';
         }
         if (i == 2){
-            span.textContent = '3er Lugar 🥉: ' + topSellerData[i].Seller + ', with ' + topSellerData[i].TotalLeads + ' leads' + '\n';
+            span.textContent = '3er Lugar 🥉: ' + topSellerData[i].Seller + ', con ' + topSellerData[i].TotalLeads + ' leads' + '\n';
         }
 
         // Append the span element to the 'topseller' element
         topSeller.appendChild(span);
         topSeller.appendChild(br);
     }
+    
+     //--------------------------Top seller final-------------------------------------//
     // Establecer la opción selecscionada tan pronto como se carga el script
-    const selectedRange = localStorage.getItem('selectedRange') || '1'; // Obtener el rango seleccionado
+    const selectedRange = '1'; // Obtener el rango seleccionado
     if (selectedRange) {
         document.getElementById('dateRange').value = selectedRange; // Establecer la opción seleccionada
     }
-
     // Establecer la opción seleccionada de Agente
     const selectedRangeAgente = localStorage.getItem('selectedRangeAgente') || '1'; // Obtener el rango seleccionado
     if (selectedRangeAgente) {
         document.getElementById('dateRangeLeadsPorAgente').value = selectedRangeAgente; // Establecer la opción seleccionada
     }
 
+    //------------------------------Ultima fecha---------------------------------//
+    var ultimaFechaLead = <%- JSON.stringify(ultimaFechaLead) %> [0];
+    //Esto convierte las fechas en objetos Date
+    // fechas = ultimaFechaLead.map(fecha => new Date(fecha));
+    // Obtener el primer elemento en fechas
+    const firstDate = ultimaFechaLead[0];
+    //Formateamos firstDate
+    const firstDateFormateada = moment(firstDate.UltimaFecha).format('D [de] MMMM [de] YYYY');
+    const ultimaFechaLeadElement = document.getElementById('ultimaFechaLead');
+    ultimaFechaLeadElement.textContent = firstDateFormateada;
+    //------------------------------Ultima fecha- final--------------------------------//
 
     //------------------------Código gráfica Status------------------------------------------//
     const datosStatus= <%- JSON.stringify(cantidadLeadsStatus) %>[0];
-    console.log(datosStatus);
 
     const status=[];
     const totalesLeadsStatus=[];
 
      // Iterar sobre cada objeto en el array
-     datosStatus.forEach(statu => {
+    datosStatus.forEach(statu => {
         // Obtener el nombre del embudo y el total de leads
         const nombreStatus = statu.Status;
         const totalLeadsStatus = parseInt(statu.TotalLeads);
@@ -350,8 +367,6 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
         status.push(nombreStatus);
         totalesLeadsStatus.push(totalLeadsStatus);
     });
-    console.log(status);
-    console.log(totalesLeadsStatus);
 
     const backgroundColorsStatus = status.map(() => getRandomPastelColor());
 
@@ -364,20 +379,6 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
             hoverOffset: 4
         }]
     };
-
-    var ultimaFechaLead = <%- JSON.stringify(ultimaFechaLead) %> [0];
-
-
-    //Esto convierte las fechas en objetos Date
-    // fechas = ultimaFechaLead.map(fecha => new Date(fecha));
-    // console.log("FECHAS",fechas);
-    // Obtener el primer elemento en fechas
-    const firstDate = ultimaFechaLead[0];
-    //Formateamos firstDate
-    const firstDateFormateada = moment(firstDate.UltimaFecha).format('D [de] MMMM [de] YYYY');
-    console.log("FIRSTDATE",firstDateFormateada);
-    const ultimaFechaLeadElement = document.getElementById('ultimaFechaLead');
-    ultimaFechaLeadElement.textContent = firstDateFormateada;
 
     // Obtener el contexto del canvas para la gráfica de donut
     const pieCt = document.getElementById('pieChartStatus').getContext('2d');
@@ -415,7 +416,6 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
     //------------------------Código gráfica Embdos------------------------------------------//
     // Datos de ejemplo para la gráfica de donut
     const datos = <%- JSON.stringify(cantidadLeadsEmbudos) %>[0];
-
 
     // Crear arrays para almacenar las etiquetas y los totales de leads
     const embudos = [];
@@ -456,7 +456,6 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
             hoverOffset: 4
         }]
     };
-
     // Obtener el contexto del canvas para la gráfica de donut
     const pieCtx = document.getElementById('pieChartEmbudo').getContext('2d');
 
@@ -487,10 +486,11 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
                 text: 'Gráfica de Pay Embudo'
             }
         }
-    });
-
-
+    }); 
     
+
+    //--------------------------------------------------------------------------------------//
+
     // Obtener el contexto del canvas para después crear la gráfica
     const ctx = document.getElementById('leadsChart').getContext('2d');
 
@@ -524,15 +524,11 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
         }
     }
 
-
     // Datos de ejemplo
     const leadsPerDay = <%- JSON.stringify(leadsPerDay) %>.map(item => ({
         ...item,
         Fecha: new Date(item.Fecha)
     }));
-
-    console.log("LEADSPERDAY",leadsPerDay);
-    
     let myChart = new Chart(ctx, {
     type: 'line',
     data: {
@@ -558,7 +554,6 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
                 }   
             }]
         },
-
         options: {
             scales: {
                 y: {
@@ -626,26 +621,26 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
             }
         }]
     });
- 
 
+
+    //-----------------------------Gràfica leads por agente-----------------------------------//
     var fechas = <%- JSON.stringify(fechas) %>;
     var datasets = <%- JSON.stringify(datasets) %>;
-
     // Calcular el total de Leads por Agente
     const totalLeadsPorAgente = datasets.map(dataset => {
         const totalLeads = dataset.datos.reduce((a, b) => a + b, 0);
-        return `${dataset.agente}: ${totalLeads}`;
-    });
+        const agente = dataset.agente !== '' ? dataset.agente : "Leads sin asignar";
+        return `${agente}: ${totalLeads}`;
+    });     
 
     // Actualizar el contenido del elemento HTML con el total de Leads por Agente
     document.getElementById('totalLeadsPorAgente').textContent = totalLeadsPorAgente.join(', ');
    
-
     // Obtener el contexto del segundo canvas
     const ctxAgent = document.getElementById('leadsPorAgenteChart').getContext('2d');
 
-     // Crear la gráfica de Leads por Agente
-     const leadsPorAgenteChart = new Chart(ctxAgent, {
+    // Crear la gráfica de Leads por Agente
+    const leadsPorAgenteChart = new Chart(ctxAgent, {
         type: 'line',
         data: {
         labels: fechas.map(fecha => formatDate(fecha, selectedRangeAgente)), // Usar la función formatDate
@@ -695,28 +690,29 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
         }
     });
 
-    
-
+    //Ajax para la parte de agente
     document.getElementById('dateRangeLeadsPorAgente').addEventListener('change', function(event) {
     event.preventDefault(); // Evitar la recarga de la página
     const selectedRangeAgent = this.value;
     localStorage.setItem('selectedRangeAgent', selectedRangeAgent); // Guardar el rango seleccionado
 
-    fetch('/lead/analitics/agent/' + selectedRangeAgent)
+    let version= document.getElementById('IDVersionSeleccionada').value;
+
+    fetch('/lead/analitics/agent/' + selectedRangeAgent+'/'+version)
     .then(response => response.json())
     .then(data => {
-        console.log("CHECARESTO",data);
 
         // Utilizar los datos ya procesados que recibes del servidor
         const fechas = data.fechas;
-        const datasets = data.datasets.map(dataset=> {
+        const datasets = data.datasets.map(dataset => {
+            const agente = dataset.agente !== '' ? dataset.agente : 'Sin asignar';
             return {
-                label: dataset.agente, // Usar el nombre del agente
-                data: dataset.datos, // Usar los datos del agente
-                tension: 0.4 // Añadir curvas a las líneas
+                label: agente,
+                data: dataset.datos,
+                tension: 0.4
             };
         });
-
+        
             // Calcular el total de Leads por Agente
             const totalLeadsPorAgente = datasets.map(dataset => {
             const totalLeads = dataset.data.reduce((a, b) => a + b, 0);
@@ -740,9 +736,9 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
     event.preventDefault(); // Evitar la recarga de la página
     const selectedRange = this.value;
     localStorage.setItem('selectedRange', selectedRange); // Guardar el rango seleccionado
-
+    let version= document.getElementById('IDVersionSeleccionada').value;
     // Hacer una solicitud AJAX para obtener los datos
-    fetch('/lead/analitics/' + selectedRange)
+    fetch('/lead/analitics/' + selectedRange+'/'+version)
     .then(response => response.json())
     .then(data => {
         // Formatear las fechas y actualizar la gráfica con los nuevos datos
@@ -758,6 +754,164 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
 });
 
 
+// -----------  CAMBIO De Versión  ------------------ 
+
+    document.getElementById('IDVersionSeleccionada').addEventListener('change', function(event) {
+        event.preventDefault(); // Evitar la recarga de la página
+        let version = document.getElementById('IDVersionSeleccionada').value;
+        fetch('/lead/analitics/' + version)
+            .then(response => response.json())
+            .then(data => {
+                //Asignaciòn de porcentaje de leads inorganicos
+                const cantidadTotalLeads = data['cantidadTotalLeads'];
+                const cantidadLeadsOrganicos =  data['cantidadLeadsOrganicos'];
+
+                //Asignaciòn total de leads
+                document.getElementById('totalLeads').textContent = cantidadTotalLeads;
+
+                // Calcular el porcentaje de leads orgánicos y actualizar el texto
+                const porcentajeLeadsOrganicos = (cantidadLeadsOrganicos / cantidadTotalLeads) * 100;
+                const porcentajeLeadsOrganicosElement = document.getElementById('porcentajeLeadsOrganicos');
+                porcentajeLeadsOrganicosElement.textContent = porcentajeLeadsOrganicos.toFixed(2) + '%';
+            
+                // Asignar una clase de color en función del porcentaje
+                porcentajeLeadsOrganicosElement.className = getColorForPercentage(porcentajeLeadsOrganicos);
+                porcentajeLeadsOrganicosElement.style.fontWeight = 'bold';
+
+                //Asignaciòn ultima fecha
+                const firstDate = data['ultimaFechaLead'][0][0]['UltimaFecha'];
+                const firstDateFormateada = moment(firstDate).format('D [de] MMMM [de] YYYY');
+                const ultimaFechaLeadElement = document.getElementById('ultimaFechaLead');
+                ultimaFechaLeadElement.textContent = firstDateFormateada;
+
+                //Asignaciòn nuevos datos para el top seller
+                const topSeller = document.getElementById('topseller');
+                topSeller.innerHTML = "";
+                const topSellerData = data['cantidadLeadsAgente'][0];
+                let topSellerText = '';
+                for (let i = 0; i < topSellerData.length; i++) {
+                    const span = document.createElement('span');
+                    const br = document.createElement('br');
+                    if (i == 0){
+                        span.textContent = '1er Lugar 🥇: ' + topSellerData[i].Seller + ', con ' + topSellerData[i].TotalLeads + ' leads' + '\n';
+                    }
+                    if (i == 1){
+                        span.textContent = '2do Lugar 🥈: ' + topSellerData[i].Seller + ', con ' + topSellerData[i].TotalLeads + ' leads' + '\n';
+                    }
+                    if (i == 2){
+                        span.textContent = '3er Lugar 🥉: ' + topSellerData[i].Seller + ', con ' + topSellerData[i].TotalLeads + ' leads' + '\n';
+                    }
+                    topSeller.appendChild(span);
+                    topSeller.appendChild(br);
+                }               
+
+                const datos = data['cantidadLeadsEmbudos'][0];
+                // Crear arrays para almacenar las etiquetas y los totales de leads
+                const embudo = [];
+                const totalesLead = [];
+                                
+                // Iterar sobre cada objeto en el array
+                datos.forEach(embudoItem => {
+                    // Obtener el nombre del embudo y el total de leads
+                    const nombreEmbudo = embudoItem.Embudo;
+                    const totalLeads = parseInt(embudoItem.TotalLeads);
+                    
+                    // Agregar el nombre del embudo y el total de leads a los arrays correspondientes
+                    embudo.push(nombreEmbudo);
+                    totalesLead.push(totalLeads);
+                });
+                
+                // Crear un array para almacenar los colores
+                const backgroundColor2 = embudo.map(() => getRandomPastelColor());
+                pieData.labels = embudo;
+                pieData.datasets[0].data = totalesLead;
+                pieData.datasets[0].backgroundColor = backgroundColor2;
+                pieChartEmbudo.update();
+                
+                //Crear nueva grafica de status
+                const datosStatus= data['cantidadLeadsStatus'][0];
+                const status=[];
+                const totalesLeadsStatus=[];
+            
+                 // Iterar sobre cada objeto en el array
+                datosStatus.forEach(statu => {
+                    // Obtener el nombre del embudo y el total de leads
+                    const nombreStatus = statu.Status;
+                    const totalLeadsStatus = parseInt(statu.TotalLeads);
+                    
+                    // Agregar el nombre del embudo y el total de leads a los arrays correspondientes
+                    status.push(nombreStatus);
+                    totalesLeadsStatus.push(totalLeadsStatus);
+                });
+            
+                const backgroundColorsStatus = status.map(() => getRandomPastelColor());
+                pieDataStatus.labels = status;
+                pieDataStatus.datasets[0].data = totalesLeadsStatus;
+                pieDataStatus.datasets[0].backgroundColor = backgroundColorsStatus;
+                pieChartStatus.update();
+
+                //Actualizar gràfica total de leads
+                const leadsPerDay = data['leadsPerDay'].map(item => ({
+                    ...item,
+                    Fecha: new Date(item.Fecha)
+                }));
+                myChart.data.labels=leadsPerDay.map(lead => formatDate(lead.Fecha, selectedRange));
+                myChart.data.datasets[0].label= getLabelText(selectedRange); // Actualizar el label del dataset
+                myChart.data.datasets[0].data=  leadsPerDay.map(lead => lead.CantidadLeads);
+                myChart.update();
+                var selectElement = document.getElementById('dateRange');
+
+                // Establecer el valor de selectedIndex en 0 seleccionará la primera opción
+                selectElement.selectedIndex = 0;
+
+                //Actualizar gràfica agente
+                 //-----------------------------Gràfica leads por agente-----------------------------------//
+                var fechas = data['fechas'];
+                var datasets = data['datasets'];
+                // Calcular el total de Leads por Agente
+                const totalLeadsPorAgente = datasets.map(dataset => {
+                    const totalLeads = dataset.datos.reduce((a, b) => a + b, 0);
+                    const agente = dataset.agente !== '' ? dataset.agente : "Leads sin asignar";
+                    return `${agente}: ${totalLeads}`;
+                });                            
+
+                // Actualizar el contenido del elemento HTML con el total de Leads por Agente
+                document.getElementById('totalLeadsPorAgente').textContent = totalLeadsPorAgente.join(', ');
+                var selectElement = document.getElementById('dateRangeLeadsPorAgente');
+
+                leadsPorAgenteChart.data.labels= fechas.map(fecha => formatDate(fecha, selectedRangeAgente));
+                leadsPorAgenteChart.data.datasets[0].label= getLabelText(selectedRange); // Actualizar el label del dataset
+                leadsPorAgenteChart.data.datasets= datasets.map(dataset => ({
+                    label: dataset.agente, // Asegurarse de incluir la propiedad label
+                    data: dataset.datos, // Asegurarse de incluir la propiedad data
+                    tension: 0.4 // Añadir curvas a las líneas
+                }))
+                leadsPorAgenteChart.update();
+                // Establecer el valor de selectedIndex en 0 seleccionará la primera opción
+                selectElement.selectedIndex = 0;
+
+
+
+            }).catch(error => console.error('Error en la solicitud fetch: ', error));
+    });
+
+
+    // Event listener para el botón de descargar PDF
+    document.getElementById('openModalButton').addEventListener('click', () => {
+        // Capturar la imagen de las gráficas utilizando html2canvas
+        html2canvas(document.querySelector('.shadow-lg')).then(canvas => {
+            const imgData = canvas.toDataURL('image/png');
+
+            // Crear un objeto PDF
+            const pdf = new jsPDF('p', 'mm', 'a4');
+
+            // Agregar la imagen de las gráficas al PDF
+            pdf.addImage(imgData, 'PNG', 10, 10, 180, 160);
+
+            // Descargar el PDF
+            pdf.save('reporte.pdf');
+        });
+    });
 
 
 </script>

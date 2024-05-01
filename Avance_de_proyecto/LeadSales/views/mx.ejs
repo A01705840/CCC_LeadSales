@@ -149,11 +149,9 @@
 
 <script>
 var estados = <%- JSON.stringify(estados) %>[0];
-console.log("ESTADOS",estados);
 
 // Calcula el valor máximo
 var max = Math.max(...Object.values(estados));
-console.log ("max", max);
 
 // Función para obtener el color en función del porcentaje
 function getColorForPercentage(porcentaje) {

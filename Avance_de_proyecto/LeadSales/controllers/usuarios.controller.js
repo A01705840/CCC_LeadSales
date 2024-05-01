@@ -4,9 +4,6 @@ const bcrypt = require('bcryptjs');
 exports.get_login = (request, response, next) => {
     const error = request.session.error || '';
     request.session.error = '';
-    console.log('GET LOGIN');
-    console.log('SESSION' + JSON.stringify(request.session));
-    console.log('BODY' + JSON.stringify(request.body));
     response.render('signup', {
         username: request.session.username || '',
         registro: false,
@@ -16,8 +13,6 @@ exports.get_login = (request, response, next) => {
 };
 
 exports.post_login = (request, response, next) => {
-    console.log('POST LOGIN');
-    console.log('BODY' + JSON.stringify(request.body));
     Usuario.fetchOne(request.body.username)
         .then(([usuarios]) => {
             if (usuarios.length == 1) {
@@ -25,13 +20,11 @@ exports.post_login = (request, response, next) => {
                 bcrypt.compare(request.body.password, usuario.Password)
                     .then((doMatch) => {
                         if(doMatch) {
-                            console.log('CONTRASEÑA CORRECTA')
                             Usuario.getPermisos(usuario.UserName)
                                 .then(([permisos, fieldData]) => {
                                     request.session.permisos = permisos || [];
                                     request.session.username = usuario.UserName;
                                     request.session.isLoggedIn = true;
-                                    console.log('SESSION' + JSON.stringify(request.session));
                                     response.redirect('/lead/analitica');
                                 })
                                 .catch((error) => {
@@ -54,7 +47,6 @@ exports.post_login = (request, response, next) => {
 };
 
 exports.get_signup = (req, res, next) => {
-    console.log('GET SIGNUP');
     res.render('signup', {
         username: req.session.username || '',
         registro: true,
@@ -62,8 +54,6 @@ exports.get_signup = (req, res, next) => {
 };
 
 exports.post_signup = (req, res, next) => {
-    console.log('POST SIGNUP')
-    console.log('BODY' + JSON.stringify(req.body));
     const nuevo_usuario = new Usuario(
         req.body.correo, req.body.username, req.body.name, req.body.password
     );
