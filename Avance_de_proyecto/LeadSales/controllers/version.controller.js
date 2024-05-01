@@ -91,8 +91,7 @@ exports.post_historial = async (req, res, next) => {
     let todosPresentes;
     let exito;
     let falla;
-    let arrayBeforeNull = [];
-    let arrayIDLeads = [];
+    //let arrayBeforeNull = [];
     let lastIDResult = await Lead.fetchlastID();
     let lastID = Number(lastIDResult[0][0].IDLead);
     //arrayIDLeads.push(lastID);
@@ -102,7 +101,7 @@ exports.post_historial = async (req, res, next) => {
             .on("data", async function (rowData) {
                 if (fila > 0) {
                     if(todosPresentes){
-                        arrayBeforeNull.push(rowData[posiciones[1]]);
+                        //arrayBeforeNull.push(rowData[posiciones[1]]);
                     try {
                         if (rowData[posiciones[8]] === 'TRUE') {
                             rowData[posiciones[8]] = 1;
@@ -132,69 +131,69 @@ exports.post_historial = async (req, res, next) => {
                             lastID = lastID + 1;
                             console.log('LAST ID' + lastID);
                             try {
-                                if (regexDIF.test(arrayBeforeNull[i])){
+                                if (regexDIF.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXDIF', lastID);
-                                } else if (regexCHH.test(arrayBeforeNull[i])){
+                                } else if (regexCHH.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXCHH', lastID);
-                                } else if (regexJAL.test(arrayBeforeNull[i])){
+                                } else if (regexJAL.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXJAL', lastID);
-                                } else if (regexMXNLE.test(arrayBeforeNull[i])){
+                                } else if (regexMXNLE.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXNLE', lastID);
-                                } else if (regexMXNPUE.test(arrayBeforeNull[i])){
+                                } else if (regexMXNPUE.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXNPUE', lastID);
-                                } else if (regexMXYUC.test(arrayBeforeNull[i])){
+                                } else if (regexMXYUC.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXYUC', lastID);
-                                } else if (regexMXCOA.test(arrayBeforeNull[i])){
+                                } else if (regexMXCOA.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXCOA', lastID);
-                                } else if (regexMXAGU.test(arrayBeforeNull[i])){
+                                } else if (regexMXAGU.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXAGU', lastID);
-                                } else if (regexMXSON.test(arrayBeforeNull[i])){
+                                } else if (regexMXSON.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXSON', lastID);
-                                } else if (regexMXBCN.test(arrayBeforeNull[i])){
+                                } else if (regexMXBCN.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXBCN', lastID);
-                                } else if (regexMXBCS.test(arrayBeforeNull[i])){
+                                } else if (regexMXBCS.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXBCS', lastID);
-                                } else if (regexMXQUE.test(arrayBeforeNull[i])){
+                                } else if (regexMXQUE.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXQUE', lastID);
-                                } else if (regexMXMIC.test(arrayBeforeNull[i])){
+                                } else if (regexMXMIC.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXMIC', lastID);
-                                } else if (regexMXDUR.test(arrayBeforeNull[i])){
+                                } else if (regexMXDUR.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXDUR', lastID);
-                                } else if (regexMXCHP.test(arrayBeforeNull[i])){
+                                } else if (regexMXCHP.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXCHP', lastID);
-                                } else if (regexMXVER.test(arrayBeforeNull[i])){
+                                } else if (regexMXVER.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXVER', lastID);
-                                } else if (regexMXNAY.test(arrayBeforeNull[i])){
+                                } else if (regexMXNAY.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXNAY', lastID);
-                                } else if (regexMXTAB.test(arrayBeforeNull[i])){
+                                } else if (regexMXTAB.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXTAB', lastID);
-                                } else if (regexMXTAM.test(arrayBeforeNull[i])){
+                                } else if (regexMXTAM.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXTAM', lastID);
-                                } else if (regexMXMOR.test(arrayBeforeNull[i])){
+                                } else if (regexMXMOR.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXMOR', lastID);
-                                } else if (regexMXOAX.test(arrayBeforeNull[i])){
+                                } else if (regexMXOAX.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXOAX', lastID);
-                                } else if (regexMXHID.test(arrayBeforeNull[i])){    
+                                } else if (regexMXHID.test(rowData[posiciones[1]])){    
                                     Lead.guardar_estadolada('MXHID', lastID);
-                                } else if (regexMXCAM.test(arrayBeforeNull[i])){        
+                                } else if (regexMXCAM.test(rowData[posiciones[1]])){        
                                     Lead.guardar_estadolada('MXCAM', lastID);
-                                } else if (regexMXSLP.test(arrayBeforeNull[i])){
+                                } else if (regexMXSLP.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXSLP', lastID);
-                                } else if (regexMXMEX.test(arrayBeforeNull[i])){
+                                } else if (regexMXMEX.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXMEX', lastID);
-                                } else if (regexMXROO.test(arrayBeforeNull[i])){
+                                } else if (regexMXROO.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXROO', lastID);
-                                } else if (regexMXCOL.test(arrayBeforeNull[i])){
+                                } else if (regexMXCOL.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXCOL', lastID);
-                                } else if (regexMXZAC.test(arrayBeforeNull[i])){
+                                } else if (regexMXZAC.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXZAC', lastID);
-                                } else if (regexMXGUA.test(arrayBeforeNull[i])){
+                                } else if (regexMXGUA.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXGUA', lastID);
-                                } else if (regexMXTLA.test(arrayBeforeNull[i])){
+                                } else if (regexMXTLA.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXTLA', lastID);
-                                } else if (regexMXGRO.test(arrayBeforeNull[i])){
+                                } else if (regexMXGRO.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXGRO', lastID);
-                                } else if (regexMXSIN.test(arrayBeforeNull[i])){
+                                } else if (regexMXSIN.test(rowData[posiciones[1]])){
                                     Lead.guardar_estadolada('MXSIN', lastID);
                                 } else {
                                     console.log('No encontrado');
@@ -203,7 +202,7 @@ exports.post_historial = async (req, res, next) => {
                         } catch (error) {
                             console.log(error);
                         }
-                        console.log(arrayBeforeNull);
+                        //console.log(arrayBeforeNull);
                         i = i + 1;
                     }
                 
