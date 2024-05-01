@@ -281,17 +281,10 @@
     
      //--------------------------Top seller final-------------------------------------//
     // Establecer la opción selecscionada tan pronto como se carga el script
-   // Obtener el rango seleccionado del almacenamiento local o establecer '1' como valor predeterminado
-    const selectedRange = localStorage.getItem('selectedRange') || '1';
-
-    // Establecer la opción seleccionada del menú desplegable
+    const selectedRange = '1'; // Obtener el rango seleccionado
     if (selectedRange) {
-        document.getElementById('dateRange').value = selectedRange;
+        document.getElementById('dateRange').value = selectedRange; // Establecer la opción seleccionada
     }
-
-    // Seleccionar automáticamente la primera opción del menú desplegable
-    document.getElementById('IDVersionSeleccionada').getElementsByTagName('option')[0].selected = true;
-
     // Establecer la opción seleccionada de Agente
     const selectedRangeAgente = localStorage.getItem('selectedRangeAgente') || '1'; // Obtener el rango seleccionado
     if (selectedRangeAgente) {
@@ -515,7 +508,6 @@
                 }   
             }]
         },
-
         options: {
             scales: {
                 y: {
@@ -583,16 +575,18 @@
             }
         }]
     });
- 
-    //--------------------------------------------------------------------------------------//
+
+
+    //-----------------------------Gràfica leads por agente-----------------------------------//
     var fechas = <%- JSON.stringify(fechas) %>;
     var datasets = <%- JSON.stringify(datasets) %>;
-
     // Calcular el total de Leads por Agente
+    console.log(datasets);
     const totalLeadsPorAgente = datasets.map(dataset => {
         const totalLeads = dataset.datos.reduce((a, b) => a + b, 0);
-        return `${dataset.agente}: ${totalLeads}`;
-    });
+        const agente = dataset.agente !== '' ? dataset.agente : "Leads sin asignar";
+        return `${agente}: ${totalLeads}`;
+    });     
 
     // Actualizar el contenido del elemento HTML con el total de Leads por Agente
     document.getElementById('totalLeadsPorAgente').textContent = totalLeadsPorAgente.join(', ');
@@ -665,13 +659,17 @@
 
         // Utilizar los datos ya procesados que recibes del servidor
         const fechas = data.fechas;
-        const datasets = data.datasets.map(dataset=> {
+        const datasets = data.datasets.map(dataset => {
+            const agente = dataset.agente !== '' ? dataset.agente : 'Sin asignar';
             return {
-                label: dataset.agente, // Usar el nombre del agente
-                data: dataset.datos, // Usar los datos del agente
-                tension: 0.4 // Añadir curvas a las líneas
+                label: agente,
+                data: dataset.datos,
+                tension: 0.4
             };
         });
+        
+        console.log(datasets);
+
             // Calcular el total de Leads por Agente
             const totalLeadsPorAgente = datasets.map(dataset => {
             const totalLeads = dataset.data.reduce((a, b) => a + b, 0);
@@ -711,6 +709,9 @@
     })
     .catch(error => console.error('Error en la solicitud fetch: ', error));
 });
+
+
+// -----------  CAMBIO De Versión  ------------------ 
 
     document.getElementById('IDVersionSeleccionada').addEventListener('change', function(event) {
         event.preventDefault(); // Evitar la recarga de la página
@@ -787,7 +788,6 @@
                 pieData.datasets[0].backgroundColor = backgroundColor2;
                 pieChartEmbudo.update();
                 
-
                 //Crear nueva grafica de status
                 const datosStatus= data['cantidadLeadsStatus'][0];
                 const status=[];
@@ -810,35 +810,48 @@
                 pieDataStatus.datasets[0].backgroundColor = backgroundColorsStatus;
                 pieChartStatus.update();
 
-
-                const selectedRange = localStorage.getItem('selectedRange') || '1';
-
-                // Establecer la opción seleccionada del menú desplegable
-                if (selectedRange) {
-                    document.getElementById('dateRange').value = selectedRange;
-                }
-            
-                // Seleccionar automáticamente la primera opción del menú desplegable
-                document.getElementById('IDVersionSeleccionada').getElementsByTagName('option')[0].selected = true;
-            
+                //Actualizar gràfica total de leads
                 const leadsPerDay = data['leadsPerDay'].map(item => ({
                     ...item,
                     Fecha: new Date(item.Fecha)
                 }));
-                
-
-                document.getElementById('IDVersionSeleccionada').getElementsByTagName('option')[0].selected = true;
-                // Actualizar las etiquetas (labels) del gráfico
-                myChart.data.labels = leadsPerDay.map(lead => formatDate(lead.Fecha, selectedRange));
-                
-                // Actualizar el label del dataset
-                myChart.data.datasets[0].label = getLabelText(selectedRange);
-                
-                // Actualizar los datos del dataset
-                myChart.data.datasets[0].data = leadsPerDay.map(lead => lead.CantidadLeads);
-                
-                // Actualizar el gráfico
+                myChart.data.labels=leadsPerDay.map(lead => formatDate(lead.Fecha, selectedRange));
+                myChart.data.datasets[0].label= getLabelText(selectedRange); // Actualizar el label del dataset
+                myChart.data.datasets[0].data=  leadsPerDay.map(lead => lead.CantidadLeads);
                 myChart.update();
+                var selectElement = document.getElementById('dateRange');
+
+                // Establecer el valor de selectedIndex en 0 seleccionará la primera opción
+                selectElement.selectedIndex = 0;
+
+                //Actualizar gràfica agente
+                 //-----------------------------Gràfica leads por agente-----------------------------------//
+                var fechas = data['fechas'];
+                var datasets = data['datasets'];
+                // Calcular el total de Leads por Agente
+                const totalLeadsPorAgente = datasets.map(dataset => {
+                    const totalLeads = dataset.datos.reduce((a, b) => a + b, 0);
+                    const agente = dataset.agente !== '' ? dataset.agente : "Leads sin asignar";
+                    return `${agente}: ${totalLeads}`;
+                });                            
+
+                // Actualizar el contenido del elemento HTML con el total de Leads por Agente
+                document.getElementById('totalLeadsPorAgente').textContent = totalLeadsPorAgente.join(', ');
+                var selectElement = document.getElementById('dateRangeLeadsPorAgente');
+
+                leadsPorAgenteChart.data.labels= fechas.map(fecha => formatDate(fecha, selectedRangeAgente));
+                leadsPorAgenteChart.data.datasets[0].label= getLabelText(selectedRange); // Actualizar el label del dataset
+                leadsPorAgenteChart.data.datasets= datasets.map(dataset => ({
+                    label: dataset.agente, // Asegurarse de incluir la propiedad label
+                    data: dataset.datos, // Asegurarse de incluir la propiedad data
+                    tension: 0.4 // Añadir curvas a las líneas
+                }))
+                leadsPorAgenteChart.update();
+                // Establecer el valor de selectedIndex en 0 seleccionará la primera opción
+                selectElement.selectedIndex = 0;
+
+
+
             }).catch(error => console.error('Error en la solicitud fetch: ', error));
     });
 
