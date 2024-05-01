@@ -375,4 +375,16 @@ module.exports = class Lead {
             LIMIT ? OFFSET ?
         `, [IDVersion, tamañoPagina, offset]);
     }
+
+    static async guardar_estadolada(mi_EstadoLada, IDLead){
+        return db.execute(`UPDATE leads SET EstadoLada = ? WHERE IDLead = ?`, [mi_EstadoLada, IDLead]);
+    }
+
+    static async fetchlastID() {
+        return db.execute('SELECT MAX(IDLead) as IDLead FROM leads;');
+    }
+
+    static async fetchLeadsporEstado() {
+        return db.execute(`SELECT EstadoLada, COUNT(*) AS 'LeadsporEstado' FROM leads GROUP BY EstadoLada;`);
+    }
 }
