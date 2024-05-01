@@ -282,6 +282,19 @@
         document.getElementById('dateRangeLeadsPorAgente').value = selectedRangeAgente; // Establecer la opción seleccionada
     }
 
+    var ultimaFechaLead = <%- JSON.stringify(ultimaFechaLead) %> [0];
+
+
+    //Esto convierte las fechas en objetos Date
+    // fechas = ultimaFechaLead.map(fecha => new Date(fecha));
+    // console.log("FECHAS",fechas);
+    // Obtener el primer elemento en fechas
+    const firstDate = ultimaFechaLead[0];
+    //Formateamos firstDate
+    const firstDateFormateada = moment(firstDate.UltimaFecha).format('D [de] MMMM [de] YYYY');
+    const ultimaFechaLeadElement = document.getElementById('ultimaFechaLead');
+    ultimaFechaLeadElement.textContent = firstDateFormateada;
+
 
     //------------------------Código gráfica Status------------------------------------------//
     const datosStatus= <%- JSON.stringify(cantidadLeadsStatus) %>[0];
@@ -300,7 +313,6 @@
         totalesLeadsStatus.push(totalLeadsStatus);
     });
 
-
     const backgroundColorsStatus = status.map(() => getRandomPastelColor());
 
     const pieDataStatus = {
@@ -312,19 +324,6 @@
             hoverOffset: 4
         }]
     };
-
-    var ultimaFechaLead = <%- JSON.stringify(ultimaFechaLead) %> [0];
-
-
-    //Esto convierte las fechas en objetos Date
-    // fechas = ultimaFechaLead.map(fecha => new Date(fecha));
-    // console.log("FECHAS",fechas);
-    // Obtener el primer elemento en fechas
-    const firstDate = ultimaFechaLead[0];
-    //Formateamos firstDate
-    const firstDateFormateada = moment(firstDate.UltimaFecha).format('D [de] MMMM [de] YYYY');
-    const ultimaFechaLeadElement = document.getElementById('ultimaFechaLead');
-    ultimaFechaLeadElement.textContent = firstDateFormateada;
 
     // Obtener el contexto del canvas para la gráfica de donut
     const pieCt = document.getElementById('pieChartStatus').getContext('2d');
@@ -764,17 +763,6 @@
                     totalesLead.push(totalLeads);
                 });
                 
-                // Función para generar un color aleatorio pastel
-                function getRandomPastelColor() {
-                    let r, g, b;
-                    do {
-                        r = Math.floor(Math.random() * 128) + 128; // Valor entre 128 y 255 para tonos más claros
-                        g = Math.floor(Math.random() * 128) + 128; // Valor entre 128 y 255 para tonos más claros
-                        b = Math.floor(Math.random() * 128) + 128; // Valor entre 128 y 255 para tonos más claros
-                    } while (r === g && g === b); // Evitar colores grises
-                    return `rgb(${r}, ${g}, ${b})`;
-                }
-                
                 // Crear un array para almacenar los colores
                 const backgroundColor2 = embudo.map(() => getRandomPastelColor());
                 pieData.labels = embudo;
@@ -782,6 +770,28 @@
                 pieData.datasets[0].backgroundColor = backgroundColor2;
                 pieChartEmbudo.update();
                 
+
+                //Crear nueva grafica de status
+                const datosStatus= data['cantidadLeadsStatus'][0];
+                const status=[];
+                const totalesLeadsStatus=[];
+            
+                 // Iterar sobre cada objeto en el array
+                datosStatus.forEach(statu => {
+                    // Obtener el nombre del embudo y el total de leads
+                    const nombreStatus = statu.Status;
+                    const totalLeadsStatus = parseInt(statu.TotalLeads);
+                    
+                    // Agregar el nombre del embudo y el total de leads a los arrays correspondientes
+                    status.push(nombreStatus);
+                    totalesLeadsStatus.push(totalLeadsStatus);
+                });
+            
+                const backgroundColorsStatus = status.map(() => getRandomPastelColor());
+                pieDataStatus.labels = status;
+                pieDataStatus.datasets[0].data = totalesLeadsStatus;
+                pieDataStatus.datasets[0].backgroundColor = backgroundColorsStatus;
+                pieChartStatus.update();
 
             }).catch(error => console.error('Error en la solicitud fetch: ', error));
     });
