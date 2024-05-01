@@ -36,8 +36,12 @@ module.exports = class Lead {
         [mi_asignado_a,mi_telefono,mi_nombreLead,mi_FechaPrimerMensaje,mi_Embudo,mi_Etapa,mi_Status,mi_Archivado,mi_CreadoManual])
     }  
 
-    static async guardar_estadolada(mi_EstadoLada){
-        return db.execute(`UPDATE leads SET EstadoLada = ? WHERE IDLead = ?`, [mi_EstadoLada, this.IDLead]);
+    static async guardar_estadolada(mi_EstadoLada, IDLead){
+        return db.execute(`UPDATE leads SET EstadoLada = ? WHERE IDLead = ?`, [mi_EstadoLada, IDLead]);
+    }
+
+    static async fetchlastID() {
+        return db.execute('SELECT MAX(IDLead) as IDLead FROM leads;');
     }
 
     static max(){

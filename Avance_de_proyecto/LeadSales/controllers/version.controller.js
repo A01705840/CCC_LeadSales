@@ -91,6 +91,11 @@ exports.post_historial = async (req, res, next) => {
     let exito;
     let falla;
     let arrayBeforeNull = [];
+    let arrayIDLeads = [];
+    let lastIDResult = await Lead.fetchlastID();
+    let lastID = Number(lastIDResult[0][0].IDLead);
+    //arrayIDLeads.push(lastID);
+    let i = 0;
     if (req.file.mimetype == 'text/csv') {
         csv.parseFile(req.file.path)
             .on("data", async function (rowData) {
@@ -118,75 +123,111 @@ exports.post_historial = async (req, res, next) => {
                         // Ejecutar ambas consultas y esperar a que se completen
                         const [usuarioResult, leadResult] =await Promise.all([
                             Usuario.guardar_nuevo(rowData[posiciones[0]]),
-                            Lead.guardar_nuevo(rowData[posiciones[0]], rowData[posiciones[1]], rowData[posiciones[2]], rowData[posiciones[3]], rowData[posiciones[4]], rowData[posiciones[5]], rowData[posiciones[6]], rowData[posiciones[7]], rowData[posiciones[8]]),
-                        ]); } catch (error) { console.log(error); }
-                        console.log(arrayBeforeNull);
-                        for(let i = 0; i < arrayBeforeNull.length; i++){
+                            Lead.guardar_nuevo(rowData[posiciones[0]], rowData[posiciones[1]], rowData[posiciones[2]], rowData[posiciones[3]], rowData[posiciones[4]], rowData[posiciones[5]], rowData[posiciones[6]], rowData[posiciones[7]], rowData[posiciones[8]])
+                        ]); 
+                    } catch (error) { console.log(error); }
+                        
+                        //console.log(arrayBeforeNull);
+                        //console.log(arrayIDLeads);
+                            lastID = lastID + 1;
+                            console.log('LAST ID' + lastID);
                             try {
                                 if (regexDIF.test(arrayBeforeNull[i])){
-                                    console.log('DIF encontrado');
+                                    console.log(arrayIDLeads[i] + 'DIF encontrado');
+                                    Lead.guardar_estadolada('MXDIF', lastID);
                                 } else if (regexCHH.test(arrayBeforeNull[i])){
-                                    console.log('CHH encontrado');
+                                    console.log(arrayIDLeads[i] + 'CHH encontrado');
+                                    Lead.guardar_estadolada('MXCHH', lastID);
                                 } else if (regexJAL.test(arrayBeforeNull[i])){
-                                    console.log('JAL encontrado');
+                                    console.log(arrayIDLeads[i] + 'JAL encontrado');
+                                    Lead.guardar_estadolada('MXJAL', lastID);
                                 } else if (regexMXNLE.test(arrayBeforeNull[i])){
-                                    console.log('MXNLE encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXNLE encontrado');
+                                    Lead.guardar_estadolada('MXNLE', lastID);
                                 } else if (regexMXNPUE.test(arrayBeforeNull[i])){
-                                    console.log('MXNPUE encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXNPUE encontrado');
+                                    Lead.guardar_estadolada('MXNPUE', lastID);
                                 } else if (regexMXYUC.test(arrayBeforeNull[i])){
-                                    console.log('MXYUC encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXYUC encontrado');
+                                    Lead.guardar_estadolada('MXYUC', lastID);
                                 } else if (regexMXCOA.test(arrayBeforeNull[i])){
-                                    console.log('MXCOA encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXCOA encontrado');
+                                    Lead.guardar_estadolada('MXCOA', lastID);
                                 } else if (regexMXAGU.test(arrayBeforeNull[i])){
-                                    console.log('MXAGU encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXAGU encontrado');  
+                                    Lead.guardar_estadolada('MXAGU', lastID);
                                 } else if (regexMXSON.test(arrayBeforeNull[i])){
-                                    console.log('MXSON encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXSON encontrado');
+                                    Lead.guardar_estadolada('MXSON', lastID);
                                 } else if (regexMXBCN.test(arrayBeforeNull[i])){
-                                    console.log('MXBCN encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXBCN encontrado');
+                                    Lead.guardar_estadolada('MXBCN', lastID);
                                 } else if (regexMXBCS.test(arrayBeforeNull[i])){
-                                    console.log('MXBCS encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXBCS encontrado');
+                                    Lead.guardar_estadolada('MXBCS', lastID);
                                 } else if (regexMXQUE.test(arrayBeforeNull[i])){
-                                    console.log('MXQUE encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXQUE encontrado');
+                                    Lead.guardar_estadolada('MXQUE', lastID);
                                 } else if (regexMXMIC.test(arrayBeforeNull[i])){
-                                    console.log('MXMIC encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXMIC encontrado');
+                                    Lead.guardar_estadolada('MXMIC', lastID);
                                 } else if (regexMXDUR.test(arrayBeforeNull[i])){
-                                    console.log('MXDUR encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXDUR encontrado');
+                                    Lead.guardar_estadolada('MXDUR', lastID);
                                 } else if (regexMXCHP.test(arrayBeforeNull[i])){
-                                    console.log('MXCHP encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXCHP encontrado');
+                                    Lead.guardar_estadolada('MXCHP', lastID);
                                 } else if (regexMXVER.test(arrayBeforeNull[i])){
-                                    console.log('MXVER encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXVER encontrado');
+                                    Lead.guardar_estadolada('MXVER', lastID);
                                 } else if (regexMXNAY.test(arrayBeforeNull[i])){
-                                    console.log('MXNAY encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXNAY encontrado');
+                                    Lead.guardar_estadolada('MXNAY', lastID);
                                 } else if (regexMXTAB.test(arrayBeforeNull[i])){
-                                    console.log('MXTAB encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXTAB encontrado');
+                                    Lead.guardar_estadolada('MXTAB', lastID);
                                 } else if (regexMXTAM.test(arrayBeforeNull[i])){
-                                    console.log('MXTAM encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXTAM encontrado');
+                                    Lead.guardar_estadolada('MXTAM', lastID);
                                 } else if (regexMXMOR.test(arrayBeforeNull[i])){
-                                    console.log('MXMOR encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXMOR encontrado');
+                                    Lead.guardar_estadolada('MXMOR', lastID);
                                 } else if (regexMXOAX.test(arrayBeforeNull[i])){
-                                    console.log('MXOAX encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXOAX encontrado');
+                                    Lead.guardar_estadolada('MXOAX', lastID);
                                 } else if (regexMXHID.test(arrayBeforeNull[i])){    
-                                    console.log('MXHID encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXHID encontrado');
+                                    Lead.guardar_estadolada('MXHID', lastID);
                                 } else if (regexMXCAM.test(arrayBeforeNull[i])){        
-                                    console.log('MXCAM encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXCAM encontrado');
+                                    Lead.guardar_estadolada('MXCAM', lastID);
                                 } else if (regexMXSLP.test(arrayBeforeNull[i])){
-                                    console.log('MXSLP encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXSLP encontrado');
+                                    Lead.guardar_estadolada('MXSLP', lastID);
                                 } else if (regexMXMEX.test(arrayBeforeNull[i])){
-                                    console.log('MXMEX encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXMEX encontrado');
+                                    Lead.guardar_estadolada('MXMEX', lastID);
                                 } else if (regexMXROO.test(arrayBeforeNull[i])){
-                                    console.log('MXROO encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXROO encontrado');
+                                    Lead.guardar_estadolada('MXROO', lastID);
                                 } else if (regexMXCOL.test(arrayBeforeNull[i])){
-                                    console.log('MXCOL encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXCOL encontrado');
+                                    Lead.guardar_estadolada('MXCOL', lastID);
                                 } else if (regexMXZAC.test(arrayBeforeNull[i])){
-                                    console.log('MXZAC encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXZAC encontrado');
+                                    Lead.guardar_estadolada('MXZAC', lastID);
                                 } else if (regexMXGUA.test(arrayBeforeNull[i])){
-                                    console.log('MXGUA encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXGUA encontrado');
+                                    Lead.guardar_estadolada('MXGUA', lastID);
                                 } else if (regexMXTLA.test(arrayBeforeNull[i])){
-                                    console.log('MXTLA encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXTLA encontrado');
+                                    Lead.guardar_estadolada('MXTLA', lastID);
                                 } else if (regexMXGRO.test(arrayBeforeNull[i])){
-                                    console.log('MXGRO encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXGRO encontrado');
+                                    Lead.guardar_estadolada('MXGRO', lastID);
                                 } else if (regexMXSIN.test(arrayBeforeNull[i])){
-                                    console.log('MXSIN encontrado');
+                                    console.log(arrayIDLeads[i] + 'MXSIN encontrado');
+                                    Lead.guardar_estadolada('MXSIN', lastID);
                                 } else {
                                     console.log('No encontrado');
                                 }
@@ -194,8 +235,9 @@ exports.post_historial = async (req, res, next) => {
                         } catch (error) {
                             console.log(error);
                         }
+                        console.log(arrayBeforeNull);
+                        i = i + 1;
                     }
-                }
                 }
                 else{
                     fila++;
