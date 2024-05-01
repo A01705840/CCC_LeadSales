@@ -41,7 +41,7 @@
                     <div class="flex justify-end mr-10 mb-4">
                     <p class="mr-4 text-sm">Elige el período de análisis: </p>
                     <select id="dateRange" class=" border border-grey-100 text-sm bg-grey-600 rounded-md shadow-sm focus:outline-none text-ellipsis">
-                        <option value="1" selected>Última semana</option>
+                        <option value="1">Última semana</option>
                         <option value="2">Último mes</option>
                         <option value="3">Últimos 6 meses</option>
                         <option value="4">Último año</option>
@@ -218,7 +218,12 @@
     document.getElementById('modalBackground').addEventListener('click', cerrarModal);
 
 
+    //------------MAPA DE MÉXICO fin-----------------//
+
+
+    //----------texto------//
     const cantidadLeadsAgente = <%- JSON.stringify(cantidadLeadsAgente) %>;
+    
     // Obtener la cantidad total de leads y la cantidad de leads orgánicos de los elementos HTML
     const cantidadTotalLeads = Number(document.getElementById('totalLeads').textContent);
     const cantidadLeadsOrganicos = <%- JSON.stringify(cantidadLeadsOrganicos) %>;
@@ -244,7 +249,10 @@
     // Asignar una clase de color en función del porcentaje
     porcentajeLeadsOrganicosElement.className = getColorForPercentage(porcentajeLeadsOrganicos);
     porcentajeLeadsOrganicosElement.style.fontWeight = 'bold';
+    //----------texto------//
 
+
+    //---------------------------------Top seller-------------------------------------------------//
     // Obtener el top seller y actualizar el texto
     const topSeller = document.getElementById('topseller');
     // Parse the JSON string back to an object
@@ -270,11 +278,19 @@
         topSeller.appendChild(span);
         topSeller.appendChild(br);
     }
+    
+     //--------------------------Top seller final-------------------------------------//
     // Establecer la opción selecscionada tan pronto como se carga el script
-    const selectedRange = localStorage.getItem('selectedRange') || '1'; // Obtener el rango seleccionado
+   // Obtener el rango seleccionado del almacenamiento local o establecer '1' como valor predeterminado
+    const selectedRange = localStorage.getItem('selectedRange') || '1';
+
+    // Establecer la opción seleccionada del menú desplegable
     if (selectedRange) {
-        document.getElementById('dateRange').value = selectedRange; // Establecer la opción seleccionada
+        document.getElementById('dateRange').value = selectedRange;
     }
+
+    // Seleccionar automáticamente la primera opción del menú desplegable
+    document.getElementById('IDVersionSeleccionada').getElementsByTagName('option')[0].selected = true;
 
     // Establecer la opción seleccionada de Agente
     const selectedRangeAgente = localStorage.getItem('selectedRangeAgente') || '1'; // Obtener el rango seleccionado
@@ -282,9 +298,9 @@
         document.getElementById('dateRangeLeadsPorAgente').value = selectedRangeAgente; // Establecer la opción seleccionada
     }
 
+
+    //------------------------------Ultima fecha---------------------------------//
     var ultimaFechaLead = <%- JSON.stringify(ultimaFechaLead) %> [0];
-
-
     //Esto convierte las fechas en objetos Date
     // fechas = ultimaFechaLead.map(fecha => new Date(fecha));
     // console.log("FECHAS",fechas);
@@ -294,7 +310,7 @@
     const firstDateFormateada = moment(firstDate.UltimaFecha).format('D [de] MMMM [de] YYYY');
     const ultimaFechaLeadElement = document.getElementById('ultimaFechaLead');
     ultimaFechaLeadElement.textContent = firstDateFormateada;
-
+    //------------------------------Ultima fecha- final--------------------------------//
 
     //------------------------Código gráfica Status------------------------------------------//
     const datosStatus= <%- JSON.stringify(cantidadLeadsStatus) %>[0];
@@ -433,7 +449,9 @@
         }
     }); 
     
-    
+
+    //--------------------------------------------------------------------------------------//
+
     // Obtener el contexto del canvas para después crear la gráfica
     const ctx = document.getElementById('leadsChart').getContext('2d');
 
@@ -472,7 +490,6 @@
         ...item,
         Fecha: new Date(item.Fecha)
     }));
-    
     let myChart = new Chart(ctx, {
     type: 'line',
     data: {
@@ -567,6 +584,7 @@
         }]
     });
  
+    //--------------------------------------------------------------------------------------//
     var fechas = <%- JSON.stringify(fechas) %>;
     var datasets = <%- JSON.stringify(datasets) %>;
 
@@ -582,8 +600,8 @@
     // Obtener el contexto del segundo canvas
     const ctxAgent = document.getElementById('leadsPorAgenteChart').getContext('2d');
 
-     // Crear la gráfica de Leads por Agente
-     const leadsPorAgenteChart = new Chart(ctxAgent, {
+    // Crear la gráfica de Leads por Agente
+    const leadsPorAgenteChart = new Chart(ctxAgent, {
         type: 'line',
         data: {
         labels: fechas.map(fecha => formatDate(fecha, selectedRangeAgente)), // Usar la función formatDate
@@ -746,7 +764,6 @@
                     topSeller.appendChild(br);
                 }               
 
-
                 const datos = data['cantidadLeadsEmbudos'][0];
                 // Crear arrays para almacenar las etiquetas y los totales de leads
                 const embudo = [];
@@ -793,6 +810,35 @@
                 pieDataStatus.datasets[0].backgroundColor = backgroundColorsStatus;
                 pieChartStatus.update();
 
+
+                const selectedRange = localStorage.getItem('selectedRange') || '1';
+
+                // Establecer la opción seleccionada del menú desplegable
+                if (selectedRange) {
+                    document.getElementById('dateRange').value = selectedRange;
+                }
+            
+                // Seleccionar automáticamente la primera opción del menú desplegable
+                document.getElementById('IDVersionSeleccionada').getElementsByTagName('option')[0].selected = true;
+            
+                const leadsPerDay = data['leadsPerDay'].map(item => ({
+                    ...item,
+                    Fecha: new Date(item.Fecha)
+                }));
+                
+
+                document.getElementById('IDVersionSeleccionada').getElementsByTagName('option')[0].selected = true;
+                // Actualizar las etiquetas (labels) del gráfico
+                myChart.data.labels = leadsPerDay.map(lead => formatDate(lead.Fecha, selectedRange));
+                
+                // Actualizar el label del dataset
+                myChart.data.datasets[0].label = getLabelText(selectedRange);
+                
+                // Actualizar los datos del dataset
+                myChart.data.datasets[0].data = leadsPerDay.map(lead => lead.CantidadLeads);
+                
+                // Actualizar el gráfico
+                myChart.update();
             }).catch(error => console.error('Error en la solicitud fetch: ', error));
     });
 

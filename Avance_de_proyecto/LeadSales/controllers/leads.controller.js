@@ -159,7 +159,6 @@ exports.get_analitica_version = async (request, response, next) => {
         ultimaFechaLead: ultimaFechaLead,
         fechas: fechas,
         datasets: datasetsPorAgente,
-        versiones: versiones,
         estados: estados,
     });
 };
