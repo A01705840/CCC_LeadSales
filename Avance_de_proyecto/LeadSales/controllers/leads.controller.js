@@ -111,42 +111,8 @@ exports.get_analitica_version = async (request, response, next) => {
     const datasetsPorAgente = utils.generarDatasetsPorAgente(gruposPorAgente, fechas);
     // Ejemplo de lo que contendría el objeto de estados
     // [{MXQRO: 10, MXMEX: 20, MXGDL: 30, MXMTY: 40, MXAGS: 50}]
-    const estados = [
-        {
-        MXSON: 10,
-        MXBCN: 20,
-        MXCHH: 30,
-        MXCOA: 40,
-        MXTAM: 50,
-        MXNLE: 60,
-        MXROO: 70,
-        MXCAM: 80,
-        MXTAB: 90,
-        MXCHP: 100,
-        MXCOL: 110,
-        MXNAY: 120,
-        MXBCS: 130,
-        MXSIN: 140,
-        MXYUC: 150,
-        MXVER: 160,
-        MXJAL: 170,
-        MXMIC: 180,
-        MXGRO: 190,
-        MXOAX: 200,
-        MXMEX: 210,
-        MXPUE: 220,
-        MXMOR: 230,
-        MXQUE: 240,
-        MXHID: 250,
-        MXGUA: 260,
-        MXSLP: 270,
-        MXZAC: 280,
-        MXAGU: 290,
-        MXDUR: 300,
-        MXTLA: 310,
-        MXDIF: 320,
-        }
-    ];
+    const estados = utils.reduceLeadporEstado(leadsporEstado[0]);
+
 
     response.json({
         leadsPerDay: leadsConDiasSinLeads, 
@@ -176,7 +142,8 @@ exports.get_analiticaPRESET = async (request, response, next) => {
     
     const ultimaFechaLead = await Lead.obtenerUltimaFechaLeadPorVersion(versionMaxResult); // Obtener la última fecha de un lead
     const leadsPorAgente = leadsPorAgenteResult[0]; // Solo usar el primer elemento del array para evitar duplicados 
-    
+    const leadsporEstado = await Lead.fetchLeadsporEstado(); // Obtener la cantidad de leads por estado
+
     const version= await Version.fetchAll(); // Obtener el nombre de la versión
     const versiones= version[0]; // Solo usar el primer elemento del array para evitar duplicados
     
@@ -191,42 +158,8 @@ exports.get_analiticaPRESET = async (request, response, next) => {
     const datasetsPorAgente = utils.generarDatasetsPorAgente(gruposPorAgente, fechas);
     // Ejemplo de lo que contendría el objeto de estados
     // [{MXQRO: 10, MXMEX: 20, MXGDL: 30, MXMTY: 40, MXAGS: 50}]
-    const estados = [
-        {
-        MXSON: 10,
-        MXBCN: 20,
-        MXCHH: 30,
-        MXCOA: 40,
-        MXTAM: 50,
-        MXNLE: 60,
-        MXROO: 70,
-        MXCAM: 80,
-        MXTAB: 90,
-        MXCHP: 100,
-        MXCOL: 110,
-        MXNAY: 120,
-        MXBCS: 130,
-        MXSIN: 140,
-        MXYUC: 150,
-        MXVER: 160,
-        MXJAL: 170,
-        MXMIC: 180,
-        MXGRO: 190,
-        MXOAX: 200,
-        MXMEX: 210,
-        MXPUE: 220,
-        MXMOR: 230,
-        MXQUE: 240,
-        MXHID: 250,
-        MXGUA: 260,
-        MXSLP: 270,
-        MXZAC: 280,
-        MXAGU: 290,
-        MXDUR: 300,
-        MXTLA: 310,
-        MXDIF: 320,
-        }
-    ];
+    const estados = utils.reduceLeadporEstado(leadsporEstado[0]);
+
 
     response.render('Analitica', {
         username: request.session.username || '',
