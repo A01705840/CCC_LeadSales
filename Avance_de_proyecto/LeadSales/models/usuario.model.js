@@ -51,8 +51,26 @@ module.exports = class Usuario {
         return db.execute('SELECT * FROM usuario');
     }
 
-    static eliminar_usuario(id) {
-        return db.execute('DELETE FROM usuario WHERE IDUsuario = ?', [id]);
+
+    static obtener_id(username){
+        return db.execute('Select IDUsuario FROM Usuario Where username=?', [username]);
+    }
+    static asignar_rol_nuevo_usuario(idUsuario){
+        return db.execute(`
+        INSERT INTO usuario_tiene_rol
+        (IDUsuario, IDRol, FechaUsuarioRol, FechaUsuarioRolActualizacion) 
+        VALUES (?, 1, CURRENT_TIME, NULL);
+        `,[idUsuario]);
+    }
+    static getPermisos(username) {
+        return db.execute(`
+            SELECT funcion.Descripcion
+            FROM rol_adquiere_funcion rf
+            INNER JOIN usuario_tiene_rol utr ON rf.IDRol = utr.IDRol
+            INNER JOIN Usuario u ON utr.IDUsuario = u.IDUsuario
+            INNER JOIN funcion ON funcion.IDFuncion = rf.IDFuncion
+            WHERE u.username = ?;
+        `, [username]);
     }
 
     static obtener_id(username){
@@ -81,7 +99,7 @@ module.exports = class Usuario {
         
     }
     static eliminar_usuario(id) {
-        return db.execute('DELETE FROM usuario WHERE IDUsuario = ?', [id]);
+        return db.execute('UPDATE usuario SET Eliminado = 1 WHERE IDUsuario = ?', [id]);
     }
 
     static establecer_rol(IDRoles,idUsuario) {
