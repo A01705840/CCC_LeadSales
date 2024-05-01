@@ -6,9 +6,9 @@
                 <div class="flex space-x-2 items-center ">
                     <p class="text-lg"><b>Visualizando datos de la version:</b></p>
                     <% %>
-                    <select class="border text-lg border-grey-100 bg-grey-600 px-4 py-2 rounded-full shadow-sm focus:outline-none text-ellipsis">
-                        <% for (let nombreDeVersion of nombreDeVersiones) { %>
-                            <option value="nombreDeVersion.NombreVersion"><%= nombreDeVersion.NombreVersion %></option>
+                    <select id="IDVersionSeleccionada" class="border text-lg border-grey-100 bg-grey-600 px-4 py-2 rounded-full shadow-sm focus:outline-none text-ellipsis">
+                        <% for (let version of versiones.reverse()) { %>
+                            <option value="<%= version.IDVersion %>"><%= version.NombreVersion %></option>
                         <% } %>
                     </select>
                 <button id="openModalButton"  class="bg-white hover:bg-indigo-600 hover:text-white py-2 px-4 rounded-full flex items-center">
@@ -41,7 +41,7 @@
                     <div class="flex justify-end mr-10 mb-4">
                     <p class="mr-4 text-sm">Elige el período de análisis: </p>
                     <select id="dateRange" class=" border border-grey-100 text-sm bg-grey-600 rounded-md shadow-sm focus:outline-none text-ellipsis">
-                        <option value="1">Última semana</option>
+                        <option value="1" selected>Última semana</option>
                         <option value="2">Último mes</option>
                         <option value="3">Últimos 6 meses</option>
                         <option value="4">Último año</option>
@@ -67,7 +67,7 @@
                 </div>
             </div>
             <div class="flex mt-4 text-center">
-                <div class="flex flex-col w-1/3 mr-4 mb-4 bg-white rounded-xl justify-center items-center">
+                <div class="flex flex-col w-1/4 mr-4 mb-4 bg-white rounded-xl justify-center items-center">
                     <b><p class="text-2xl mt-4">
                         Distribución de Embudos
                     </p></b>                    
@@ -75,7 +75,7 @@
                         <canvas id="pieChartEmbudo"></canvas>
                     </div>
                 </div>
-                <div class="flex flex-col w-1/3 mr-4 mb-4 bg-white rounded-xl justify-center items-center">
+                <div class="flex flex-col w-1/4 mr-4 mb-4 bg-white rounded-xl justify-center items-center">
                     <b><p class="text-2xl mt-4">
                         Distribución de status
                     </p></b>
@@ -83,7 +83,7 @@
                         <canvas id="pieChartStatus"></canvas>
                     </div>
                 </div>
-                <div class="flex flex-col w-1/3 mr-4 mb-4 bg-white rounded-xl justify-center items-center">  
+                <div class="flex flex-col w-1/4 mr-4 mb-4 bg-white rounded-xl justify-center items-center">  
                     <h2 class="text-2xl mb-4 mt-4">Total de Leads: <span id="totalLeads" class="font-bold"><%= cantidadTotalLeads %></span></h2>
                     <h2 class="text-2xl mb-4">El <span id="porcentajeLeadsOrganicos"></span> de los leads son orgánicos.</h2>
                     <div id="modalBackground" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;"  class="flex items-center justify-center bg-gray-500 bg-opacity-75"></div>
@@ -96,9 +96,9 @@
                           </div>
                         </div>
                     </div>
-                    <h2 class="text-2xl mb-4"> La fecha de tu ultimo lead fue el<span id="ultimaFechaLead"></span></h2>
+                    <h2 class="text-xl mb-4"> La fecha de tu ultimo lead fue el: <span id="ultimaFechaLead"></span></h2>
                 </div>
-                <div class="flex flex-col w-1/3 mr-4 mb-4 bg-white rounded-xl justify-center items-center">
+                <div class="flex flex-col w-1/4 mr-4 mb-4 bg-white rounded-xl justify-center items-center">
                     <h2 class="text-2xl mb-4 mt-4">Top Seller:</h2>
                     <h2 id="topseller" class="text-lg mb-4 mt-4"></h2>
                     <div>
@@ -327,7 +327,6 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
     const firstDate = ultimaFechaLead[0];
     //Formateamos firstDate
     const firstDateFormateada = moment(firstDate.UltimaFecha).format('D [de] MMMM [de] YYYY');
-    console.log("FIRSTDATE",firstDateFormateada);
     const ultimaFechaLeadElement = document.getElementById('ultimaFechaLead');
     ultimaFechaLeadElement.textContent = firstDateFormateada;
 
@@ -654,7 +653,9 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
     const selectedRangeAgent = this.value;
     localStorage.setItem('selectedRangeAgent', selectedRangeAgent); // Guardar el rango seleccionado
 
-    fetch('/lead/analitics/agent/' + selectedRangeAgent)
+    let version= document.getElementById('IDVersionSeleccionada').value;
+
+    fetch('/lead/analitics/agent/' + selectedRangeAgent+'/'+version)
     .then(response => response.json())
     .then(data => {
         console.log("CHECARESTO",data);
@@ -692,9 +693,9 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
     event.preventDefault(); // Evitar la recarga de la página
     const selectedRange = this.value;
     localStorage.setItem('selectedRange', selectedRange); // Guardar el rango seleccionado
-
+    let version= document.getElementById('IDVersionSeleccionada').value;
     // Hacer una solicitud AJAX para obtener los datos
-    fetch('/lead/analitics/' + selectedRange)
+    fetch('/lead/analitics/' + selectedRange+'/'+version)
     .then(response => response.json())
     .then(data => {
         // Formatear las fechas y actualizar la gráfica con los nuevos datos

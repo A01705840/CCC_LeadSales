@@ -8,7 +8,6 @@ module.exports = class Version {
         this.FechaCreacion = mi_fecha; // Añade esta línea
         this.NombreVersion = mi_nombreVersion;
     }
-
     save() { 
         return db.execute(
             `INSERT INTO version (IDVersion, IDUsuario, FechaCreacion, NombreVersion) 
@@ -18,7 +17,6 @@ module.exports = class Version {
             console.log(error);
         });
     }
-
     static async guardar_nuevo(mi_IDUsuario,mi_NombreVersion) {
     return await db.execute(
     `INSERT INTO version (IDVersion, IDUsuario, FechaCreacion, NombreVersion) 
@@ -27,8 +25,7 @@ module.exports = class Version {
     }
     static max(){
     return  db.execute( `SELECT MAX(IDVersion) FROM version;`)
-    }
-   
+    } 
     static async deleteLast(){
     await db.execute(
         `DELETE FROM version_almacena_leads
@@ -54,7 +51,6 @@ module.exports = class Version {
     static fetchOne(NombreVersion) {
         return db.execute('Select * from usuario WHERE NombreVersion = ?', [NombreVersion]);
     }
-
     static async fetchLeadsPorIDVersion(IDVersion, pagina) {
         const tamañoPagina = 500;
         const offset = (pagina - 1) * tamañoPagina;
@@ -69,7 +65,6 @@ module.exports = class Version {
             LIMIT ? OFFSET ?
         `, [IDVersion, tamañoPagina, offset]);
     }
-
     static async fetchAllLeadsPorIDVersion(IDVersion) {
         return db.execute(`
             SELECT leads.IDLead,leads.asignado_a,leads.Telefono, 
@@ -87,7 +82,6 @@ module.exports = class Version {
             ORDER BY IDVersion DESC
         `);
     }
-
     static async fetchNumeroTotalDeLeads(IDVersion) {
         const result = await db.execute(`
             SELECT COUNT(*) as total 
@@ -97,7 +91,6 @@ module.exports = class Version {
     
         return result[0][0].total;
     }
-
     static async Nombres(){
         return db.execute( `SELECT NombreVersion FROM version;`)
     }

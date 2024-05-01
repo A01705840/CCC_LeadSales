@@ -11,8 +11,8 @@ const utils = require('../controllers/util');
 
 exports.get_analitica = async (request, response, next) => {
     const range = request.params.date; // Obtener el rango de la ruta para obtener los leads
-    let result = await Lead.fetchLeadsByDay(range);
-    console.log("get_analitica",result);
+    const version = request.params.version;
+    let result = await Lead.fetchLeadsByDayPorVersion(range,version);
     // Inicializar las fechas
     let fechas = [];
 
@@ -54,17 +54,17 @@ exports.get_analitica = async (request, response, next) => {
 
 exports.get_analitica_agent = async (request, response, next) => {
     const rangeAgent = Number(request.params.date); // Obtener el rango de la ruta
+    const version = request.params.version;
 
     // Verificar si el rango es de días o de meses
     let result;
     if (rangeAgent === 3 || rangeAgent === 4) {
         // Para semestre y año, llamar a la nueva función
-        result = await Lead.fetchLeadsPorAgenteAgrupadosPorMes(rangeAgent);
+        result = await Lead.fetchLeadsPorAgenteAgrupadosPorMesPorVersion(rangeAgent,version);
         return response.json(result);
     } else {
         // Para otros casos, llamar a la función original
-        result = await Lead.fetchLeadsPorAgente(rangeAgent);
-        console.log(result);
+        result = await Lead.fetchLeadsPorAgentePorVersion(rangeAgent,version);
     }
 
     const leadsPorAgente = result[0]; // Solo usar el primer elemento del array
@@ -72,8 +72,6 @@ exports.get_analitica_agent = async (request, response, next) => {
     // Calcular el rango de fechas y generar las fechas
     const rangoFechas = utils.calcularRangoFechas(rangeAgent);
     const fechas = utils.generarFechas(rangoFechas.inicio, rangoFechas.fin);
-
-    console.log("leadsPorAgente",leadsPorAgente);
 
     const gruposPorAgente = utils.agruparLeadsPorAgente(leadsPorAgente);
     const datasetsPorAgente = utils.generarDatasetsPorAgente(gruposPorAgente, fechas);
@@ -87,20 +85,23 @@ exports.get_analitica_agent = async (request, response, next) => {
 };
 
 exports.get_analiticaPRESET = async (request, response, next) => {
+    let [versionMaxResult]=await Version.max();
+    versionMaxResult=versionMaxResult[0]['MAX(IDVersion)'];
     const rangeAgent = '1'; // Siempre usa '1' (semana) como valor predeterminado
-    const result = await Lead.fetchLeadsByDay(rangeAgent); // Obtener los leads por día
-    const cantidadLeads = await Lead.obtenerCantidadLeads(); // Obtener la cantidad total de leads
-    const cantidadLeadsOrganicos = await Lead.obtenerCantidadLeadsOrganicos(); // Obtener la cantidad de leads orgánicos
-    const cantidadLeadsEmbudos = await Lead.obtenerCantidadLeadsEmbudos(); // Obtener la cantidad de leads en embudos
-    const cantidadLeadsStatus = await Lead.obtenerCantidadLeadsStatus(); // Obtener la cantidad de leads por status
-    const cantidadLeadsAgente = await Lead.obtenerCantidadLeadsPorAgente(); // Obtener la cantidad de leads por agente
-    const leadsPorAgenteResult = await Lead.fetchLeadsPorAgente(rangeAgent); // Obtener los leads por agente
-    const ultimaFechaLead = await Lead.obtenerUltimaFechaLead(); // Obtener la última fecha de un lead
+    const result = await Lead.fetchLeadsByDayPorVersion(rangeAgent,versionMaxResult); // Obtener los leads por día
+    const cantidadLeads = await Lead.obtenerCantidadLeadsPorVersion(versionMaxResult); // Obtener la cantidad total de leads
+    const cantidadLeadsOrganicos = await Lead.obtenerCantidadLeadsOrganicosPorVersion(versionMaxResult); // Obtener la cantidad de leads orgánicos
+    const cantidadLeadsEmbudos = await Lead.obtenerCantidadLeadsEmbudosPorVersion(versionMaxResult); // Obtener la cantidad de leads en embudos
+    const cantidadLeadsStatus = await Lead.obtenerCantidadLeadsStatusPorVersion(versionMaxResult); // Obtener la cantidad de leads por status
+    const cantidadLeadsAgente = await Lead.obtenerCantidadLeadsPorAgentePorVersion(versionMaxResult); // Obtener la cantidad de leads por agente
+    const leadsPorAgenteResult = await Lead.fetchLeadsPorAgentePorVersion(rangeAgent,versionMaxResult); // Obtener los leads por agente
+    
+    const ultimaFechaLead = await Lead.obtenerUltimaFechaLeadPorVersion(versionMaxResult); // Obtener la última fecha de un lead
     const leadsPorAgente = leadsPorAgenteResult[0]; // Solo usar el primer elemento del array para evitar duplicados 
-    const nombreDeVersione= await Version.Nombres(); // Obtener el nombre de la versión
-    const nombreDeVersiones= nombreDeVersione[0]; // Solo usar el primer elemento del array para evitar duplicados
-    console.log("Nombre de versiones "+nombreDeVersiones);
-
+    
+    const version= await Version.fetchAll(); // Obtener el nombre de la versión
+    const versiones= version[0]; // Solo usar el primer elemento del array para evitar duplicados
+    
     // Calcular el rango de fechas y generar las fechas
     const rangoFechas = utils.calcularRangoFechas(rangeAgent);
     const fechas = utils.generarFechas(rangoFechas.inicio, rangoFechas.fin);
@@ -110,7 +111,6 @@ exports.get_analiticaPRESET = async (request, response, next) => {
 
     const gruposPorAgente = utils.agruparLeadsPorAgente(leadsPorAgente);
     const datasetsPorAgente = utils.generarDatasetsPorAgente(gruposPorAgente, fechas);
-    console.log(cantidadLeadsAgente);
     // Ejemplo de lo que contendría el objeto de estados
     // [{MXQRO: 10, MXMEX: 20, MXGDL: 30, MXMTY: 40, MXAGS: 50}]
     const estados = [
@@ -161,12 +161,10 @@ exports.get_analiticaPRESET = async (request, response, next) => {
         ultimaFechaLead: ultimaFechaLead,
         fechas: fechas,
         datasets: datasetsPorAgente,
-        nombreDeVersiones: nombreDeVersiones,
+        versiones: versiones,
         estados: estados,
     });
 };
-
-//
 
 exports.get_root = (request, response, next) => {
     console.log('GET ROOT');
@@ -236,8 +234,6 @@ exports.get_fechas = () => {
     Lead
 }
 
-
-
 exports.get_modificar_lead = (request, response, next) => {
     console.log('GET MODIFICAR LEAD')
     const id = request.params.id;
@@ -301,7 +297,7 @@ exports.post_leads_por_version = async (request, response, next) => {
     const inicio = (pagina - 1) * tamañoPagina + 1;
     const fin = Math.min(inicio + tamañoPagina - 1, numeroTotalDeLeads);
 
-    const leads = await Version.fetchLeadsPorIDVersion(IDVersion, pagina,0);
+    const leads = await Version.fetchLeadsPorIDVersion(IDVersion, pagina);
 
     return response.status(200).json({
         leads: leads,
