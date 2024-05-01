@@ -84,6 +84,87 @@ exports.get_analitica_agent = async (request, response, next) => {
     });
 };
 
+exports.get_analitica_version = async (request, response, next) => {
+    const IDversion = request.params.version;
+    const rangeAgent = '1'; // Siempre usa '1' (semana) como valor predeterminado
+    const result = await Lead.fetchLeadsByDayPorVersion(rangeAgent,IDversion); // Obtener los leads por día
+    const cantidadLeads = await Lead.obtenerCantidadLeadsPorVersion(IDversion); // Obtener la cantidad total de leads
+    const cantidadLeadsOrganicos = await Lead.obtenerCantidadLeadsOrganicosPorVersion(IDversion); // Obtener la cantidad de leads orgánicos
+    const cantidadLeadsEmbudos = await Lead.obtenerCantidadLeadsEmbudosPorVersion(IDversion); // Obtener la cantidad de leads en embudos
+    const cantidadLeadsStatus = await Lead.obtenerCantidadLeadsStatusPorVersion(IDversion); // Obtener la cantidad de leads por status
+    const cantidadLeadsAgente = await Lead.obtenerCantidadLeadsPorAgentePorVersion(IDversion); // Obtener la cantidad de leads por agente
+    const leadsPorAgenteResult = await Lead.fetchLeadsPorAgentePorVersion(rangeAgent,IDversion); // Obtener los leads por agente
+    
+    const ultimaFechaLead = await Lead.obtenerUltimaFechaLeadPorVersion(IDversion); // Obtener la última fecha de un lead
+    const leadsPorAgente = leadsPorAgenteResult[0]; // Solo usar el primer elemento del array para evitar duplicados 
+    
+    const version= await Version.fetchAll(); // Obtener el nombre de la versión
+    const versiones= version[0]; // Solo usar el primer elemento del array para evitar duplicados
+    
+    // Calcular el rango de fechas y generar las fechas
+    const rangoFechas = utils.calcularRangoFechas(rangeAgent);
+    const fechas = utils.generarFechas(rangoFechas.inicio, rangoFechas.fin);
+
+    // Generar los leads con días sin leads
+    let leadsConDiasSinLeads = utils.generarLeadsConDiasSinLeads(result[0], fechas);
+
+    const gruposPorAgente = utils.agruparLeadsPorAgente(leadsPorAgente);
+    const datasetsPorAgente = utils.generarDatasetsPorAgente(gruposPorAgente, fechas);
+    // Ejemplo de lo que contendría el objeto de estados
+    // [{MXQRO: 10, MXMEX: 20, MXGDL: 30, MXMTY: 40, MXAGS: 50}]
+    const estados = [
+        {
+        MXSON: 10,
+        MXBCN: 20,
+        MXCHH: 30,
+        MXCOA: 40,
+        MXTAM: 50,
+        MXNLE: 60,
+        MXROO: 70,
+        MXCAM: 80,
+        MXTAB: 90,
+        MXCHP: 100,
+        MXCOL: 110,
+        MXNAY: 120,
+        MXBCS: 130,
+        MXSIN: 140,
+        MXYUC: 150,
+        MXVER: 160,
+        MXJAL: 170,
+        MXMIC: 180,
+        MXGRO: 190,
+        MXOAX: 200,
+        MXMEX: 210,
+        MXPUE: 220,
+        MXMOR: 230,
+        MXQUE: 240,
+        MXHID: 250,
+        MXGUA: 260,
+        MXSLP: 270,
+        MXZAC: 280,
+        MXAGU: 290,
+        MXDUR: 300,
+        MXTLA: 310,
+        MXDIF: 320,
+        }
+    ];
+
+    response.json({
+        leadsPerDay: leadsConDiasSinLeads, 
+        cantidadTotalLeads: cantidadLeads,
+        cantidadLeadsOrganicos: cantidadLeadsOrganicos,
+        cantidadLeadsEmbudos: cantidadLeadsEmbudos,
+        cantidadLeadsAgente: cantidadLeadsAgente,
+        cantidadLeadsStatus: cantidadLeadsStatus ,
+        ultimaFechaLead: ultimaFechaLead,
+        fechas: fechas,
+        datasets: datasetsPorAgente,
+        versiones: versiones,
+        estados: estados,
+    });
+};
+
+
 exports.get_analiticaPRESET = async (request, response, next) => {
     let [versionMaxResult]=await Version.max();
     versionMaxResult=versionMaxResult[0]['MAX(IDVersion)'];

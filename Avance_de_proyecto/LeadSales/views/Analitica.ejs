@@ -138,85 +138,84 @@
         fire(0.1, { spread: 360, startVelocity: 30, decay: 0.92, scalar: 1.2});
         fire(0.2, { spread: 360, startVelocity: 45});
     });
-</script>
-<script>
+
     //------------MAPA DE MÉXICO-----------------//
-// Evento al hacer clic en el contenedorMapa
-document.getElementById('contenedorMapa').addEventListener('click', function() {
-  var mapaContenedor = document.getElementById('mapaContenedor');
-  var mapa = document.getElementById('mapa');
-  var titulo = document.getElementById('titulo');
-  var modalBackground = document.getElementById('modalBackground');
-  var cerrarModalBoton = document.getElementById('cerrarModal');
-  // Hace que el mapa sea interactivo
-  mapa.style.pointerEvents = 'auto';
-
-  // Muestra el botón de cierre
-  cerrarModalBoton.style.display = 'block';  
-
-  // Cambia el cursor a default
-  contenedorMapa.style.cursor = 'default';
-
-  // Cambia el tamaño del contenedor y el mapa
-  mapaContenedor.style.position = 'fixed';
-  mapaContenedor.style.top = '15%';
-  mapaContenedor.style.left = '15%';
-  mapaContenedor.style.width = '65%';
-  mapaContenedor.style.height = '70%';
-  mapaContenedor.style.zIndex = '10000';
-  mapaContenedor.style.backgroundColor = 'white';
-  mapaContenedor.style.boxShadow = '0 4px 6px 0 hsla(0, 0%, 0%, 0.2)';
-  mapaContenedor.style.borderRadius = '15px';
-
-  mapa.style.width = '100%';
-  mapa.style.height = 'calc(100% - 2em)'; // Resta el espacio para el título
-  mapa.style.marginLeft = '54px';
-
-  // Agrega un título al mapa
-  titulo.innerHTML = '<b>Leads por Estado</b>';
-
-  // Muestra el fondo del modal
-  modalBackground.style.display = 'block';
-});
-
-// Función para cerrar el modal
-function cerrarModal() {
-  var mapaContenedor = document.getElementById('mapaContenedor');
-  var mapa = document.getElementById('mapa');
-  var titulo = document.getElementById('titulo');
-  var modalBackground = document.getElementById('modalBackground');
-  var cerrarModalBoton = document.getElementById('cerrarModal');
-  // Hace que el mapa no sea interactivo
-  mapa.style.pointerEvents = 'none';
+    // Evento al hacer clic en el contenedorMapa
+    document.getElementById('contenedorMapa').addEventListener('click', function() {
+    var mapaContenedor = document.getElementById('mapaContenedor');
+    var mapa = document.getElementById('mapa');
+    var titulo = document.getElementById('titulo');
+    var modalBackground = document.getElementById('modalBackground');
+    var cerrarModalBoton = document.getElementById('cerrarModal');
+    // Hace que el mapa sea interactivo
+    mapa.style.pointerEvents = 'auto';
 
     // Muestra el botón de cierre
-  cerrarModalBoton.style.display = 'none'; 
+    cerrarModalBoton.style.display = 'block';  
 
-  // Cambia el cursor a pointer
-  contenedorMapa.style.cursor = 'pointer';
+    // Cambia el cursor a default
+    contenedorMapa.style.cursor = 'default';
 
-  // Restaura el tamaño y la posición del contenedor
-  mapaContenedor.style.position = 'static';
-  mapaContenedor.style.width = 'auto';
-  mapaContenedor.style.height = 'auto';
-  mapaContenedor.style.backgroundColor = 'transparent';
-  mapaContenedor.style.boxShadow = 'none';
-  mapaContenedor.style.borderRadius = '0';
+    // Cambia el tamaño del contenedor y el mapa
+    mapaContenedor.style.position = 'fixed';
+    mapaContenedor.style.top = '15%';
+    mapaContenedor.style.left = '15%';
+    mapaContenedor.style.width = '65%';
+    mapaContenedor.style.height = '70%';
+    mapaContenedor.style.zIndex = '10000';
+    mapaContenedor.style.backgroundColor = 'white';
+    mapaContenedor.style.boxShadow = '0 4px 6px 0 hsla(0, 0%, 0%, 0.2)';
+    mapaContenedor.style.borderRadius = '15px';
 
-  // Restaura el tamaño y la posición del mapa
-  mapa.style.width = '380px';
-  mapa.style.height = '250px';
-  mapa.style.marginLeft = '0px'; 
+    mapa.style.width = '100%';
+    mapa.style.height = 'calc(100% - 2em)'; // Resta el espacio para el título
+    mapa.style.marginLeft = '54px';
 
-  // Quita el título
-  titulo.innerHTML = '';
+    // Agrega un título al mapa
+    titulo.innerHTML = '<b>Leads por Estado</b>';
 
-  // Oculta el fondo del modal
-  modalBackground.style.display = 'none';
-}
-document.getElementById('cerrarModal').addEventListener('click', cerrarModal);
-// Evento al hacer clic en el fondo del modal
-document.getElementById('modalBackground').addEventListener('click', cerrarModal);
+    // Muestra el fondo del modal
+    modalBackground.style.display = 'block';
+    });
+
+    // Función para cerrar el modal
+    function cerrarModal() {
+    var mapaContenedor = document.getElementById('mapaContenedor');
+    var mapa = document.getElementById('mapa');
+    var titulo = document.getElementById('titulo');
+    var modalBackground = document.getElementById('modalBackground');
+    var cerrarModalBoton = document.getElementById('cerrarModal');
+    // Hace que el mapa no sea interactivo
+    mapa.style.pointerEvents = 'none';
+
+        // Muestra el botón de cierre
+    cerrarModalBoton.style.display = 'none'; 
+
+    // Cambia el cursor a pointer
+    contenedorMapa.style.cursor = 'pointer';
+
+    // Restaura el tamaño y la posición del contenedor
+    mapaContenedor.style.position = 'static';
+    mapaContenedor.style.width = 'auto';
+    mapaContenedor.style.height = 'auto';
+    mapaContenedor.style.backgroundColor = 'transparent';
+    mapaContenedor.style.boxShadow = 'none';
+    mapaContenedor.style.borderRadius = '0';
+
+    // Restaura el tamaño y la posición del mapa
+    mapa.style.width = '380px';
+    mapa.style.height = '250px';
+    mapa.style.marginLeft = '0px'; 
+
+    // Quita el título
+    titulo.innerHTML = '';
+
+    // Oculta el fondo del modal
+    modalBackground.style.display = 'none';
+    }
+    document.getElementById('cerrarModal').addEventListener('click', cerrarModal);
+    // Evento al hacer clic en el fondo del modal
+    document.getElementById('modalBackground').addEventListener('click', cerrarModal);
 
 
     const cantidadLeadsAgente = <%- JSON.stringify(cantidadLeadsAgente) %>;
@@ -250,7 +249,6 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
     const topSeller = document.getElementById('topseller');
     // Parse the JSON string back to an object
     const topSellerData = JSON.parse('<%- JSON.stringify(cantidadLeadsAgente[0]) %>');
-    console.log('HOLA',topSellerData);
     // Create a string that contains all the data
     let topSellerText = '';
     for (let i = 0; i < topSellerData.length; i++) {
@@ -259,13 +257,13 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
         const br = document.createElement('br');
 
         if (i == 0){
-            span.textContent = '1er Lugar 🥇: ' + topSellerData[i].Seller + ', with ' + topSellerData[i].TotalLeads + ' leads' + '\n';
+            span.textContent = '1er Lugar 🥇: ' + topSellerData[i].Seller + ', con ' + topSellerData[i].TotalLeads + ' leads' + '\n';
         }
         if (i == 1){
-            span.textContent = '2do Lugar 🥈: ' + topSellerData[i].Seller + ', with ' + topSellerData[i].TotalLeads + ' leads' + '\n';
+            span.textContent = '2do Lugar 🥈: ' + topSellerData[i].Seller + ', con ' + topSellerData[i].TotalLeads + ' leads' + '\n';
         }
         if (i == 2){
-            span.textContent = '3er Lugar 🥉: ' + topSellerData[i].Seller + ', with ' + topSellerData[i].TotalLeads + ' leads' + '\n';
+            span.textContent = '3er Lugar 🥉: ' + topSellerData[i].Seller + ', con ' + topSellerData[i].TotalLeads + ' leads' + '\n';
         }
 
         // Append the span element to the 'topseller' element
@@ -287,13 +285,12 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
 
     //------------------------Código gráfica Status------------------------------------------//
     const datosStatus= <%- JSON.stringify(cantidadLeadsStatus) %>[0];
-    console.log(datosStatus);
 
     const status=[];
     const totalesLeadsStatus=[];
 
      // Iterar sobre cada objeto en el array
-     datosStatus.forEach(statu => {
+    datosStatus.forEach(statu => {
         // Obtener el nombre del embudo y el total de leads
         const nombreStatus = statu.Status;
         const totalLeadsStatus = parseInt(statu.TotalLeads);
@@ -302,8 +299,7 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
         status.push(nombreStatus);
         totalesLeadsStatus.push(totalLeadsStatus);
     });
-    console.log(status);
-    console.log(totalesLeadsStatus);
+
 
     const backgroundColorsStatus = status.map(() => getRandomPastelColor());
 
@@ -367,7 +363,6 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
     // Datos de ejemplo para la gráfica de donut
     const datos = <%- JSON.stringify(cantidadLeadsEmbudos) %>[0];
 
-
     // Crear arrays para almacenar las etiquetas y los totales de leads
     const embudos = [];
     const totalesLeads = [];
@@ -407,7 +402,6 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
             hoverOffset: 4
         }]
     };
-
     // Obtener el contexto del canvas para la gráfica de donut
     const pieCtx = document.getElementById('pieChartEmbudo').getContext('2d');
 
@@ -438,9 +432,8 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
                 text: 'Gráfica de Pay Embudo'
             }
         }
-    });
-
-
+    }); 
+    
     
     // Obtener el contexto del canvas para después crear la gráfica
     const ctx = document.getElementById('leadsChart').getContext('2d');
@@ -475,14 +468,11 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
         }
     }
 
-
     // Datos de ejemplo
     const leadsPerDay = <%- JSON.stringify(leadsPerDay) %>.map(item => ({
         ...item,
         Fecha: new Date(item.Fecha)
     }));
-
-    console.log("LEADSPERDAY",leadsPerDay);
     
     let myChart = new Chart(ctx, {
     type: 'line',
@@ -578,7 +568,6 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
         }]
     });
  
-
     var fechas = <%- JSON.stringify(fechas) %>;
     var datasets = <%- JSON.stringify(datasets) %>;
 
@@ -591,7 +580,6 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
     // Actualizar el contenido del elemento HTML con el total de Leads por Agente
     document.getElementById('totalLeadsPorAgente').textContent = totalLeadsPorAgente.join(', ');
    
-
     // Obtener el contexto del segundo canvas
     const ctxAgent = document.getElementById('leadsPorAgenteChart').getContext('2d');
 
@@ -646,8 +634,7 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
         }
     });
 
-    
-
+    //Ajax para la parte de agente
     document.getElementById('dateRangeLeadsPorAgente').addEventListener('change', function(event) {
     event.preventDefault(); // Evitar la recarga de la página
     const selectedRangeAgent = this.value;
@@ -658,7 +645,6 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
     fetch('/lead/analitics/agent/' + selectedRangeAgent+'/'+version)
     .then(response => response.json())
     .then(data => {
-        console.log("CHECARESTO",data);
 
         // Utilizar los datos ya procesados que recibes del servidor
         const fechas = data.fechas;
@@ -669,7 +655,6 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
                 tension: 0.4 // Añadir curvas a las líneas
             };
         });
-
             // Calcular el total de Leads por Agente
             const totalLeadsPorAgente = datasets.map(dataset => {
             const totalLeads = dataset.data.reduce((a, b) => a + b, 0);
@@ -710,7 +695,99 @@ document.getElementById('modalBackground').addEventListener('click', cerrarModal
     .catch(error => console.error('Error en la solicitud fetch: ', error));
 });
 
-// Event listener para el botón de descargar PDF
+    document.getElementById('IDVersionSeleccionada').addEventListener('change', function(event) {
+        event.preventDefault(); // Evitar la recarga de la página
+        console.log("Cambio de version");
+        let version = document.getElementById('IDVersionSeleccionada').value;
+        fetch('/lead/analitics/' + version)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+
+                //Asignaciòn de porcentaje de leads inorganicos
+                const cantidadTotalLeads = data['cantidadTotalLeads'];
+                const cantidadLeadsOrganicos =  data['cantidadLeadsOrganicos'];
+
+                //Asignaciòn total de leads
+                document.getElementById('totalLeads').textContent = cantidadTotalLeads;
+
+                // Calcular el porcentaje de leads orgánicos y actualizar el texto
+                const porcentajeLeadsOrganicos = (cantidadLeadsOrganicos / cantidadTotalLeads) * 100;
+                const porcentajeLeadsOrganicosElement = document.getElementById('porcentajeLeadsOrganicos');
+                porcentajeLeadsOrganicosElement.textContent = porcentajeLeadsOrganicos.toFixed(2) + '%';
+            
+                // Asignar una clase de color en función del porcentaje
+                porcentajeLeadsOrganicosElement.className = getColorForPercentage(porcentajeLeadsOrganicos);
+                porcentajeLeadsOrganicosElement.style.fontWeight = 'bold';
+
+                //Asignaciòn ultima fecha
+                const firstDate = data['ultimaFechaLead'][0][0]['UltimaFecha'];
+                const firstDateFormateada = moment(firstDate).format('D [de] MMMM [de] YYYY');
+                const ultimaFechaLeadElement = document.getElementById('ultimaFechaLead');
+                ultimaFechaLeadElement.textContent = firstDateFormateada;
+
+                //Asignaciòn nuevos datos para el top seller
+                const topSeller = document.getElementById('topseller');
+                topSeller.innerHTML = "";
+                const topSellerData = data['cantidadLeadsAgente'][0];
+                let topSellerText = '';
+                for (let i = 0; i < topSellerData.length; i++) {
+                    const span = document.createElement('span');
+                    const br = document.createElement('br');
+                    if (i == 0){
+                        span.textContent = '1er Lugar 🥇: ' + topSellerData[i].Seller + ', con ' + topSellerData[i].TotalLeads + ' leads' + '\n';
+                    }
+                    if (i == 1){
+                        span.textContent = '2do Lugar 🥈: ' + topSellerData[i].Seller + ', con ' + topSellerData[i].TotalLeads + ' leads' + '\n';
+                    }
+                    if (i == 2){
+                        span.textContent = '3er Lugar 🥉: ' + topSellerData[i].Seller + ', con ' + topSellerData[i].TotalLeads + ' leads' + '\n';
+                    }
+                    topSeller.appendChild(span);
+                    topSeller.appendChild(br);
+                }               
+
+
+                const datos = data['cantidadLeadsEmbudos'][0];
+                // Crear arrays para almacenar las etiquetas y los totales de leads
+                const embudo = [];
+                const totalesLead = [];
+                                
+                // Iterar sobre cada objeto en el array
+                datos.forEach(embudoItem => {
+                    // Obtener el nombre del embudo y el total de leads
+                    const nombreEmbudo = embudoItem.Embudo;
+                    const totalLeads = parseInt(embudoItem.TotalLeads);
+                    
+                    // Agregar el nombre del embudo y el total de leads a los arrays correspondientes
+                    embudo.push(nombreEmbudo);
+                    totalesLead.push(totalLeads);
+                });
+                
+                // Función para generar un color aleatorio pastel
+                function getRandomPastelColor() {
+                    let r, g, b;
+                    do {
+                        r = Math.floor(Math.random() * 128) + 128; // Valor entre 128 y 255 para tonos más claros
+                        g = Math.floor(Math.random() * 128) + 128; // Valor entre 128 y 255 para tonos más claros
+                        b = Math.floor(Math.random() * 128) + 128; // Valor entre 128 y 255 para tonos más claros
+                    } while (r === g && g === b); // Evitar colores grises
+                    return `rgb(${r}, ${g}, ${b})`;
+                }
+                
+                // Crear un array para almacenar los colores
+                const backgroundColor2 = embudo.map(() => getRandomPastelColor());
+                pieData.labels = embudo;
+                pieData.datasets[0].data = totalesLead;
+                pieData.datasets[0].backgroundColor = backgroundColor2;
+                pieChartEmbudo.update();
+                
+
+            }).catch(error => console.error('Error en la solicitud fetch: ', error));
+    });
+
+
+    // Event listener para el botón de descargar PDF
     document.getElementById('openModalButton').addEventListener('click', () => {
         // Capturar la imagen de las gráficas utilizando html2canvas
         html2canvas(document.querySelector('.shadow-lg')).then(canvas => {
