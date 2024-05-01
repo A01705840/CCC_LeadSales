@@ -160,8 +160,8 @@ exports.reduceLeadporEstado = function(leadporEstado) {
         if (curr.EstadoLada) {
             acc[curr.EstadoLada] = curr.LeadsporEstado;
         }
+        //console.log(acc);
         return acc;
     }, {});
-    
-    console.log(transformedData);
+    return transformedData;
 };

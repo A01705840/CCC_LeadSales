@@ -93,6 +93,7 @@
                             <div id="titulo" class="text-2xl mb-2 mt-4"></div>
                             <div id="mapa" class="flex" style="height: 250px; width: 380px; pointer-events: none;">
                                 <%- include('mx.ejs', {estados: estados});%>
+                                <% console.log('ESTADOS', JSON.stringify(estados)); %>
                             </div>
                             </div>
                         </div>
