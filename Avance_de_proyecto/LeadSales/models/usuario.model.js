@@ -115,9 +115,9 @@ module.exports = class Usuario {
     
     static updateRolUsuario(id, rol) {
         return db.execute(
-            `UPDATE usuarioIDversion 
+            `UPDATE usuario_tiene_rol
             SET IDRol = ?, FechaUsuarioRolActualizacion = CURRENT_DATE() 
-            WHERE IDUsuario = ?`, 
+            WHERE IDUsuario = ?;`, 
             [rol, id]
         );
     }

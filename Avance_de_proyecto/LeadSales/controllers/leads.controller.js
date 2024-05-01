@@ -264,7 +264,13 @@ exports.get_root = (request, response, next) => {
 exports.get_leads = async (request, res, next)  => {
     const versionInfo = await Version.fetchVersionInfo();
     const versiones = versionInfo[0].map(row => ({id: row.IDVersion, nombre: row.NombreVersion}));
-    const IDVersion = versiones[0].id;
+    let IDVersion;
+    if (versiones.length === 0) {
+        IDVersion=null;
+    }
+    else{
+        IDVersion = versiones[0].id;
+    }
     
     
     const tamañoPagina = 500;

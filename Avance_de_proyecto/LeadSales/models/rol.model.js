@@ -59,7 +59,41 @@ module.exports = class Rol {
                 console.log(error);
             });
     };
-
+    static async asignar_rol_sin_rol(nombre_usuario) {
+        try {
+            // Ejecutar tus consultas sin iniciar una transacción
+            const [usuarios] = await db.execute(
+                `SELECT IDUsuario FROM usuario WHERE Nombre = ?;`,
+                [nombre_usuario]
+            );
+    
+            let IDUsuario;
+            if (usuarios.length === 0) {
+                IDUsuario = -1; // O cualquier otro valor que desees
+            } else {
+                IDUsuario = usuarios[0].IDUsuario;
+            }
+    
+            const [roles] = await db.execute(
+                `SELECT COUNT(*) AS count FROM usuario_tiene_rol WHERE IDUsuario = ? AND IDRol = 0;`,
+                [IDUsuario]
+            );
+    
+            const tiene_rol_asignado = roles[0].count > 0;
+    
+            if (!tiene_rol_asignado) {
+                await db.execute(
+                    `INSERT INTO usuario_tiene_rol (IDUsuario, IDRol, FechaUsuarioRol) VALUES (?, 0, CURRENT_DATE);`,
+                    [IDUsuario]
+                );
+            }
+    
+            return 'Rol asignado correctamente';
+        } catch (error) {
+            throw error;
+        }
+    };
+    
     
     static delete(id) {
         return db.execute('DELETE FROM rol_adquiere_funcion WHERE IDRol = ? ', [id]), db.execute('UPDATE usuario_tiene_rol SET IDRol = 5, FechaUsuarioRolActualizacion = NOW() WHERE IDRol = ? ', [id])    
