@@ -158,12 +158,8 @@ exports.post_historial = async (req, res, next) => {
     }
 };
 exports.post_descargarhistorial = async (req, res, next) => {
-    console.log('Descargando historial');
-    console.log(req.body);
     let doc = new jsPDF();
-
     let body = req.body.map(version => [version.IDVersion, version.NombreVersion, version.IDUsuario, version.FechaCreacion]);
-
     doc.autoTable({
         head: [['IDVersion', 'NombreVersion', 'IDUsuario', 'FechaCreacion']],
         body: body

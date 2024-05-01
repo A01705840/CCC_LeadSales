@@ -1,9 +1,6 @@
 const express = require('express');
-
 const router = express.Router();
-
 const isAuth = require('../util/isAuth');
-
 const rolesController= require('../controllers/roles.controller');
 
 router.get('/consultas', rolesController.get_mostrarRoles);

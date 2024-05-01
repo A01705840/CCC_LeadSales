@@ -25,7 +25,7 @@ exports.post_login = (request, response, next) => {
                                     request.session.permisos = permisos || [];
                                     request.session.username = usuario.UserName;
                                     request.session.isLoggedIn = true;
-                                    response.redirect('/lead/analitica');
+                                    response.redirect('/lead/');
                                 })
                                 .catch((error) => {
                                     console.log(error);

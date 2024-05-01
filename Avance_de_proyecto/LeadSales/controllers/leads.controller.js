@@ -2,8 +2,6 @@ const { request } = require('express');
 const fastcsv = require('fast-csv');
 const fs = require('fs');
 const path = require('path');
-
-
 const Version= require('../models/version.model');
 const Lead = require('../models/lead.model');
 const Usuario = require('../models/usuario.model');
@@ -163,7 +161,6 @@ exports.get_analitica_version = async (request, response, next) => {
     });
 };
 
-
 exports.get_analiticaPRESET = async (request, response, next) => {
     let [versionMaxResult]=await Version.max();
     versionMaxResult=versionMaxResult[0]['MAX(IDVersion)'];
@@ -248,17 +245,21 @@ exports.get_analiticaPRESET = async (request, response, next) => {
 };
 
 exports.get_root = (request, response, next) => {
-    console.log('GET ROOT');
-    console.log(request.session.username + request.session.isLoggedIn)
     response.render('home', {
         username: request.session.username || '',
         permisos: request.session.permisos || [],
-    })
-    .catch((error) => {
-        console.log(error);
-        
+    }, (error, html) => {
+        if (error) {
+            console.log(error);
+            // Manejar el error aquí, por ejemplo, enviando una respuesta de error
+            response.status(500).send('Error al renderizar la vista');
+            return;
+        }
+        // La vista se renderizó correctamente, aquí puedes enviar la respuesta al cliente si es necesario
+        response.send(html);
     });
 };
+
 
 exports.get_leads = async (request, res, next)  => {
     const versionInfo = await Version.fetchVersionInfo();
@@ -296,7 +297,6 @@ exports.get_leads = async (request, res, next)  => {
 }
 
 exports.post_eliminar_lead = (request, response, next) => {
-    console.log('POST ELIMINAR LEAD');
     Lead.eliminar(request.body.IDLead)
     .then(() => {
         return Lead.fetchAll();
@@ -306,17 +306,13 @@ exports.post_eliminar_lead = (request, response, next) => {
     }).catch((error) => {
         console.log(error);
     });
-    console.log('LEAD ELIMINADO');
 }
 
 exports.get_fechas = () => {
-    console.log('GET FECHAS')
-    console.log('');
     Lead
 }
 
 exports.get_modificar_lead = (request, response, next) => {
-    console.log('GET MODIFICAR LEAD')
     const id = request.params.id;
     Lead.fetchOneLeadbyid(id)
     .then(([rows, fieldData]) => {
@@ -327,13 +323,9 @@ exports.get_modificar_lead = (request, response, next) => {
     });
 }
 
-
 exports.post_modificar_lead = async (request, response, next) => {
-    console.log('POST MODIFICAR LEAD');
     try {
         // Actualiza el lead en la base de datos
-        console.log(request.body);
-        console.log(request.body);
         await Lead.update(request.body);
 
         // Envía una respuesta al cliente indicando que la operación fue exitosa
@@ -345,15 +337,9 @@ exports.post_modificar_lead = async (request, response, next) => {
     }
 };
 
-
-
-
 exports.post_crear_lead = async (request, response, next) => {
-    console.log('POST CREAR LEAD');
     try {
         // Actualiza el lead en la base de datos
-        
-        console.log(request.body);
         await Lead.crear(request.body);
 
         // Envía una respuesta al cliente indicando que la operación fue exitosa
@@ -368,8 +354,6 @@ exports.post_crear_lead = async (request, response, next) => {
 exports.post_leads_por_version = async (request, response, next) => {
     const IDVersion = request.body.version;
     const pagina = 1; // Siempre empieza en la primera página cuando cambias de versión
-
-    console.log('POST LEADS POR VERSION', IDVersion, pagina);
 
     const tamañoPagina = 500;
     const numeroTotalDeLeads = await Version.fetchNumeroTotalDeLeads(IDVersion);
@@ -389,13 +373,9 @@ exports.post_leads_por_version = async (request, response, next) => {
     });
 }
 
-
 exports.post_leads_por_pagina = async (request, response, next) => {
-    console.log('POST LEADS POR PAGINA BODYYYY', request.body);
     const IDVersion = request.body.version;
     const pagina = request.body.pagina;
-    console.log('POST LEADS POR PAGINA', IDVersion, pagina);
-
     const tamañoPagina = 500;
     const inicio = (pagina - 1) * tamañoPagina + 1;
     const numeroTotalDeLeads = await Version.fetchNumeroTotalDeLeads(IDVersion);
@@ -409,7 +389,6 @@ exports.post_leads_por_pagina = async (request, response, next) => {
     });
 
 }
-
 
 exports.post_descargar_leads = async (req, res, next) => {
     const IDVersion = req.body.version;

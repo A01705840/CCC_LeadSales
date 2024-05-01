@@ -1,11 +1,11 @@
 module.exports = (request, response, next) => {
-    let canViewGraficas =  false;
+    let canDeleteLeads =  false;
     for (let permiso of request.session.permisos) {
-        if (permiso.Descripcion == 'Consultar reporte de leads') {
-            canViewGraficas = true;
+        if (permiso.Descripcion == 'Eliminar leads') {
+            canDeleteLeads = true;
         }
     }
-    if(canViewGraficas) {
+    if(canDeleteLeads) {
         next();
     } else {
         return response.redirect('/users/logout');    
