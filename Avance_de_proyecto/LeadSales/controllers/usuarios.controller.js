@@ -4,9 +4,6 @@ const bcrypt = require('bcryptjs');
 exports.get_login = (request, response, next) => {
     const error = request.session.error || '';
     request.session.error = '';
-    console.log('GET LOGIN');
-    console.log('SESSION' + JSON.stringify(request.session));
-    console.log('BODY' + JSON.stringify(request.body));
     response.render('signup', {
         username: request.session.username || '',
         registro: false,
@@ -16,8 +13,6 @@ exports.get_login = (request, response, next) => {
 };
 
 exports.post_login = (request, response, next) => {
-    console.log('POST LOGIN');
-    console.log('BODY' + JSON.stringify(request.body));
     Usuario.fetchOne(request.body.username)
         .then(([usuarios]) => {
             if (usuarios.length == 1) {
@@ -25,14 +20,12 @@ exports.post_login = (request, response, next) => {
                 bcrypt.compare(request.body.password, usuario.Password)
                     .then((doMatch) => {
                         if(doMatch) {
-                            console.log('CONTRASEÑA CORRECTA')
                             Usuario.getPermisos(usuario.UserName)
                                 .then(([permisos, fieldData]) => {
                                     request.session.permisos = permisos || [];
                                     request.session.username = usuario.UserName;
                                     request.session.isLoggedIn = true;
-                                    console.log('SESSION' + JSON.stringify(request.session));
-                                    response.redirect('/lead/analitica');
+                                    response.redirect('/lead/');
                                 })
                                 .catch((error) => {
                                     console.log(error);
@@ -54,31 +47,27 @@ exports.post_login = (request, response, next) => {
 };
 
 exports.get_signup = (req, res, next) => {
-    console.log('GET SIGNUP');
     res.render('signup', {
         username: req.session.username || '',
         registro: true,
     });
 };
 
-exports.post_signup = (req, res, next) => {
-    console.log('POST SIGNUP')
-    console.log('BODY' + JSON.stringify(req.body));
+exports.post_signup = async (req, res, next) => {
     const nuevo_usuario = new Usuario(
         req.body.correo, req.body.username, req.body.name, req.body.password
     );
-    nuevo_usuario.save()
-        .then(() => {
-            return Usuario._tiene_rol(req.body.username);
-        })
-        .then(() => {
-            res.redirect('/usuario/login');
-        })
-        .catch((error) => {
-            console.log(error);
-            req.sesion.error = 'Nombre de usuario ya existe';
-            res.redirect('/usuario/signup');
-        });
+    try {
+        await nuevo_usuario.save();
+        let userId = await Usuario.obtener_id(nuevo_usuario.username);
+        userId = userId[0][0].IDUsuario;
+        await Usuario.asignar_rol_nuevo_usuario(userId);
+        res.redirect('/usuario/login');
+    } catch (error) {
+        console.log(error);
+        req.sesion.error = 'Nombre de usuario ya existe';
+        res.redirect('/usuario/signup');
+    }    
 };
 
 exports.get_logout = (request, response, next) => {

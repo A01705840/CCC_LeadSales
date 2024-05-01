@@ -1,6 +1,4 @@
-<%- include('includes/head.ejs', {
-    username: username,
-    permisos: permisos}) %>
+<%- include('includes/head.ejs', {username: username,permisos: permisos}) %>
     <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
 
     <div id="modalDescargarLeads" onclick="cerrarModalDescargarLeads()" class="relative z-10" style="display: none;">
@@ -218,10 +216,6 @@
         </div>
     </div>
 
-
-    
-
-  
     <div class="p-4 sm:ml-20 sm:mr-10 font-sans">
       <div class="shadow-lg flex flex-col justify-right p-4 border-2 border-gray-200 rounded-lg dark:border-gray-700 bg-slate-200">
         <div class="inline-flex justify-between items-center mb-4">
@@ -235,10 +229,16 @@
                         <% }); %>
                     </select>
             
+                <% for(permiso of permisos) { %>
+                <%if(permiso.Descripcion == 'Registrar Lead') { %>
                   <button onclick="event.preventDefault(); crear()" class="bg-white hover:bg-indigo-600 hover:text-white py-2 px-4 rounded-full transition duration-300">
                     Crear Lead</button>
+                <% } %>
+                <%if(permiso.Descripcion == 'Descargar Historial de versiones de Leads') { %>
                   <button id="descargarLeads" class="bg-white hover:bg-indigo-600 hover:text-white py-2 px-4 rounded-full transition duration-300">Descargar Leads</button>
-              </div>
+                <% } %>
+                <% } %>
+                </div>
 
             </div>
             <div class="flex justify-center sm:mt-4 p-1 border-1 border-gray-200 rounded-lg dark:border-gray-200 bg-white">
@@ -246,6 +246,17 @@
                 <% if(leads.length === 0) {%>
                     <p class="text-2xl text-gray-500 mt-48 mb-48 flex items-center justify-center">Importa tus primeros leads, en el historial, para comenzar...</p>
                 <%  } else{ %> 
+                    <% let eliminar=false;
+                    let modificar=false;
+                    for(permiso of permisos) { %>
+                        <%if(permiso.Descripcion == 'Eliminar leads') { %>
+                            <% eliminar=true %>
+                        <% } %>
+                        <%if(permiso.Descripcion == 'Modificar leads') { %>
+                            <% modificar=true %>
+                        <% } %>
+                    <% } %>
+                    <%if(eliminar === true && modificar === true) { %>
                     <div class="flex flex-col h-full w-full">
                         <div class="flex w-full">
                             <table class="text-sm text-left text-gray-500 dark:text-gray-400 w-full">
@@ -352,8 +363,296 @@
                             <p id="rangoLeads">Mostrando leads <span id="inicio"><%= inicio %></span> - <span id="fin"><%= fin %></span> de <span id="numeroTotalDeLeads"><%= numeroTotalDeLeads %></span></p>                             
                             </div>
                         </div>
-                <%  }%> 
-            </div>
+                    </div>
+                    <% } %>
+                    <%if(eliminar === false && modificar === true) { %>
+                        <div class="flex flex-col h-full w-full">
+                            <div class="flex w-full">
+                                <table class="text-sm text-left text-gray-500 dark:text-gray-400 w-full">
+                                    <thead class=" flex w-full text-xs text-gray-700 uppercase bg-gray-100 dark:text-gray-500">
+                                        <tr class="flex w-full">
+                                            <th class="p-4 w-1/4">Lead</th>
+                                            <th class="p-4 w-1/4">Fecha</th>
+                                            <th class="p-4 w-1/4">Creador</th>
+                                            <th class="p-4 w-1/4">Modificar</th>
+                                        </tr>
+                                    </thead>
+                                <!-- Remove the nasty inline CSS fixed height on production and replace it with a CSS class — this is just for demonstration purposes! -->
+                                    <tbody  id="table_content" class="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full" style="height: 64vh;">
+                                        <% let row=0; for (let lead of leads) { %>
+                                        <% if(row%2==0){%>
+                                        <tr class="flex w-full mb-4">
+                                            <td class="p-4 w-1/4">
+                                                <% if (lead.NombreLead==""){%>
+                                                   <p class="text-gray-400">Lead sin nombre</p>
+                                                <% }else{%>
+                                                    <%= lead.NombreLead %>
+                                                <% }%>
+                                            </td>
+                                            <td class="p-4 w-1/4">
+                                                <%  let fechaActual = lead.FechaPrimerMensaje;
+                                                // Convertir la fecha a un objeto Date
+                                                const fecha = new Date(fechaActual);
+                                                // Obtener día, mes y año
+                                                const dia = fecha.getDate().toString().padStart(2, '0');
+                                                const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // El mes comienza desde 0
+                                                const año = fecha.getFullYear();
+                                                // Crear la cadena en el formato deseado (dd/mm/yyyy)
+                                                const fechaFormateada = `${dia}/${mes}/${año}`;%>
+                                                <%= fechaFormateada %>
+    
+                                            </td>
+                                            <td class="p-4 w-1/4">
+                                                <%= lead.asignado_a %>
+                                            </td>
+                                            <td class="p-4 w-1/4">
+                                                <button onclick="event.preventDefault(); modificar(<%=lead.IDLead%>)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded">
+                                                    Modificar
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <% } else{%>
+                                            <tr class="flex w-full mb-4 bg-gray-50">
+                                                <td class="p-4 w-1/4">
+                                                    <% if (lead.NombreLead==""){%>
+                                                       <p class="text-gray-400">Lead sin nombre</p>
+                                                    <% }else{%>
+                                                        <%= lead.NombreLead %>
+                                                    <% }%>
+                                                </td>
+                                                <td class="p-4 w-1/4">
+                                                    <%  let fechaActual = lead.FechaPrimerMensaje;
+                                                    // Convertir la fecha a un objeto Date
+                                                    const fecha = new Date(fechaActual);
+                                                    // Obtener día, mes y año
+                                                    const dia = fecha.getDate().toString().padStart(2, '0');
+                                                    const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // El mes comienza desde 0
+                                                    const año = fecha.getFullYear();
+                                                    // Crear la cadena en el formato deseado (dd/mm/yyyy)
+                                                    const fechaFormateada = `${dia}/${mes}/${año}`;%>
+                                                    <%= fechaFormateada %>
+        
+                                                </td>
+                                                <td class="p-4 w-1/4">
+                                                    <%= lead.asignado_a %>
+                                                </td>
+                                                <td class="p-4 w-1/4">
+                                                    <button onclick="event.preventDefault(); modificar(<%=lead.IDLead%>)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded">
+                                                        Modificar
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        <% }row++} %>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="flex ml-4 mt-2 mb-2">
+                                <div class="w-1/2">
+                                <div id="Lista23">
+                                <ul class="flex space-x-1">
+                                    Página:
+                                    <% for(let i = 1; i <= numeroTotalDePaginas; i++) { %>
+                                        <li>
+                                            <a href="#" data-pagina="<%= i %>" class="mx-1 px-2 py-0.5 bg-white text-ellipsis hover:bg-blue-500 hover:text-white border border-black border-opacity-10 rounded-full transition duration-200 page-button"><%= i %></a>
+                                        </li>
+                                    <% } %>
+                                </ul>
+                                </div>
+                                </div>
+                                <div class="w-1/2 text-end mr-4">
+                                <p id="rangoLeads">Mostrando leads <span id="inicio"><%= inicio %></span> - <span id="fin"><%= fin %></span> de <span id="numeroTotalDeLeads"><%= numeroTotalDeLeads %></span></p>                             
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                    <%if(eliminar === true && modificar === false) { %>
+                        <div class="flex flex-col h-full w-full">
+                            <div class="flex w-full">
+                                <table class="text-sm text-left text-gray-500 dark:text-gray-400 w-full">
+                                    <thead class=" flex w-full text-xs text-gray-700 uppercase bg-gray-100 dark:text-gray-500">
+                                        <tr class="flex w-full">
+                                            <th class="p-4 w-1/4">Lead</th>
+                                            <th class="p-4 w-1/4">Fecha</th>
+                                            <th class="p-4 w-1/4">Creador</th>
+                                            <th class="p-4 w-1/4">Eliminar</th>
+                                        </tr>
+                                    </thead>
+                                <!-- Remove the nasty inline CSS fixed height on production and replace it with a CSS class — this is just for demonstration purposes! -->
+                                    <tbody  id="table_content" class="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full" style="height: 64vh;">
+                                        <% let row=0; for (let lead of leads) { %>
+                                        <% if(row%2==0){%>
+                                        <tr class="flex w-full mb-4">
+                                            <td class="p-4 w-1/4">
+                                                <% if (lead.NombreLead==""){%>
+                                                   <p class="text-gray-400">Lead sin nombre</p>
+                                                <% }else{%>
+                                                    <%= lead.NombreLead %>
+                                                <% }%>
+                                            </td>
+                                            <td class="p-4 w-1/4">
+                                                <%  let fechaActual = lead.FechaPrimerMensaje;
+                                                // Convertir la fecha a un objeto Date
+                                                const fecha = new Date(fechaActual);
+                                                // Obtener día, mes y año
+                                                const dia = fecha.getDate().toString().padStart(2, '0');
+                                                const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // El mes comienza desde 0
+                                                const año = fecha.getFullYear();
+                                                // Crear la cadena en el formato deseado (dd/mm/yyyy)
+                                                const fechaFormateada = `${dia}/${mes}/${año}`;%>
+                                                <%= fechaFormateada %>
+    
+                                            </td>
+                                            <td class="p-4 w-1/4">
+                                                <%= lead.asignado_a %>
+                                            </td>
+                                            <td class="p-4 w-1/4">
+                                            <button id="deleteButton" onclick="eliminar(<%=lead.IDLead%>)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
+                                                Eliminar
+                                            </button></td>
+                                        </tr>
+                                        <% } else{%>
+                                            <tr class="flex w-full mb-4 bg-gray-50">
+                                                <td class="p-4 w-1/4">
+                                                    <% if (lead.NombreLead==""){%>
+                                                       <p class="text-gray-400">Lead sin nombre</p>
+                                                    <% }else{%>
+                                                        <%= lead.NombreLead %>
+                                                    <% }%>
+                                                </td>
+                                                <td class="p-4 w-1/4">
+                                                    <%  let fechaActual = lead.FechaPrimerMensaje;
+                                                    // Convertir la fecha a un objeto Date
+                                                    const fecha = new Date(fechaActual);
+                                                    // Obtener día, mes y año
+                                                    const dia = fecha.getDate().toString().padStart(2, '0');
+                                                    const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // El mes comienza desde 0
+                                                    const año = fecha.getFullYear();
+                                                    // Crear la cadena en el formato deseado (dd/mm/yyyy)
+                                                    const fechaFormateada = `${dia}/${mes}/${año}`;%>
+                                                    <%= fechaFormateada %>
+        
+                                                </td>
+                                                <td class="p-4 w-1/4">
+                                                    <%= lead.asignado_a %>
+                                                </td>
+                                                <td class="p-4 w-1/4">
+                                                <button id="deleteButton" onclick="eliminar(<%=lead.IDLead%>)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
+                                                    Eliminar
+                                                </button></td>
+                                            </tr>
+                                        <% }row++} %>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="flex ml-4 mt-2 mb-2">
+                                <div class="w-1/2">
+                                <div id="Lista23">
+                                <ul class="flex space-x-1">
+                                    Página:
+                                    <% for(let i = 1; i <= numeroTotalDePaginas; i++) { %>
+                                        <li>
+                                            <a href="#" data-pagina="<%= i %>" class="mx-1 px-2 py-0.5 bg-white text-ellipsis hover:bg-blue-500 hover:text-white border border-black border-opacity-10 rounded-full transition duration-200 page-button"><%= i %></a>
+                                        </li>
+                                    <% } %>
+                                </ul>
+                                </div>
+                                </div>
+                                <div class="w-1/2 text-end mr-4">
+                                <p id="rangoLeads">Mostrando leads <span id="inicio"><%= inicio %></span> - <span id="fin"><%= fin %></span> de <span id="numeroTotalDeLeads"><%= numeroTotalDeLeads %></span></p>                             
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                    <%if(eliminar === false && modificar === false) { %>
+                        <div class="flex flex-col h-full w-full">
+                            <div class="flex w-full">
+                                <table class="text-sm text-left text-gray-500 dark:text-gray-400 w-full">
+                                    <thead class=" flex w-full text-xs text-gray-700 uppercase bg-gray-100 dark:text-gray-500">
+                                        <tr class="flex w-full">
+                                            <th class="p-4 w-1/3">Lead</th>
+                                            <th class="p-4 w-1/3">Fecha</th>
+                                            <th class="p-4 w-1/3">Creador</th>
+                                        </tr>
+                                    </thead>
+                                <!-- Remove the nasty inline CSS fixed height on production and replace it with a CSS class — this is just for demonstration purposes! -->
+                                    <tbody  id="table_content" class="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full" style="height: 64vh;">
+                                        <% let row=0; for (let lead of leads) { %>
+                                        <% if(row%2==0){%>
+                                        <tr class="flex w-full mb-4">
+                                            <td class="p-4 w-1/3">
+                                                <% if (lead.NombreLead==""){%>
+                                                   <p class="text-gray-400">Lead sin nombre</p>
+                                                <% }else{%>
+                                                    <%= lead.NombreLead %>
+                                                <% }%>
+                                            </td>
+                                            <td class="p-4 w-1/3">
+                                                <%  let fechaActual = lead.FechaPrimerMensaje;
+                                                // Convertir la fecha a un objeto Date
+                                                const fecha = new Date(fechaActual);
+                                                // Obtener día, mes y año
+                                                const dia = fecha.getDate().toString().padStart(2, '0');
+                                                const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // El mes comienza desde 0
+                                                const año = fecha.getFullYear();
+                                                // Crear la cadena en el formato deseado (dd/mm/yyyy)
+                                                const fechaFormateada = `${dia}/${mes}/${año}`;%>
+                                                <%= fechaFormateada %>
+    
+                                            </td>
+                                            <td class="p-4 w-1/3">
+                                                <%= lead.asignado_a %>
+                                            </td>
+                                        </tr>
+                                        <% } else{%>
+                                            <tr class="flex w-full mb-4 bg-gray-50">
+                                                <td class="p-4 w-1/3">
+                                                    <% if (lead.NombreLead==""){%>
+                                                       <p class="text-gray-400">Lead sin nombre</p>
+                                                    <% }else{%>
+                                                        <%= lead.NombreLead %>
+                                                    <% }%>
+                                                </td>
+                                                <td class="p-4 w-1/3">
+                                                    <%  let fechaActual = lead.FechaPrimerMensaje;
+                                                    // Convertir la fecha a un objeto Date
+                                                    const fecha = new Date(fechaActual);
+                                                    // Obtener día, mes y año
+                                                    const dia = fecha.getDate().toString().padStart(2, '0');
+                                                    const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // El mes comienza desde 0
+                                                    const año = fecha.getFullYear();
+                                                    // Crear la cadena en el formato deseado (dd/mm/yyyy)
+                                                    const fechaFormateada = `${dia}/${mes}/${año}`;%>
+                                                    <%= fechaFormateada %>
+        
+                                                </td>
+                                                <td class="p-4 w-1/3">
+                                                    <%= lead.asignado_a %>
+                                                </td>
+                                            </tr>
+                                        <% }row++} %>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="flex ml-4 mt-2 mb-2">
+                                <div class="w-1/2">
+                                <div id="Lista23">
+                                <ul class="flex space-x-1">
+                                    Página:
+                                    <% for(let i = 1; i <= numeroTotalDePaginas; i++) { %>
+                                        <li>
+                                            <a href="#" data-pagina="<%= i %>" class="mx-1 px-2 py-0.5 bg-white text-ellipsis hover:bg-blue-500 hover:text-white border border-black border-opacity-10 rounded-full transition duration-200 page-button"><%= i %></a>
+                                        </li>
+                                    <% } %>
+                                </ul>
+                                </div>
+                                </div>
+                                <div class="w-1/2 text-end mr-4">
+                                <p id="rangoLeads">Mostrando leads <span id="inicio"><%= inicio %></span> - <span id="fin"><%= fin %></span> de <span id="numeroTotalDeLeads"><%= numeroTotalDeLeads %></span></p>                             
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+                <% }%> 
         </div>
         </div>
     </div>
@@ -478,7 +777,6 @@
   // Función para modificar un lead
   function modificar(id) {
       leadId = id;
-      console.log('modificar', id);
       $.get(`/lead/modificar/${id}`, function(data) {
       // Aquí, `data` es el lead que se obutvo del servidor. (Un botón de modificar)
       $('#nombre').val(data.NombreLead);
@@ -596,7 +894,6 @@ function cerrarModal() {
 
 function crear() {
       
-  console.log('crear');
   $('#modalCrear').show();
   // Agregar los controladores de eventos
   agregarControladoresDeEventosCrear();
@@ -719,7 +1016,6 @@ function guardarCambios() {
     })
     .then(response => response.json())
     .then(respuesta => {
-    console.log(respuesta);
 
     swal('Lead modificado', 'El lead se ha modificado de forma exitosa.', 'success')
     .then((value) => {
@@ -736,9 +1032,7 @@ function guardarCambios() {
 }
 
 
-function guardarCambioscrear() {
-    console.log("GuadaCambios");
-    
+function guardarCambioscrear() {    
     // Recoge los datos del formulario
     var nombre = document.getElementById('nombreCrear').value;
     var fecha = document.getElementById('fechaCrear').value;

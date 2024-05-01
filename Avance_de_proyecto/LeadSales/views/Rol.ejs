@@ -8,14 +8,28 @@
     <div class="inline-flex justify-between items-center">
       <span style='font-size:30px;'>🎭 Roles</span>
       <div class="flex space-x-2">
-        <a href="/roles/agregar">
-        <button href="/Roles/agregar" id="openModalButton"  class="bg-white hover:bg-indigo-600 hover:text-white py-2 px-4 rounded-full flex items-center">
-          <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="mr-2">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M9.99999 4.16666C10.4602 4.16666 10.8333 4.53975 10.8333 4.99999V9.16666H15C15.4602 9.16666 15.8333 9.53975 15.8333 9.99999C15.8333 10.4602 15.4602 10.8333 15 10.8333H10.8333V15C10.8333 15.4602 10.4602 15.8333 9.99999 15.8333C9.53975 15.8333 9.16666 15.4602 9.16666 15V10.8333L4.99999 10.8333C4.53975 10.8333 4.16666 10.4602 4.16666 9.99999C4.16666 9.53975 4.53975 9.16666 4.99999 9.16666H9.16666V4.99999C9.16666 4.53975 9.53975 4.16666 9.99999 4.16666Z" fill="#4A5567"/>
-          </svg>
-          Agregar Rol
-        </button>
-        </a>
+        <% let modificar=false;
+        let eliminar=false;
+        for(permiso of permisos) { %>
+          <% if(permiso.Descripcion == 'Registrar roles') { 
+                modificar=true; %>
+            <a href="/roles/agregar">
+              <button href="/Roles/agregar" id="openModalButton" class="bg-white hover:bg-indigo-600 hover:text-white py-2 px-4 rounded-full flex items-center">
+                <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="mr-2">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M9.99999 4.16666C10.4602 4.16666 10.8333 4.53975 10.8333 4.99999V9.16666H15C15.4602 9.16666 15.8333 9.53975 15.8333 9.99999C15.8333 10.4602 15.4602 10.8333 15 10.8333H10.8333V15C10.8333 15.4602 10.4602 15.8333 9.99999 15.8333C9.53975 15.8333 9.16666 15.4602 9.16666 15V10.8333L4.99999 10.8333C4.53975 10.8333 4.16666 10.4602 4.16666 9.99999C4.16666 9.53975 4.53975 9.16666 4.99999 9.16666H9.16666V4.99999C9.16666 4.53975 9.53975 4.16666 9.99999 4.16666Z" fill="#4A5567"/>
+                </svg>
+                Agregar Rol
+              </button>
+            </a>
+          <% } %>
+          <% if(permiso.Descripcion == 'Eliminar roles') { 
+                eliminar=true; %>
+          <% } %>
+          <% if(permiso.Descripcion == 'Modificar roles') { 
+              modificar=true; %>
+      <% } %>
+        <% } %>
+        
 
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         </svg>
@@ -25,6 +39,8 @@
     <div class="flex flex-col items-center justify-center h-screen">
       <div class="w-full max-w-2x1 h-full">
         <div class="flex justify-center sm:mt-4 p-1 border-1 border-gray-200 rounded-lg dark:border-gray-200 bg-white">
+          
+          <% if(eliminar===true &&  modificar===true) { %>
           <table class="text-left w-full border-collapse">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
@@ -66,6 +82,74 @@
             <% contador++; %>
             <% } %>
           </table>
+          <% } %>
+          <% if(eliminar===true &&  modificar===false) { %>
+            <table class="text-left w-full border-collapse">
+              <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                  <th class="p-4 w-1/3">
+                    Id
+                  </th>
+                  <th class="p-4 w-1/3">
+                    Rol
+                  </th>
+                  <th class="p-4 w-1/3">
+                    Eliminar
+                  </th>
+                </tr>
+              </thead>
+              <!-- Fin de simulación de datos -->
+              <% let contador = 1; %>
+              <% for (let ro of rol) { %>
+              <tr class="hover:bg-gray-200">
+                <td class="p-4 w-1/3 border-b border-gray-200"><%= contador %></td>
+                <td class="p-4 w-1/3 border-b border-gray-200"><%= ro.TipoRol %></td>
+                <td class="p-4 w-1/3 border-b border-gray-200">
+                  <button type="button" data-id="<%= ro.IDRol %>" class="px-4 py-2 text-white font-bold bg-red-500 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 deleteButton">
+                    Eliminar
+                  </button>
+                  </form>
+                </td>
+              </tr>
+              <% contador++; %>
+              <% } %>
+            </table>
+          <% } %>
+          <% if(eliminar===false &&  modificar===true) { %>
+            <table class="text-left w-full border-collapse">
+              <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                  <th class="p-4 w-1/3">
+                    Id
+                  </th>
+                  <th class="p-4 w-1/3">
+                    Rol
+                  </th>
+                  <th class="p-4 w-1/3">
+                    Modificar
+                  </th>
+                </tr>
+              </thead>
+              <!-- Fin de simulación de datos -->
+              <% let contador = 1; %>
+              <% for (let ro of rol) { %>
+              <tr class="hover:bg-gray-200">
+                <td class="p-4 w-1/3 border-b border-gray-200"><%= contador %></td>
+                <td class="p-4 w-1/3 border-b border-gray-200"><%= ro.TipoRol %></td>
+                <td class="py-4 px-6 border-b border-gray-200">
+                  <form action="/privilegios/<%= ro.IDRol %>" method="GET">
+                    <input type="hidden" name="IDRol" value="<%= ro.IDRol %>">
+                    <button type="submit" class="px-4 py-2 text-white font-bold bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                      Modificar
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              <% contador++; %>
+              <% } %>
+            </table>
+          <% } %>
+          
         </div>
       </div>
     </div>

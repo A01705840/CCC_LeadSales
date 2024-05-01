@@ -14,9 +14,9 @@ module.exports = class Usuario {
         return bcrypt.hash(this.password, 12)
         .then((password_cifrado) => {
             return db.execute(
-            `INSERT INTO usuario (username, nombre, password, correo, Eliminado) 
-            VALUES (?, ?, ?, ?, ?)`, 
-            [this.username, this.nombre, password_cifrado, this.correo, this.eliminado]);
+            `INSERT INTO usuario (UserName, Nombre, Password, Correo,Eliminado) 
+            VALUES (?, ?, ?, ?,0)`, 
+            [this.username, this.nombre, password_cifrado, this.correo]);
         })
         .catch((error) => {
             console.log(error);
@@ -31,13 +31,13 @@ module.exports = class Usuario {
             [nombre_usuario,nombre_usuario]
         );
     }
-    static async _tiene_rol(nombre_usuario){
+    static async IDversion(nombre_usuario){
         return await db.execute(
             `
-            INSERT INTO usuario_tiene_rol (IDUsuario, IDRol, FechaUsuarioRol, FechaUsuarioRolActualizacion)
+            INSERT INTO usuarioIDversion (IDUsuario, IDRol, FechaUsuarioRol, FechaUsuarioRolActualizacion)
             SELECT usuario.IDUsuario, rol.IDRol, CURDATE(), CURDATE()
             FROM usuario, rol
-            WHERE usuario.UserName = ? AND rol.IDRol = 3
+            WHERE usuario.UserName = ? AND rol.IDRol = 1
             `,
             [nombre_usuario]
         );
@@ -45,15 +45,6 @@ module.exports = class Usuario {
     
     static fetchOne(username) {
         return db.execute('Select * from usuario WHERE UserName = ?', [username]);
-    }
-    
-    static getPermisos(username) {
-        return db.execute(`
-            SELECT f.Descripcion
-            FROM funcion f, rol_adquiere_funcion r_a_f, rol r, usuario_tiene_rol u_t_r, usuario u
-            WHERE u.UserName = ? AND u.IDUsuario = u_t_r.IDUsuario AND
-            u_t_r.IDRol = r.IDRol AND r.IDRol = r_a_f.IDRol AND r_a_f.IDFuncion= f.IDFuncion
-        `, [username]);
     }
 
     static fetchAll() {
@@ -64,19 +55,38 @@ module.exports = class Usuario {
         return db.execute('DELETE FROM usuario WHERE IDUsuario = ?', [id]);
     }
 
+    static obtener_id(username){
+        return db.execute('Select IDUsuario FROM Usuario Where username=?', [username]);
+    }
+    static asignar_rol_nuevo_usuario(idUsuario){
+        return db.execute(`
+        INSERT INTO usuario_tiene_rol
+        (IDUsuario, IDRol, FechaUsuarioRol, FechaUsuarioRolActualizacion) 
+        VALUES (?, 1, CURRENT_TIME, NULL);
+        `,[idUsuario]);
+    }
+    static getPermisos(username) {
+        return db.execute(`
+            SELECT funcion.Descripcion
+            FROM rol_adquiere_funcion rf
+            INNER JOIN usuario_tiene_rol utr ON rf.IDRol = utr.IDRol
+            INNER JOIN Usuario u ON utr.IDUsuario = u.IDUsuario
+            INNER JOIN funcion ON funcion.IDFuncion = rf.IDFuncion
+            WHERE u.username = ?;
+        `, [username]);
+    }
     static establecer_rol(IDRoles,idUsuario) {
         //const fechaCreate = date.now();
-        return db.execute('INSERT INTO `usuario_tiene_rol` (`IDUsuario`, `IDRol`, `FechaUsuarioRol`, `FechaUsuarioRolActualizacion`) VALUES (?, ?, CURRENT_DATE(), CURRENT_DATE());', [IDRoles, idUsuario]);
+        return db.execute('INSERT INTO `usuarioIDversion` (`IDUsuario`, `IDRol`, `FechaUsuarioRol`, `FechaUsuarioRolActualizacion`) VALUES (?, ?, CURRENT_DATE(), CURRENT_DATE());', [IDRoles, idUsuario]);
         
     }
-
     static eliminar_usuario(id) {
         return db.execute('DELETE FROM usuario WHERE IDUsuario = ?', [id]);
     }
 
     static establecer_rol(IDRoles,idUsuario) {
         //const fechaCreate = date.now();
-        return db.execute('INSERT INTO `usuario_tiene_rol` (`IDUsuario`, `IDRol`, `FechaUsuarioRol`, `FechaUsuarioRolActualizacion`) VALUES (?, ?, CURRENT_DATE(), CURRENT_DATE());', [IDRoles, idUsuario]);
+        return db.execute('INSERT INTO `usuarioIDversion` (`IDUsuario`, `IDRol`, `FechaUsuarioRol`, `FechaUsuarioRolActualizacion`) VALUES (?, ?, CURRENT_DATE(), CURRENT_DATE());', [IDRoles, idUsuario]);
         
     }
 
@@ -105,7 +115,7 @@ module.exports = class Usuario {
     
     static updateRolUsuario(id, rol) {
         return db.execute(
-            `UPDATE usuario_tiene_rol 
+            `UPDATE usuarioIDversion 
             SET IDRol = ?, FechaUsuarioRolActualizacion = CURRENT_DATE() 
             WHERE IDUsuario = ?`, 
             [rol, id]
