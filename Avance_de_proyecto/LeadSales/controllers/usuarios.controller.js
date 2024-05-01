@@ -53,22 +53,21 @@ exports.get_signup = (req, res, next) => {
     });
 };
 
-exports.post_signup = (req, res, next) => {
+exports.post_signup = async (req, res, next) => {
     const nuevo_usuario = new Usuario(
         req.body.correo, req.body.username, req.body.name, req.body.password
     );
-    nuevo_usuario.save()
-        .then(() => {
-            return Usuario._tiene_rol(req.body.username);
-        })
-        .then(() => {
-            res.redirect('/usuario/login');
-        })
-        .catch((error) => {
-            console.log(error);
-            req.sesion.error = 'Nombre de usuario ya existe';
-            res.redirect('/usuario/signup');
-        });
+    try {
+        await nuevo_usuario.save();
+        let userId = await Usuario.obtener_id(nuevo_usuario.username);
+        userId = userId[0][0].IDUsuario;
+        await Usuario.asignar_rol_nuevo_usuario(userId);
+        res.redirect('/usuario/login');
+    } catch (error) {
+        console.log(error);
+        req.sesion.error = 'Nombre de usuario ya existe';
+        res.redirect('/usuario/signup');
+    }    
 };
 
 exports.get_logout = (request, response, next) => {
