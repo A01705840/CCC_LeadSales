@@ -1,6 +1,4 @@
-<%- include('includes/head.ejs', {
-    username: username,
-    permisos: permisos}) %>
+<%- include('includes/head.ejs', {username: username,permisos: permisos}) %>
     <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
 
     <div id="modalDescargarLeads" onclick="cerrarModalDescargarLeads()" class="relative z-10" style="display: none;">
