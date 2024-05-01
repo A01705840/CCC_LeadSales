@@ -22,7 +22,11 @@ exports.post_login = (request, response, next) => {
         .then(([usuarios]) => {
             if (usuarios.length == 1) {
                 const usuario = usuarios[0];
-                bcrypt.compare(request.body.password, usuario.Password)
+                if(usuario.Eliminado == 1) {
+                    request.session.error = "Usuario y/o contraseña incorrectos";
+                    response.redirect('/usuario/login');
+                } else {
+                    bcrypt.compare(request.body.password, usuario.Password)
                     .then((doMatch) => {
                         if(doMatch) {
                             console.log('CONTRASEÑA CORRECTA')
@@ -45,6 +49,7 @@ exports.post_login = (request, response, next) => {
                     .catch((error) => {
                         console.log(error);
                     });
+                }
             } else {
                 request.session.error = "Usuario y/o contraseña incorrectos";
                 response.redirect('/usuario/login');
@@ -65,7 +70,7 @@ exports.post_signup = (req, res, next) => {
     console.log('POST SIGNUP')
     console.log('BODY' + JSON.stringify(req.body));
     const nuevo_usuario = new Usuario(
-        req.body.correo, req.body.username, req.body.name, req.body.password
+        req.body.correo, req.body.username, req.body.name, req.body.password, req.body.Eliminado || 0
     );
     nuevo_usuario.save()
         .then(() => {

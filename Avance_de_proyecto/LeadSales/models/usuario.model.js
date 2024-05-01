@@ -14,9 +14,9 @@ module.exports = class Usuario {
         return bcrypt.hash(this.password, 12)
         .then((password_cifrado) => {
             return db.execute(
-            `INSERT INTO usuario (username, nombre, password, correo) 
-            VALUES (?, ?, ?, ?)`, 
-            [this.username, this.nombre, password_cifrado, this.correo,]);
+            `INSERT INTO usuario (username, nombre, password, correo, eliminado) 
+            VALUES (?, ?, ?, ?, ?)`, 
+            [this.username, this.nombre, password_cifrado, this.correo, this.eliminado]);
         })
         .catch((error) => {
             console.log(error);
@@ -60,9 +60,6 @@ module.exports = class Usuario {
         return db.execute('SELECT * FROM usuario');
     }
 
-    static eliminar_usuario(id) {
-        return db.execute('DELETE FROM usuario WHERE IDUsuario = ?', [id]);
-    }
 
     static establecer_rol(IDRoles,idUsuario) {
         //const fechaCreate = date.now();
@@ -71,7 +68,7 @@ module.exports = class Usuario {
     }
 
     static eliminar_usuario(id) {
-        return db.execute('UPDATE usuario SET Eliminado = 0 WHERE IDUsuario = ?', [id]);
+        return db.execute('UPDATE usuario SET Eliminado = 1 WHERE IDUsuario = ?', [id]);
     }
 
     static establecer_rol(IDRoles,idUsuario) {
