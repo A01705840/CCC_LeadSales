@@ -233,23 +233,15 @@
     modalBackground.style.display = 'block';
     });
 
-    // Función para cerrar el modal
-document.getElementById('cerrarModal').addEventListener('click', function() {
-    mapa.style.pointerEvents = 'none';
-    cerrarModalBoton.style.display = 'none';
-    contenedorMapa.style.cursor = 'pointer';
-    mapaContenedor.style.position = 'relative';
-    mapaContenedor.style.top = '0';
-    mapaContenedor.style.left = '0';
-});
-    function cerrarModal() {
-    var mapaContenedor = document.getElementById('mapaContenedor');
-    var mapa = document.getElementById('mapa');
-    var titulo = document.getElementById('titulo');
-    var modalBackground = document.getElementById('modalBackground');
-    var cerrarModalBoton = document.getElementById('cerrarModal');
-    // Hace que el mapa no sea interactivo
-    mapa.style.pointerEvents = 'none';
+// Función para cerrar el modal
+function cerrarModal() {
+  var mapaContenedor = document.getElementById('mapaContenedor');
+  var mapa = document.getElementById('mapa');
+  var titulo = document.getElementById('titulo');
+  var modalBackground = document.getElementById('modalBackground');
+  var cerrarModalBoton = document.getElementById('cerrarModal');
+  // Hace que el mapa no sea interactivo
+  mapa.style.pointerEvents = 'none';
 
         // Muestra el botón de cierre
     cerrarModalBoton.style.display = 'none'; 

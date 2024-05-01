@@ -115,11 +115,11 @@ exports.post_historial = async (req, res, next) => {
                         }
                         if (rowData[posiciones[1]]==''){
                             rowData[posiciones[1]]=null;
-                        } else{
-                            rowData[posiciones[1]]= rowData[posiciones[1]].split(' ').join('');
+                        }
+                        if (typeof rowData[posiciones[1]] == "string") {
+                            rowData[posiciones[1]]= null;
                         }
                         rowData[posiciones[3]] = convertirFecha(rowData[posiciones[3]]);
-                        console.log(rowData[posiciones[1]]);
                         // Ejecutar ambas consultas y esperar a que se completen
                         const [usuarioResult, leadResult] =await Promise.all([
                             Usuario.guardar_nuevo(rowData[posiciones[0]]),
