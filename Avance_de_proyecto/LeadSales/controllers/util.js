@@ -162,6 +162,5 @@ exports.reduceLeadporEstado = function(leadporEstado) {
         }
         return acc;
     }, {});
-
-    console.log(transformedData);
+    return transformedData;
 };
