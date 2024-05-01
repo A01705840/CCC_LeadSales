@@ -35,6 +35,11 @@ module.exports = class Lead {
         VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )`,
         [mi_asignado_a,mi_telefono,mi_nombreLead,mi_FechaPrimerMensaje,mi_Embudo,mi_Etapa,mi_Status,mi_Archivado,mi_CreadoManual])
     }  
+
+    static async guardar_estadolada(mi_EstadoLada){
+        return db.execute(`UPDATE leads SET EstadoLada = ? WHERE IDLead = ?`, [mi_EstadoLada, this.IDLead]);
+    }
+
     static max(){
         return db.execute(`SELECT MAX(IDLead) FROM leads;`)
     }  
@@ -219,5 +224,9 @@ module.exports = class Lead {
         WHERE version_almacena_leads.IDVersion = ? 
             LIMIT ? OFFSET ?
         `, [IDVersion, tamañoPagina, offset]);
+    }
+
+    static async fetchLeadsporEstado() {
+        return db.execute(`SELECT EstadoLada, COUNT(*) AS 'LeadsporEstado' FROM leads GROUP BY EstadoLada;`);
     }
 }
