@@ -1,6 +1,7 @@
 const Rol = require('../models/rol.model');
 const privilegios = require('../models/privilegios.model');
 const Usuario = require('../models/usuario.model');
+const { register } = require('module');
 
 exports.post_eliminar = (request, response, next) => {
     console.log(request.body.IDRol)
@@ -150,6 +151,7 @@ exports.post_agregarRol = (req, res, next) => {
 }
 
 exports.get_equipo = (req, res, next) => {
+    let register=false;
     Rol.fetchRolesWithUsers()
         .then(([rows, fieldData]) => {
             // Mapea los resultados para formatear la fecha
@@ -170,7 +172,8 @@ exports.get_equipo = (req, res, next) => {
                         username: req.session.username || '',
                         permisos: req.session.permisos || [],
                         data: data,  
-                        roles: roles
+                        roles: roles,
+                        register: register,
                     });
                 })
                 .catch((error) => {
@@ -206,9 +209,8 @@ exports.get_agregarEmpleado = (request, response, next) => {
 
 }
 exports.post_agregarEmpleado = async (request, response, next) => {
-    console.log('POST-AgregarEmpleado');
+    let register=false;
     try {
-        console.log(request.body);
         const nuevo_usuario = new Usuario(
             request.body.username || '', 
             request.body.nombre || '', 
@@ -217,17 +219,47 @@ exports.post_agregarEmpleado = async (request, response, next) => {
             request.body.Eliminado || 0, 
         );
         await nuevo_usuario.save(request.body);
-        console.log(nuevo_usuario)
         //Rol.fetchAll();
         const idusuario = await Usuario.fetchOneID(request.body.username);
-        console.log('Usuario creado', idusuario[0][0].IDUsuario);
         //const idRol = await Rol.fetchOneID(request.body.rol);
-        console.log(request.body.rol);
         await Usuario.establecer_rol(idusuario[0][0].IDUsuario, request.body.rol);
-        return response.status(200).json({ message: 'Lead actualizado con éxito' });
+        Rol.fetchRolesWithUsers()
+        .then(([rows, fieldData]) => {
+            // Mapea los resultados para formatear la fecha
+            const data = rows.map(row => {
+                let fecha = new Date(row.FechaUsuarioRolActualizacion);
+                let fechaFormateada = fecha.toLocaleDateString('es-ES', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                row.FechaUsuarioRolActualizacion = fechaFormateada;
+                return row;
+            });
+
+            Rol.fetchAll()
+                .then(([roles, fieldData]) => {
+                    register=true;
+                    response.render('equipo', {
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        data: data,  
+                        roles: roles,
+                        register: register,
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+
+        
+       
     } catch (error) {
         // Maneja cualquier error que pueda ocurrir
         console.error(error);
-        return response.status(500).json({ message: 'Hubo un error al actualizar el lead' });
     }
 }

@@ -137,7 +137,7 @@ module.exports = class Rol {
     static cambiarRol(idUsuario, idRol) {
         return db.execute(`
             UPDATE usuario_tiene_rol
-            SET IDRol = ?, FechaUsuarioRolActualizacion = NOW()
+            SET IDRol = ?, FechaUsuarioRolActualizacion = CURRENT_DATE
             WHERE IDUsuario = ?
         `, [idRol, idUsuario])
         .then(() => {

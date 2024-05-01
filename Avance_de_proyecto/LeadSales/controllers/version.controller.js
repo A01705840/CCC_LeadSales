@@ -103,7 +103,7 @@ exports.post_historial = async (req, res, next) => {
                     else{
                         falla=false;
                         exito=true;
-                        await Version.guardar_nuevo(66, req.body.versionName);  
+                        await Version.guardar_nuevo(1, req.body.versionName);  
                     }
                 }
             })

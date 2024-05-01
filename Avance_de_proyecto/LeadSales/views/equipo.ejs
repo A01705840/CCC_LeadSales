@@ -1,6 +1,10 @@
-<%- include('includes/head.ejs', {username: username,permisos: permisos}) %>
+<%- include('includes/head.ejs', {username: username,permisos: permisos, register:register}) %>
 
-
+<% if (register) { %>
+  <script>
+      swal('Registado', 'El usuario se ha registrado.', 'success')
+  </script>
+<% } %>
 <div id="modal" onclick="cerrarModal()" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; " class="flex items-center justify-center bg-gray-500 bg-opacity-75">
   <div onclick="event.stopPropagation()" class="relative overflow-y-auto transform overflow-hidden rounded-lg bg-gray-50 dark:bg-gray-800 text-left shadow-xl transition-all" style="width: 600px; height: 580px;">
     <h1 class="text-xl font-bold capitalize text-gray-800 dark:text-white mb-4" style="padding-left: 20px; padding-top: 20px;">Account settings</h1>
@@ -95,7 +99,7 @@
 
 
 <div class="p-4 sm:ml-20 sm:mr-10 font-sans">
-  <div class="flex flex-col justify-right p-4 border-2 border-gray-200 rounded-lg dark:border-gray-700 bg-slate-200" style="height:970px; overflow-y:visible;">
+  <div class="flex flex-col justify-right p-4 border-2 border-gray-200 rounded-lg dark:border-gray-700 bg-slate-200">
     <div class="inline-flex justify-between items-center">
       <span style='font-size:30px;'>👥 Mi Equipo</span>
       <input type="text" id="search" name="q" placeholder="Buscar usuario" class="search-bar py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" style="padding-left: 20px; padding-right: 350px; " maxlength="40"><br><br>
@@ -103,62 +107,64 @@
         <a href="/Roles/consultas">
           <button class="bg-white hover:bg-indigo-600 text-black hover:text-white py-2 px-4 rounded-full transition duration-300">Roles</button>
         </a>
+        <% for(permiso of permisos) { %>
+          <%if(permiso.Descripcion == 'Registrar cuenta de empleados') { %>
         <button onclick="agregarEmpleado()" class="bg-white hover:bg-indigo-600 text-black hover:text-white py-2 px-4 rounded-full transition duration-300 ml-2">Agregar Cuenta de Empleado</button>
+        <% } %>
+        <% } %>
       </div>
     </div>
-    <div class="flex flex-col items-center justify-center h-screen">
-      <div class="w-full max-w-2x1 h-full">
-        <div class="flex justify-center sm:mt-4 p-1 border-1 border-gray-200 rounded-lg dark:border-gray-200 bg-white" style="height:auto; overflow-y: auto;  overflow-x: hidden;">
-          <table class="t text-left w-full border-collapse">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 top-0">
-              <tr>
-                <th scope="col" class="px-6 py-3">
-                  Nombre 
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  Rol
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  Última actualización del Rol
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  Modificar
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  Eliminar
-                </th>
-              </tr>
-            </thead>
-            <tbody id="tabla">
-              <% data.forEach(function(item) { %>
-              <% if (item.Nombre === "" || item.Eliminado === 1) { return; } %>
-              <tr class="hover:bg-gray-100">
-                <td class="py-4 px-6 border-b border-gray-200"><%= item.Nombre %></td>
-                <td class="py-4 border-b border-gray-200" style="padding-right: 40px;">
-                  <select id="rol-<%= item.IDUsuario %>" onchange="cambiarRol('<%= item.IDUsuario %>')" class="px-4 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    <% roles.forEach(function(rol) { %>
-                    <option value="<%= rol.IDRol %>" <%= rol.IDRol == item.IDRol ? 'selected' : '' %>><%= rol.TipoRol %></option>
-                    <% }); %>
-                  </select>
-                </td>
-                <td class="py-4 border-b border-gray-200" style="padding-left: 70px;"><%= item.FechaUsuarioRolActualizacion %></td>
-                <td class="py-4 px-6 border-b border-gray-200">
-                  <button type="button" onclick="abrirModalModificarUsuario('<%= item.IDUsuario %>')" class="px-4 py-2 text-white font-bold bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    Modificar
-                  </button>
-                </td>
-                <td class="py-4 px-6 border-b border-gray-200">
-                  <button type="button" onclick="eliminarUsuario('<%= item.IDUsuario %>')" class="px-4 py-2 text-white font-bold bg-red-500 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                    Eliminar
-                </button>
-                </td>
-              </tr>
-              <% }); %>
-            </tbody>
-          </table>
+    <div class="flex justify-center sm:mt-4 p-1 border-1 border-gray-200 rounded-lg dark:border-gray-200 bg-white">
+      <div class="container justify-center border-1 border-gray-200 rounded-lg dark:border-gray-200 bg-white">
+        <div class="flex flex-col h-full w-full">
+          <div class="flex w-full">
+              <table class="text-sm text-left text-gray-500 dark:text-gray-400 w-full">
+                  <thead class=" flex w-full text-xs text-gray-700 uppercase bg-gray-100 dark:text-gray-500">
+                      <tr class="flex w-full">
+                          <th class="p-4 w-1/5">Nombre</th>
+                          <th class="p-4 w-1/5">Rol</th>
+                          <th class="p-4 w-1/5">Última actualización del Rol</th>
+                          <th class="p-4 w-1/5">Modificar</th>
+                          <th class="p-4 w-1/5">Eliminar</th>
+                      </tr>
+                  </thead>
+                  <tbody id="tabla" class="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full" style="height: 64vh;">
+                      <% data.forEach(function(item, index) { %>
+                          <% if (item.Nombre === "" || item.Eliminado === 1) { return; } %>
+                          <tr class="flex w-full mb-4 <%= index % 2 === 0 ? '' : 'bg-gray-50' %>">
+                              <td class="p-4 w-1/5">
+                                  <%= item.Nombre %>
+                              </td>
+                              <td class="p-4 w-1/5">
+                                  <select id="rol-<%= item.IDUsuario %>" onchange="cambiarRol('<%= item.IDUsuario %>')" class="px-4 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                      <% roles.forEach(function(rol) { %>
+                                          <option value="<%= rol.IDRol %>" <%= rol.IDRol == item.IDRol ? 'selected' : '' %>><%= rol.TipoRol %></option>
+                                      <% }); %>
+                                  </select>
+                              </td>
+                              <td class="p-4 w-1/5" style="padding-left: 70px;">
+                                  <%= item.FechaUsuarioRolActualizacion %>
+                              </td>
+                              <td class="p-4 w-1/5">
+                                  <button type="button" onclick="abrirModalModificarUsuario('<%= item.IDUsuario %>')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded">
+                                      Modificar
+                                  </button>
+                              </td>
+                              <td class="p-4 w-1/5">
+                                  <button type="button" onclick="eliminarUsuario('<%= item.IDUsuario %>')" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
+                                      Eliminar
+                                  </button>
+                              </td>
+                          </tr>
+                      <% }); %>
+                  </tbody>
+              </table>
         </div>
       </div>
     </div>
+
+  </div>
+  
   </div>
 </div>
 
@@ -166,17 +172,6 @@
 
 <script>
   function agregarEmpleado() {
-    console.log('GET')
-      // $('#username').val(data.username);
-
-      // $('#nombre').val(data.nombre);
-
-      // $('#correo').val(data.correo);
-
-      // $('#password').val(data.password);
-
-      // $('#rol').val(data.rol);
-
       $('#modal').show();
 
     document.getElementById('botonGuardar').addEventListener('click', guardarCambios);

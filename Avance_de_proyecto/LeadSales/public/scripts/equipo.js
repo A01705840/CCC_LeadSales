@@ -39,39 +39,42 @@ const buscar = () => {
         return response.json();
     }).then((data) => {
         console.log(data);
-        let table = document.getElementById('tabla');
+        let table = document.querySelector('.bg-grey-light');
         let html = '';
-        data.data.forEach(function(item) {
-            html += `
-            <tr class="hover:bg-gray-100" >
-                <td class="py-4 px-6 border-b border-gray-200" >${item.Nombre}</td>
-                <td class="py-4 border-b border-gray-200" style="padding-right: 40px;">
-                    <select id="rol-${item.IDUsuario}" onchange="cambiarRol('${item.IDUsuario}')" class="px-4 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">`;
-    
-            // Añade cada rol al select
-            data.roles.forEach(function(rol) {
-                html += `<option value="${rol.IDRol}" ${rol.IDRol === item.IDRol ? 'selected' : ''}>${rol.TipoRol}</option>`;
-            });
-    
-            html += `</select>
-                </td>
-                <td class="py-4 border-b border-gray-200" style="padding-left: 70px;">${item.FechaUsuarioRolActualizacion}</td>
-                <td class="py-4 px-6 border-b border-gray-200">
-                    <button type="button" onclick="abrirModalModificarUsuario('${item.IDUsuario}')" class="px-4 py-2 text-white font-bold bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        Modificar
-                    </button>
-                </td>
-                <td class="py-4 px-6 border-b border-gray-200">
-                    <form action="/Roles/eliminarUsuario" method="POST">
-                        <input type="hidden" name="IDUsuario" value="${item.IDUsuario}">
-                        <button type="submit" class="px-4 py-2 text-white font-bold bg-red-500 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                            Eliminar
-                        </button>
-                    </form>
-                </td>
-            </tr>`;
+
+    data.data.forEach(function(item) {
+        html += `
+        <tr class="flex w-full mb-4 hover:bg-gray-100">
+            <td class="p-4 w-1/5">${item.Nombre}</td>
+            <td class="p-4 w-1/5" style="padding-right: 40px;">
+                <select id="rol-${item.IDUsuario}" onchange="cambiarRol('${item.IDUsuario}')" class="px-4 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">`;
+
+        // Añade cada rol al select
+        data.roles.forEach(function(rol) {
+            html += `<option value="${rol.IDRol}" ${rol.IDRol === item.IDRol ? 'selected' : ''}>${rol.TipoRol}</option>`;
         });
-        table.innerHTML = html;
+
+        html += `</select>
+            </td>
+            <td class="p-4 w-1/5" style="padding-left: 70px;">${item.FechaUsuarioRolActualizacion}</td>
+            <td class="p-4 w-1/5">
+                <button type="button" onclick="abrirModalModificarUsuario('${item.IDUsuario}')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded">
+                    Modificar
+                </button>
+            </td>
+            <td class="p-4 w-1/5">
+                <form action="/Roles/eliminarUsuario" method="POST">
+                    <input type="hidden" name="IDUsuario" value="${item.IDUsuario}">
+                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
+                        Eliminar
+                    </button>
+                </form>
+            </td>
+        </tr>`;
+    });
+
+    table.innerHTML = html;
+   
     }).catch((error) => {
         console.log(error);
     });

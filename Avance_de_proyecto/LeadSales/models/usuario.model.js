@@ -60,9 +60,10 @@ module.exports = class Usuario {
     }
     static asignar_rol_nuevo_usuario(idUsuario){
         return db.execute(`
-        INSERT INTO usuario_tiene_rol
-        (IDUsuario, IDRol, FechaUsuarioRol, FechaUsuarioRolActualizacion) 
-        VALUES (?, 1, CURRENT_TIME, NULL);
+        UPDATE usuario_tiene_rol 
+        SET IDRol=1,FechaUsuarioRolActualizacion=CURRENT_DATE
+        WHERE usuario_tiene_rol.IDUsuario = ?
+        AND usuario_tiene_rol.IDRol = 0;
         `,[idUsuario]);
     }
     static getPermisos(username) {
@@ -77,17 +78,15 @@ module.exports = class Usuario {
     }
     static establecer_rol(IDRoles,idUsuario) {
         //const fechaCreate = date.now();
-        return db.execute('INSERT INTO `usuarioIDversion` (`IDUsuario`, `IDRol`, `FechaUsuarioRol`, `FechaUsuarioRolActualizacion`) VALUES (?, ?, CURRENT_DATE(), CURRENT_DATE());', [IDRoles, idUsuario]);
+        return db.execute(`
+        UPDATE usuario_tiene_rol 
+        SET IDRol=?,FechaUsuarioRolActualizacion=CURRENT_DATE
+        WHERE usuario_tiene_rol.IDUsuario = ?
+        AND usuario_tiene_rol.IDRol = 0;`, [IDRoles, idUsuario]);
         
     }
     static eliminar_usuario(id) {
         return db.execute('DELETE FROM usuario WHERE IDUsuario = ?', [id]);
-    }
-
-    static establecer_rol(IDRoles,idUsuario) {
-        //const fechaCreate = date.now();
-        return db.execute('INSERT INTO `usuarioIDversion` (`IDUsuario`, `IDRol`, `FechaUsuarioRol`, `FechaUsuarioRolActualizacion`) VALUES (?, ?, CURRENT_DATE(), CURRENT_DATE());', [IDRoles, idUsuario]);
-        
     }
 
     static fetchOneID(username) {
