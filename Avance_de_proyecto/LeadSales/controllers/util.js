@@ -154,3 +154,14 @@ exports.generarLeadsConMesesSinLeads = function(leadsPorMes, fechas) {
 
     return leadsConMesesSinLeads;
 };
+
+exports.reduceLeadporEstado = function(leadporEstado) {
+    let transformedData = leadporEstado.reduce((acc, curr) => {
+        if (curr.EstadoLada) {
+            acc[curr.EstadoLada] = curr.LeadsporEstado;
+        }
+        return acc;
+    }, {});
+    
+    console.log(transformedData);
+};

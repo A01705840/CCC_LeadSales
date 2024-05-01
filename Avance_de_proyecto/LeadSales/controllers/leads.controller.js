@@ -111,10 +111,12 @@ exports.get_analiticaPRESET = async (request, response, next) => {
 
     const gruposPorAgente = utils.agruparLeadsPorAgente(leadsPorAgente);
     const datasetsPorAgente = utils.generarDatasetsPorAgente(gruposPorAgente, fechas);
-    console.log(cantidadLeadsAgente);
+    console.log(leadsporEstado);
+    const estados = utils.reduceLeadporEstado(leadsporEstado[0]);
+    console.log(estados);
     // Ejemplo de lo que contendría el objeto de estados
     // [{MXQRO: 10, MXMEX: 20, MXGDL: 30, MXMTY: 40, MXAGS: 50}]
-    const estados = [
+    /*const estados = [
         {
         MXSON: 10,
         MXBCN: 20,
@@ -149,7 +151,7 @@ exports.get_analiticaPRESET = async (request, response, next) => {
         MXTLA: 310,
         MXDIF: 320,
         }
-    ];
+    ];*/
 
     response.render('Analitica', {
         username: request.session.username || '',
