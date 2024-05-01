@@ -46,15 +46,6 @@ module.exports = class Usuario {
     static fetchOne(username) {
         return db.execute('Select * from usuario WHERE UserName = ?', [username]);
     }
-    
-    static getPermisos(username) {
-        return db.execute(`
-            SELECT f.Descripcion
-            FROM funcion f, rol_adquiere_funcion r_a_f, rol r, usuarioIDversion u_t_r, usuario u
-            WHERE u.UserName = ? AND u.IDUsuario = u_t_r.IDUsuario AND
-            u_t_r.IDRol = r.IDRol AND r.IDRol = r_a_f.IDRol AND r_a_f.IDFuncion= f.IDFuncion
-        `, [username]);
-    }
 
     static fetchAll() {
         return db.execute('SELECT * FROM usuario');
@@ -74,13 +65,21 @@ module.exports = class Usuario {
         VALUES (?, 1, CURRENT_TIME, NULL);
         `,[idUsuario]);
     }
-
+    static getPermisos(username) {
+        return db.execute(`
+            SELECT funcion.Descripcion
+            FROM rol_adquiere_funcion rf
+            INNER JOIN usuario_tiene_rol utr ON rf.IDRol = utr.IDRol
+            INNER JOIN Usuario u ON utr.IDUsuario = u.IDUsuario
+            INNER JOIN funcion ON funcion.IDFuncion = rf.IDFuncion
+            WHERE u.username = ?;
+        `, [username]);
+    }
     static establecer_rol(IDRoles,idUsuario) {
         //const fechaCreate = date.now();
         return db.execute('INSERT INTO `usuarioIDversion` (`IDUsuario`, `IDRol`, `FechaUsuarioRol`, `FechaUsuarioRolActualizacion`) VALUES (?, ?, CURRENT_DATE(), CURRENT_DATE());', [IDRoles, idUsuario]);
         
     }
-
     static eliminar_usuario(id) {
         return db.execute('DELETE FROM usuario WHERE IDUsuario = ?', [id]);
     }

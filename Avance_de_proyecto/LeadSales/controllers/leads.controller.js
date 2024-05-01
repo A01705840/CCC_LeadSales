@@ -232,6 +232,7 @@ exports.get_analiticaPRESET = async (request, response, next) => {
 
     response.render('Analitica', {
         username: request.session.username || '',
+        permisos: request.session.permisos || [],
         leadsPerDay: leadsConDiasSinLeads, 
         cantidadTotalLeads: cantidadLeads,
         cantidadLeadsOrganicos: cantidadLeadsOrganicos,
