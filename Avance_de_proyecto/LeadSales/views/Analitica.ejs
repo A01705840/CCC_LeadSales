@@ -243,7 +243,7 @@
     // Hace que el mapa no sea interactivo
     mapa.style.pointerEvents = 'none';
 
-        // Muestra el botón de cierre
+    // Muestra el botón de cierre
     cerrarModalBoton.style.display = 'none'; 
 
     // Cambia el cursor a pointer
@@ -897,6 +897,82 @@
                 // Establecer el valor de selectedIndex en 0 seleccionará la primera opción
                 selectElement.selectedIndex = 0;
 
+                const estados = data['estados'];
+                console.log(estados);
+                // Calcula el valor máximo
+let max = Math.max(...Object.values(estados));
+
+// Función para obtener el color en función del porcentaje
+function getColorForPercentage(porcentaje) {
+    if (porcentaje >= 0.9) {
+        return '#1d4ed8';
+    } else if (porcentaje >= 0.9) {
+        return '#2563eb';
+    } else if (porcentaje >= 0.5) {
+        return '#3b82f6';
+    } else if (porcentaje >= 0.25) {
+        return '#60a5fa';
+    } else if (porcentaje >= 0.125) {
+        return '#93c5fd';
+    } else if (porcentaje >= 0.75) {
+        return '#bfdbfe';
+    } else if (porcentaje >= 0.05) {
+        return '#dbeafe';
+    } else {
+        return '#eff6ff';
+    }
+}
+
+// Colorea los paths
+var paths = document.querySelectorAll('svg.map path');
+paths.forEach(function(path) {
+    // Obtiene el id del path
+    var id = path.getAttribute('id');
+    // Obtiene el valor correspondiente a este path
+    var value = estados[id];
+    if (value !== undefined) {
+        // Calcula el porcentaje
+        var porcentaje = value / max; // Usa el valor máximo
+        var color = getColorForPercentage(porcentaje);
+        // Asigna el color al path
+        path.style.fill = color;
+        // Asigna el borde al path
+        path.style.stroke = "#cbd5e1"; // Color del borde
+        path.style.strokeWidth = "1px"; // Ancho del borde
+
+       // Agrega un controlador de eventos mouseover
+        path.addEventListener('mouseover', function(e) {
+            // Cambia el color al pasar el ratón sobre el path
+            path.style.fill = '#fffbeb'; // Color al pasar el ratón
+
+            // Crea un nuevo elemento para el tooltip
+            var tooltip = document.createElement('div');
+            tooltip.className = 'tooltip';
+            tooltip.textContent = path.getAttribute('name') + ": " + value + " leads";
+
+            // Añade el tooltip al documento
+            document.body.appendChild(tooltip);
+
+            // Posiciona el tooltip cerca del cursor
+            tooltip.style.left = e.pageX + 'px';
+            tooltip.style.top = (e.pageY - tooltip.offsetHeight) + 'px';
+
+            // Asegura que el tooltip se muestre en frente del mapa
+            tooltip.style.zIndex = '10000';
+        });
+
+        // Agrega un controlador de eventos mouseout
+        path.addEventListener('mouseout', function() {
+            // Restaura el color original al quitar el ratón del path
+            path.style.fill = color; // Color original
+            // Elimina el tooltip
+            var tooltip = document.querySelector('.tooltip');
+            if (tooltip) {
+            tooltip.remove();
+            }
+        });
+    }
+})
 
 
             }).catch(error => console.error('Error en la solicitud fetch: ', error));

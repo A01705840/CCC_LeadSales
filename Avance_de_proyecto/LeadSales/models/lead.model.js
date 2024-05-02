@@ -385,6 +385,14 @@ module.exports = class Lead {
     }
 
     static async fetchLeadsporEstado() {
-        return db.execute(`SELECT EstadoLada, COUNT(*) AS 'LeadsporEstado' FROM leads GROUP BY EstadoLada;`);
+        return db.execute(`SELECT EstadoLada,
+        COUNT(*) AS 'LeadsporEstado' 
+        FROM leads GROUP BY EstadoLada;`);
+    }
+    static async fetchLeadsporEstadoPorVersion(versionID) {
+        return db.execute(`SELECT EstadoLada, COUNT(*) AS LeadsporEstado 
+        FROM version_almacena_leads 
+        JOIN leads ON version_almacena_leads.IDLead = leads.IDLead 
+        WHERE IDVersion = ? GROUP BY EstadoLada;`,[versionID]);
     }
 }
