@@ -93,7 +93,6 @@ exports.get_analitica_version = async (request, response, next) => {
     const cantidadLeadsAgente = await Lead.obtenerCantidadLeadsPorAgentePorVersion(IDversion); // Obtener la cantidad de leads por agente
     const leadsPorAgenteResult = await Lead.fetchLeadsPorAgentePorVersion(rangeAgent,IDversion); // Obtener los leads por agente
     
-    const ultimaFechaLead = await Lead.obtenerUltimaFechaLeadPorVersion(IDversion); // Obtener la última fecha de un lead
     const leadsPorAgente = leadsPorAgenteResult[0]; // Solo usar el primer elemento del array para evitar duplicados 
     
     const version= await Version.fetchAll(); // Obtener el nombre de la versión
@@ -121,7 +120,6 @@ exports.get_analitica_version = async (request, response, next) => {
         cantidadLeadsEmbudos: cantidadLeadsEmbudos,
         cantidadLeadsAgente: cantidadLeadsAgente,
         cantidadLeadsStatus: cantidadLeadsStatus ,
-        ultimaFechaLead: ultimaFechaLead,
         fechas: fechas,
         datasets: datasetsPorAgente,
         estados: estados,
@@ -140,7 +138,6 @@ exports.get_analiticaPRESET = async (request, response, next) => {
     const cantidadLeadsAgente = await Lead.obtenerCantidadLeadsPorAgentePorVersion(versionMaxResult); // Obtener la cantidad de leads por agente
     const leadsPorAgenteResult = await Lead.fetchLeadsPorAgentePorVersion(rangeAgent,versionMaxResult); // Obtener los leads por agente
     
-    const ultimaFechaLead = await Lead.obtenerUltimaFechaLeadPorVersion(versionMaxResult); // Obtener la última fecha de un lead
     const leadsPorAgente = leadsPorAgenteResult[0]; // Solo usar el primer elemento del array para evitar duplicados 
     const leadsporEstado = await Lead.fetchLeadsporEstado(versionMaxResult); // Obtener la cantidad de leads por estado
 
@@ -170,7 +167,6 @@ exports.get_analiticaPRESET = async (request, response, next) => {
         cantidadLeadsEmbudos: cantidadLeadsEmbudos,
         cantidadLeadsAgente: cantidadLeadsAgente,
         cantidadLeadsStatus: cantidadLeadsStatus ,
-        ultimaFechaLead: ultimaFechaLead,
         fechas: fechas,
         datasets: datasetsPorAgente,
         versiones: versiones,
