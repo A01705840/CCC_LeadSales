@@ -215,7 +215,7 @@ exports.get_leads = async (request, res, next)  => {
     const fin = inicio + tamañoPagina - 1;
 
     const offsete = (pagina - 1) * tamañoPagina;
-    Version.fetchLeadsPorIDVersionDo(IDVersion,offsete)
+    Version.fetchLeadsPorIDVersionDo(IDVersion)
         .then(([rows,fieldData]) => {
             res.render ('leads', {
                 csrfToken: request.csrfToken,
