@@ -77,8 +77,8 @@ module.exports = class Version {
             leads.Etapa, leads.Status, leads.Archivado,leads.CreadoManual,
             version_almacena_leads.FechaVersionAlmacenaLead FROM version_almacena_leads 
             INNER JOIN leads ON version_almacena_leads.IDLead = leads.IDLead 
-            WHERE version_almacena_leads.IDVersion = ? 
-            LIMIT ? OFFSET ?
+            WHERE version_almacena_leads.IDVersion = 3
+            LIMIT 500 OFFSET 0;
         `, [IDVersion, tamañoPagina, offset]);
     }
 
