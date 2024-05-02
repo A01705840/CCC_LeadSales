@@ -136,61 +136,78 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <!-- Agrega el script de html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
-
-
     <!-- Agrega el script de jspdf -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 
-
     <script>
         window.jsPDF = window.jspdf.jsPDF;
-        document.getElementById('openModalButtonPDF').addEventListener('click', () => {
-    // Crear un objeto PDF
         const pdf = new jsPDF('p', 'mm', 'a4');
-
-        // Obtener las instancias de las gráficas
-        pdf.text("Total de Leads", 90, 15);
-        const pieChartEmbudoCanvas = document.getElementById('pieChartEmbudo');
-        const pieChartStatusCanvas = document.getElementById('pieChartStatus');
-        const leadsChartCanvas = document.getElementById('leadsChart');
-        const leadsPorAgenteChartCanvas = document.getElementById('leadsPorAgenteChart');
-
-        pdf.text("Total de Leads por Agente", 90, 150);
-        // Capturar cada gráfica como una imagen y agregarla al PDF
-        html2canvas(leadsChartCanvas).then(canvas => {
-            const imgDataLeadsChart = canvas.toDataURL('image/png');
-            pdf.addImage(imgDataLeadsChart, 'PNG', 10, 20, 180, 110);
-
-        html2canvas(leadsPorAgenteChartCanvas, { scale: 0.5}).then(canvas => {
-            const imgDataLeadsPorAgenteChart = canvas.toDataURL('image/png');
-            pdf.addImage(imgDataLeadsPorAgenteChart, 'PNG', 10, 160, 180, 110);
-            pdf.addPage()
-
-        html2canvas(pieChartEmbudoCanvas).then(canvas => {
-            const imgDataPieChartEmbudo = canvas.toDataURL('image/png');
-            pdf.addImage(imgDataPieChartEmbudo, 'PNG', 10, 20, 100, 0);
-
-        html2canvas(pieChartStatusCanvas).then(canvas => {
-            const imgDataPieChartStatus = canvas.toDataURL('image/png');
-            pdf.addImage(imgDataPieChartStatus, 'PNG', 110, 20, 90, 90);
-            pdf.addPage(); // Agregar una nueva página para la siguiente gráfica
-
         
-
-            
-
+        //Logo de Lead
+        var imgData = 'data:'
+        const logoImg = new Image();
+        logoImg.src = '/uploads/Charleads.png'; // Ruta del logo
+        logoImg.onload = function() {
+            pdf.addImage(this, 'PNG', 40, 90, 140, 40);
+        }
+        document.getElementById('openModalButtonPDF').addEventListener('click', () => {
+            // Crear un objeto PDF
+                pdf.text("Reporte de Analiticas", 80, 140,  { fontSize: 40 });
                 
+                pdf.addPage()
+                const logoImg = new Image();
+                logoImg.src = '/uploads/Charleads.png'; // Ruta del logo
 
-                        // Descargar el PDF
-                        pdf.save('reporte.pdf');
+                logoImg.onload = function() {
+                pdf.addImage(this, 'PNG', 160, 278, 35, 10);
+                }
+                pdf.text("Total de Leads", 90, 15);
+                const pieChartEmbudoCanvas = document.getElementById('pieChartEmbudo');
+                const pieChartStatusCanvas = document.getElementById('pieChartStatus');
+                const leadsChartCanvas = document.getElementById('leadsChart');
+                const leadsPorAgenteChartCanvas = document.getElementById('leadsPorAgenteChart');
+                
+                
+                pdf.text("Total de Leads por Agente", 75, 145);
+                // Capturar cada gráfica como una imagen y agregarla al PDF
+                html2canvas(leadsChartCanvas).then(canvas => {
+                    const imgDataLeadsChart = canvas.toDataURL('image/png');
+                pdf.addImage(imgDataLeadsChart, 'PNG', 10, 20, 180, 110);
+
+                html2canvas(leadsPorAgenteChartCanvas, { scale: 0.5}).then(canvas => {
+                    const imgDataLeadsPorAgenteChart = canvas.toDataURL('image/png');
+                    pdf.addImage(imgDataLeadsPorAgenteChart, 'PNG', 10, 155, 180, 110);  
+                
+                
+                pdf.addPage()
+
+                var imgData = 'data:'
+                const logoImg = new Image();
+                logoImg.src = '/uploads/Charleads.png'; // Ruta del logo
+
+                logoImg.onload = function() {
+                pdf.addImage(this, 'PNG', 160, 278, 35, 10);
+                }
+                pdf.text("Distribución de Embudos", 30, 15);
+                html2canvas(pieChartEmbudoCanvas).then(canvas => {
+                    const imgDataPieChartEmbudo = canvas.toDataURL('image/png');
+                    pdf.addImage(imgDataPieChartEmbudo, 'PNG', 10, 20, 100, 0);
+
+                pdf.text("Distribución de Estatus", 130, 15);
+                html2canvas(pieChartStatusCanvas).then(canvas => {
+                    const imgDataPieChartStatus = canvas.toDataURL('image/png');
+                    pdf.addImage(imgDataPieChartStatus, 'PNG', 110, 20, 90, 90);
+                                // Descargar el PDF
+                                pdf.save('reporte.pdf');
+                            });
+                        });
                     });
                 });
-            });
-        });
     });
 
-    const celebrationButton = document.getElementById('celebration');
 
+    //------------|||Celebration|||----------------------//
+    const celebrationButton = document.getElementById('celebration');
     function fire(ratio, opt) {
         confetti(Object.assign({}, {
             particleCount: Math.floor(200 * ratio),
