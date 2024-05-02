@@ -70,6 +70,18 @@ module.exports = class Version {
         `, [IDVersion, tamañoPagina, offset]);
     }
 
+    static async fetchLeadsPorIDVersionDo(IDVersion, tamañoPagina,offset) {
+        return db.execute(`
+            SELECT leads.IDLead,leads.asignado_a,leads.Telefono, 
+            leads.NombreLead,leads.FechaPrimerMensaje, leads.Embudo, 
+            leads.Etapa, leads.Status, leads.Archivado,leads.CreadoManual,
+            version_almacena_leads.FechaVersionAlmacenaLead FROM version_almacena_leads 
+            INNER JOIN leads ON version_almacena_leads.IDLead = leads.IDLead 
+            WHERE version_almacena_leads.IDVersion = ? 
+            LIMIT ? OFFSET ?
+        `, [IDVersion, tamañoPagina, offset]);
+    }
+
     static async fetchAllLeadsPorIDVersion(IDVersion) {
         return db.execute(`
             SELECT leads.IDLead,leads.asignado_a,leads.Telefono, 
@@ -80,6 +92,7 @@ module.exports = class Version {
             WHERE version_almacena_leads.IDVersion = ? 
         `, [IDVersion]);
     }
+
     static async fetchVersionInfo() {
         return db.execute(`
             SELECT IDVersion, NombreVersion
