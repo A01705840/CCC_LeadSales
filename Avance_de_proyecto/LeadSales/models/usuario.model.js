@@ -74,7 +74,7 @@ module.exports = class Usuario {
     }
 
     static obtener_id(username){
-        return db.execute('Select IDUsuario FROM Usuario Where username=?', [username]);
+        return db.execute('Select IDUsuario FROM usuario Where username=?', [username]);
     }
     static asignar_rol_nuevo_usuario(idUsuario){
         return db.execute(`
