@@ -59,17 +59,18 @@ module.exports = class Version {
         const tamanoPagina = 500;
         const off = (pagina - 1) * tamanoPagina;
     
-        console.log(tamañoPagina);
+        console.log(tamanoPagina);
         console.log(off);
-        return db.execute(`
+        const query = `
             SELECT leads.IDLead,leads.asignado_a,leads.Telefono, 
             leads.NombreLead,leads.FechaPrimerMensaje, leads.Embudo, 
             leads.Etapa, leads.Status, leads.Archivado,leads.CreadoManual,
             version_almacena_leads.FechaVersionAlmacenaLead FROM version_almacena_leads 
             INNER JOIN leads ON version_almacena_leads.IDLead = leads.IDLead 
             WHERE version_almacena_leads.IDVersion = ? 
-            LIMIT ? OFFSET ?
-        `, [IDVersion, tamanoPagina, off]);
+            LIMIT ? OFFSET ?;
+        `;
+        return await db.execute(query, [IDVersion, tamanoPagina, off]);
     }
 
     static async fetchAllLeadsPorIDVersion(IDVersion) {
