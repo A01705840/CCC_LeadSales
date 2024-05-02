@@ -56,9 +56,11 @@ module.exports = class Version {
     }
 
     static async fetchLeadsPorIDVersion(IDVersion, pagina) {
-        const tamañoPagina = 500;
-        const offset = (pagina - 1) * tamañoPagina;
+        const tamanoPagina = 500;
+        const off = (pagina - 1) * tamanoPagina;
     
+        console.log(tamañoPagina);
+        console.log(off);
         return db.execute(`
             SELECT leads.IDLead,leads.asignado_a,leads.Telefono, 
             leads.NombreLead,leads.FechaPrimerMensaje, leads.Embudo, 
@@ -67,19 +69,7 @@ module.exports = class Version {
             INNER JOIN leads ON version_almacena_leads.IDLead = leads.IDLead 
             WHERE version_almacena_leads.IDVersion = ? 
             LIMIT ? OFFSET ?
-        `, [IDVersion, tamañoPagina, offset]);
-    }
-
-    static async fetchLeadsPorIDVersionDo(IDVersion, offsete) {
-        return db.execute(`
-            SELECT leads.IDLead, leads.asignado_a, leads.Telefono, 
-            leads.NombreLead, leads.FechaPrimerMensaje, leads.Embudo, 
-            leads.Etapa, leads.Status, leads.Archivado, leads.CreadoManual,
-            version_almacena_leads.FechaVersionAlmacenaLead FROM version_almacena_leads 
-            INNER JOIN leads ON version_almacena_leads.IDLead = leads.IDLead 
-            WHERE version_almacena_leads.IDVersion = ?
-            LIMIT 500 OFFSET 0;
-        `, [IDVersion]);
+        `, [IDVersion, tamanoPagina, off]);
     }
 
     static async fetchAllLeadsPorIDVersion(IDVersion) {
@@ -92,7 +82,6 @@ module.exports = class Version {
             WHERE version_almacena_leads.IDVersion = ? 
         `, [IDVersion]);
     }
-
     static async fetchVersionInfo() {
         return db.execute(`
             SELECT IDVersion, NombreVersion

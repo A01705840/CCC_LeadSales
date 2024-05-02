@@ -206,6 +206,7 @@ exports.get_leads = async (request, res, next)  => {
         IDVersion = versiones[0].id;
     }
     
+    
     const tamañoPagina = 500;
     const numeroTotalDeLeads = await Version.fetchNumeroTotalDeLeads(IDVersion);
     const numeroTotalDePaginas = Math.ceil(numeroTotalDeLeads / tamañoPagina);
@@ -214,8 +215,7 @@ exports.get_leads = async (request, res, next)  => {
     const inicio = (pagina - 1) * tamañoPagina + 1;
     const fin = inicio + tamañoPagina - 1;
 
-    const offsete = (pagina - 1) * tamañoPagina;
-    Version.fetchLeadsPorIDVersionDo(IDVersion)
+    Version.fetchLeadsPorIDVersion(IDVersion, pagina)
         .then(([rows,fieldData]) => {
             res.render ('leads', {
                 csrfToken: request.csrfToken,
