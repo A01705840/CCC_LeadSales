@@ -217,8 +217,8 @@
     </div>
 
     <div class="p-4 sm:ml-20 sm:mr-10 font-sans">
-      <div class="shadow-lg flex flex-col justify-right p-4 border-2 border-gray-200 rounded-lg dark:border-gray-700 bg-slate-200">
-        <div class="inline-flex justify-between items-center mb-4">
+      <div class="shadow-lg flex flex-col justify-right p-4 border-2 border-gray-200 rounded-lg dark:border-gray-700 bg-slate-200" style="height:970px; overflow-y:visible;">
+        <div class="inline-flex justify-between items-center">
             <span style='font-size:30px;'>📋 Leads</span>
               <div class="flex space-x-2">
                     <p class="text-lg mt-2"><b>Visualizando datos de la version:</b></p>
@@ -241,8 +241,7 @@
                 </div>
 
             </div>
-            <div class="flex justify-center sm:mt-4 p-1 border-1 border-gray-200 rounded-lg dark:border-gray-200 bg-white">
-            <div class="container justify-center border-1 border-gray-200 rounded-lg dark:border-gray-200 bg-white">
+            <div class="flex justify-center sm:mt-4 p-1 border-1 border-gray-200 rounded-lg dark:border-gray-200 bg-white" >
                 <% if(leads.length === 0) {%>
                     <p class="text-2xl text-gray-500 mt-48 mb-48 flex items-center justify-center">Importa tus primeros leads, en el historial, para comenzar...</p>
                 <%  } else{ %> 
@@ -270,7 +269,7 @@
                                     </tr>
                                 </thead>
                             <!-- Remove the nasty inline CSS fixed height on production and replace it with a CSS class — this is just for demonstration purposes! -->
-                                <tbody  id="table_content" class="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full" style="height: 64vh;">
+                                <tbody  id="table_content" class="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full" style="height: 78vh;">
                                     <% let row=0; for (let lead of leads) { %>
                                     <% if(row%2==0){%>
                                     <tr class="flex w-full mb-4">
@@ -378,7 +377,7 @@
                                         </tr>
                                     </thead>
                                 <!-- Remove the nasty inline CSS fixed height on production and replace it with a CSS class — this is just for demonstration purposes! -->
-                                    <tbody  id="table_content" class="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full" style="height: 64vh;">
+                                    <tbody  id="table_content" class="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full" style="height: 78vh;">
                                         <% let row=0; for (let lead of leads) { %>
                                         <% if(row%2==0){%>
                                         <tr class="flex w-full mb-4">
@@ -478,7 +477,7 @@
                                         </tr>
                                     </thead>
                                 <!-- Remove the nasty inline CSS fixed height on production and replace it with a CSS class — this is just for demonstration purposes! -->
-                                    <tbody  id="table_content" class="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full" style="height: 64vh;">
+                                    <tbody  id="table_content" class="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full" style="height: 78vh;">
                                         <% let row=0; for (let lead of leads) { %>
                                         <% if(row%2==0){%>
                                         <tr class="flex w-full mb-4">
@@ -575,7 +574,7 @@
                                         </tr>
                                     </thead>
                                 <!-- Remove the nasty inline CSS fixed height on production and replace it with a CSS class — this is just for demonstration purposes! -->
-                                    <tbody  id="table_content" class="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full" style="height: 64vh;">
+                                    <tbody  id="table_content" class="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full" style="height: 78vh;">
                                         <% let row=0; for (let lead of leads) { %>
                                         <% if(row%2==0){%>
                                         <tr class="flex w-full mb-4">
