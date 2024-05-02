@@ -56,21 +56,19 @@ module.exports = class Version {
     }
 
     static async fetchLeadsPorIDVersion(IDVersion, pagina) {
-        const tamanoPagina = 500;
-        const off = (pagina - 1) * tamanoPagina;
+        let tamanoPagina = 500;
+        let off = (pagina - 1) * tamanoPagina;
     
-        console.log(tamanoPagina);
-        console.log(off);
         const query = `
-            SELECT leads.IDLead,leads.asignado_a,leads.Telefono, 
-            leads.NombreLead,leads.FechaPrimerMensaje, leads.Embudo, 
-            leads.Etapa, leads.Status, leads.Archivado,leads.CreadoManual,
-            version_almacena_leads.FechaVersionAlmacenaLead FROM version_almacena_leads 
-            INNER JOIN leads ON version_almacena_leads.IDLead = leads.IDLead 
-            WHERE version_almacena_leads.IDVersion = ? 
-            LIMIT ? OFFSET ?;
+            SELECT leads.IDLead, leads.asignado_a, leads.Telefono,
+            leads.NombreLead, leads.FechaPrimerMensaje, leads.Embudo,
+            leads.Etapa, leads.Status, leads.Archivado, leads.CreadoManual,
+            version_almacena_leads.FechaVersionAlmacenaLead FROM version_almacena_leads
+            INNER JOIN leads ON version_almacena_leads.IDLead = leads.IDLead
+            WHERE version_almacena_leads.IDVersion = ?
+            LIMIT ${tamanoPagina} OFFSET ${off};
         `;
-        return await db.execute(query, [IDVersion, tamanoPagina, off]);
+        return await db.execute(query, [IDVersion]);
     }
 
     static async fetchAllLeadsPorIDVersion(IDVersion) {
