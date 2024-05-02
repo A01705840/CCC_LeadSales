@@ -7,7 +7,6 @@ exports.post_eliminar = (request, response, next) => {
     console.log(request.body.IDRol)
     Rol.delete(request.body.IDRol)
         .then(([rows,fieldData]) => {
-            Console.log("Registro eliminado exitosamente")
             response.redirect ('/Roles/consultas');
         }).catch((error) => {
             console.log(error)
