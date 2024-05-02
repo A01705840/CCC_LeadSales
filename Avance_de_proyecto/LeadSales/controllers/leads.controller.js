@@ -97,7 +97,7 @@ exports.get_analitica_version = async (request, response, next) => {
     
     const version= await Version.fetchAll(); // Obtener el nombre de la versión
     const versiones= version[0]; // Solo usar el primer elemento del array para evitar duplicados
-    const leadsporEstado = await Lead.fetchLeadsporEstado(IDversion); // Obtener la cantidad de leads por estado
+    const leadsporEstado = await Lead.fetchLeadsporEstadoPorVersion(IDversion); // Obtener la cantidad de leads por estado
     
     // Calcular el rango de fechas y generar las fechas
     const rangoFechas = utils.calcularRangoFechas(rangeAgent);
@@ -139,7 +139,7 @@ exports.get_analiticaPRESET = async (request, response, next) => {
     const leadsPorAgenteResult = await Lead.fetchLeadsPorAgentePorVersion(rangeAgent,versionMaxResult); // Obtener los leads por agente
     
     const leadsPorAgente = leadsPorAgenteResult[0]; // Solo usar el primer elemento del array para evitar duplicados 
-    const leadsporEstado = await Lead.fetchLeadsporEstado(versionMaxResult); // Obtener la cantidad de leads por estado
+    const leadsporEstado = await Lead.fetchLeadsporEstadoPorVersion(versionMaxResult); // Obtener la cantidad de leads por estado
 
     const version= await Version.fetchAll(); // Obtener el nombre de la versión
     const versiones= version[0]; // Solo usar el primer elemento del array para evitar duplicados
