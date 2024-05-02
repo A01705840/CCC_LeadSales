@@ -25,7 +25,7 @@ module.exports = class Usuario {
     static async guardar_nuevo(nombre_usuario){
         return await db.execute(
             `
-            I INSERT INTO usuario (Nombre,Eliminado) SELECT ?, 0
+            INSERT INTO usuario (Nombre,Eliminado) SELECT ?, 0
             WHERE NOT EXISTS ( SELECT 1 FROM usuario WHERE Nombre = ?)
             `,
             [nombre_usuario,nombre_usuario]
