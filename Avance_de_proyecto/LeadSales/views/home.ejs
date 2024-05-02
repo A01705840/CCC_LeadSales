@@ -1,23 +1,20 @@
-<%- include('includes/head.ejs',  {username: username,permisos: permisos}) %>
-<h2>Hola</h2>
+<%- include('includes/head.ejs', { username: username, permisos: permisos }) %>
 
-<div class="p-4 sm:ml-20 sm:mr-10 font-sans">
-  <h2>Hola</h2>
-  <% for (let permiso of permisos) {%>
-  <% if (permiso == 'Consultar roles.') { %>
-  <h2>ROLES</h2>
-  <% } %>
-  <% } %>
-  <h1>Home</h1><br>
-  <div class="flex flex-col justify-right p-4 border-2 border-gray-200 rounded-lg dark:border-gray-700 bg-slate-200">
-    <div class="inline-flex justify-between items-center">
-      <p class="items-center">Aquí va el contenido de tu caso de uso, confío en ti, ¡o7!</p>
-      <div class="flex space-x-2">
-        <button class="bg-white hover:bg-indigo-600 py-2 px-4 rounded-full">Texto genérico 1</button>
-        <button class="bg-white hover:bg-indigo-600 py-2 px-4 rounded-full">Texto genérico 2</button>
+<div class="flex flex-col justify-center items-center min-h-screen">
+  <div class="p-4 sm:ml-20 sm:mr-10 font-sans w-full max-w-screen-lg mx-auto">
+    <div class="flex flex-col justify-center p-4 border-2 border-gray-200 rounded-lg dark:border-gray-700 bg-slate-200">
+      <div class="inline-flex justify-between items-center">
+        <div class="flex space-x-2">
+          <!-- Aquí puedes agregar elementos adicionales si es necesario -->
+        </div>
+      </div>
+      <div class="flex justify-center sm:mt-4 p-1 border-1 border-gray-200 rounded-lg dark:border-gray-200 bg-white">
+        <div class="max-w-sm mx-auto text-center">
+          <h1 class="text-6xl font-bold text-gray-800 mb-8">Bienvenido a Charleads</h1>
+          <p class="text-xl text-gray-600 mb-8">¡Explora nuestras herramientas y visualiza tus leads de manera efectiva!</p>
+          
+        </div>
       </div>
     </div>
-    <div class="flex justify-center sm:mt-4 p-1 border-1 border-gray-200 rounded-lg dark:border-gray-200 bg-white">
-
-    </div>
   </div>
+</div>
