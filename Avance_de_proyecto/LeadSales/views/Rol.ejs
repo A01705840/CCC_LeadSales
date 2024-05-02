@@ -4,7 +4,7 @@
 
 
 <div class="p-4 sm:ml-20 sm:mr-10 font-sans">
-  <div class="shadow-lg flex flex-col justify-right p-4 border-2 border-gray-200 rounded-lg dark:border-gray-700 bg-slate-200" style="height:970px;">
+  <div class="shadow-lg flex flex-col justify-right p-4 border-2 border-gray-200 rounded-lg dark:border-gray-700 bg-slate-200" >
     <div class="inline-flex justify-between items-center">
       <span style='font-size:30px;'>🎭 Roles</span>
       <div class="flex space-x-2">
@@ -36,24 +36,62 @@
  
       </div>
     </div>
-    <div class="flex flex-col items-center justify-center h-screen">
-      <div class="w-full max-w-2x1 h-full">
-        <div class="flex justify-center sm:mt-4 p-1 border-1 border-gray-200 rounded-lg dark:border-gray-200 bg-white">
-          
-          <% if(eliminar===true &&  modificar===true) { %>
+      <div class="flex justify-center sm:mt-4 p-1 border-1 border-gray-200 rounded-lg dark:border-gray-200 bg-white">
+        
+        <% if(eliminar===true &&  modificar===true) { %>
+        <table class="text-left w-full border-collapse">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" class="p-4">
+                &nbsp;&nbsp;Id
+              </th>
+              <th scope="col" class="px-6 py-3">
+                &nbsp;&nbsp;&nbsp;Rol
+              </th>
+              <th scope="col" class="px-6 py-3">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Modificar
+              </th>
+              <th scope="col" class="px-6 py-3">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Eliminar
+              </th>
+            </tr>
+          </thead>
+          <!-- Fin de simulación de datos -->
+          <% let contador = 1; %>
+          <% for (let ro of rol) { %>
+          <tr class="hover:bg-gray-200">
+            <td class="py-4 px-6 border-b border-gray-200"><%= contador %></td>
+            <td class="py-4 px-6 border-b border-gray-200"><%= ro.TipoRol %></td>
+            <td class="py-4 px-6 border-b border-gray-200">
+              <form action="/privilegios/<%= ro.IDRol %>" method="GET">
+                <input type="hidden" name="IDRol" value="<%= ro.IDRol %>">
+                <button type="submit" class="px-4 py-2 text-white font-bold bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                  Modificar
+                </button>
+              </form>
+            </td>
+            <td class="py-4 px-6 border-b border-gray-200">
+              <button type="button" data-id="<%= ro.IDRol %>" class="px-4 py-2 text-white font-bold bg-red-500 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 deleteButton">
+                Eliminar
+              </button>
+              </form>
+            </td>
+          </tr>
+          <% contador++; %>
+          <% } %>
+        </table>
+        <% } %>
+        <% if(eliminar===true &&  modificar===false) { %>
           <table class="text-left w-full border-collapse">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                <th scope="col" class="px-6 py-3">
+                <th class="p-4 w-1/3">
                   Id
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th class="p-4 w-1/3">
                   Rol
                 </th>
-                <th scope="col" class="px-6 py-3">
-                  Modificar
-                </th>
-                <th scope="col" class="px-6 py-3">
+                <th class="p-4 w-1/3">
                   Eliminar
                 </th>
               </tr>
@@ -62,17 +100,9 @@
             <% let contador = 1; %>
             <% for (let ro of rol) { %>
             <tr class="hover:bg-gray-200">
-              <td class="py-4 px-6 border-b border-gray-200"><%= contador %></td>
-              <td class="py-4 px-6 border-b border-gray-200"><%= ro.TipoRol %></td>
-              <td class="py-4 px-6 border-b border-gray-200">
-                <form action="/privilegios/<%= ro.IDRol %>" method="GET">
-                  <input type="hidden" name="IDRol" value="<%= ro.IDRol %>">
-                  <button type="submit" class="px-4 py-2 text-white font-bold bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    Modificar
-                  </button>
-                </form>
-              </td>
-              <td class="py-4 px-6 border-b border-gray-200">
+              <td class="p-4 w-1/3 border-b border-gray-200"><%= contador %></td>
+              <td class="p-4 w-1/3 border-b border-gray-200"><%= ro.TipoRol %></td>
+              <td class="p-4 w-1/3 border-b border-gray-200">
                 <button type="button" data-id="<%= ro.IDRol %>" class="px-4 py-2 text-white font-bold bg-red-500 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 deleteButton">
                   Eliminar
                 </button>
@@ -82,77 +112,42 @@
             <% contador++; %>
             <% } %>
           </table>
-          <% } %>
-          <% if(eliminar===true &&  modificar===false) { %>
-            <table class="text-left w-full border-collapse">
-              <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                  <th class="p-4 w-1/3">
-                    Id
-                  </th>
-                  <th class="p-4 w-1/3">
-                    Rol
-                  </th>
-                  <th class="p-4 w-1/3">
-                    Eliminar
-                  </th>
-                </tr>
-              </thead>
-              <!-- Fin de simulación de datos -->
-              <% let contador = 1; %>
-              <% for (let ro of rol) { %>
-              <tr class="hover:bg-gray-200">
-                <td class="p-4 w-1/3 border-b border-gray-200"><%= contador %></td>
-                <td class="p-4 w-1/3 border-b border-gray-200"><%= ro.TipoRol %></td>
-                <td class="p-4 w-1/3 border-b border-gray-200">
-                  <button type="button" data-id="<%= ro.IDRol %>" class="px-4 py-2 text-white font-bold bg-red-500 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 deleteButton">
-                    Eliminar
-                  </button>
-                  </form>
-                </td>
+        <% } %>
+        <% if(eliminar===false &&  modificar===true) { %>
+          <table class="text-left w-full border-collapse">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th class="p-4 w-1/3">
+                  Id
+                </th>
+                <th class="p-4 w-1/3">
+                  Rol
+                </th>
+                <th class="p-4 w-1/3">
+                  Modificar
+                </th>
               </tr>
-              <% contador++; %>
-              <% } %>
-            </table>
-          <% } %>
-          <% if(eliminar===false &&  modificar===true) { %>
-            <table class="text-left w-full border-collapse">
-              <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                  <th class="p-4 w-1/3">
-                    Id
-                  </th>
-                  <th class="p-4 w-1/3">
-                    Rol
-                  </th>
-                  <th class="p-4 w-1/3">
+            </thead>
+            <!-- Fin de simulación de datos -->
+            <% let contador = 1; %>
+            <% for (let ro of rol) { %>
+            <tr class="hover:bg-gray-200">
+              <td class="p-4 w-1/3 border-b border-gray-200"><%= contador %></td>
+              <td class="p-4 w-1/3 border-b border-gray-200"><%= ro.TipoRol %></td>
+              <td class="py-4 px-6 border-b border-gray-200">
+                <form action="/privilegios/<%= ro.IDRol %>" method="GET">
+                  <input type="hidden" name="IDRol" value="<%= ro.IDRol %>">
+                  <button type="submit" class="px-4 py-2 text-white font-bold bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                     Modificar
-                  </th>
-                </tr>
-              </thead>
-              <!-- Fin de simulación de datos -->
-              <% let contador = 1; %>
-              <% for (let ro of rol) { %>
-              <tr class="hover:bg-gray-200">
-                <td class="p-4 w-1/3 border-b border-gray-200"><%= contador %></td>
-                <td class="p-4 w-1/3 border-b border-gray-200"><%= ro.TipoRol %></td>
-                <td class="py-4 px-6 border-b border-gray-200">
-                  <form action="/privilegios/<%= ro.IDRol %>" method="GET">
-                    <input type="hidden" name="IDRol" value="<%= ro.IDRol %>">
-                    <button type="submit" class="px-4 py-2 text-white font-bold bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                      Modificar
-                    </button>
-                  </form>
-                </td>
-              </tr>
-              <% contador++; %>
-              <% } %>
-            </table>
-          <% } %>
-          
-        </div>
+                  </button>
+                </form>
+              </td>
+            </tr>
+            <% contador++; %>
+            <% } %>
+          </table>
+        <% } %>
       </div>
-    </div>
   </div>
 </div>
 

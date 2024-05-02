@@ -120,7 +120,7 @@ module.exports = class Rol {
     
 
     static fetchAllParaRoles() {
-        return db.execute('SELECT * FROM rol WHERE TipoRol NOT IN ("owner", "SinRol") ORDER BY IDRol ASC');
+        return db.execute('SELECT * FROM rol WHERE TipoRol NOT IN ("owner", "Sin Rol") ORDER BY IDRol ASC');
     }
 
     static fetchAll() {
