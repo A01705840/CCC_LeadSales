@@ -78,8 +78,8 @@ module.exports = class Version {
             version_almacena_leads.FechaVersionAlmacenaLead FROM version_almacena_leads 
             INNER JOIN leads ON version_almacena_leads.IDLead = leads.IDLead 
             WHERE version_almacena_leads.IDVersion = ?
-            LIMIT ? OFFSET ?;
-        `, [IDVersion, tamañoPagina, offset]);
+            LIMIT 500 OFFSET ?;
+        `, [IDVersion, offset]);
     }
 
     static async fetchAllLeadsPorIDVersion(IDVersion) {

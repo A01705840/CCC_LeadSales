@@ -206,7 +206,6 @@ exports.get_leads = async (request, res, next)  => {
         IDVersion = versiones[0].id;
     }
     
-    
     const tamañoPagina = 500;
     const numeroTotalDeLeads = await Version.fetchNumeroTotalDeLeads(IDVersion);
     const numeroTotalDePaginas = Math.ceil(numeroTotalDeLeads / tamañoPagina);
