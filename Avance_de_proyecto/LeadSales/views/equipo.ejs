@@ -115,56 +115,52 @@
       </div>
     </div>
     <div class="flex justify-center sm:mt-4 p-1 border-1 border-gray-200 rounded-lg dark:border-gray-200 bg-white">
-      <div class="container justify-center border-1 border-gray-200 rounded-lg dark:border-gray-200 bg-white">
-        <div class="flex flex-col h-full w-full">
-          <div class="flex w-full">
-              <table class="text-sm text-left text-gray-500 dark:text-gray-400 w-full">
-                  <thead class=" flex w-full text-xs text-gray-700 uppercase bg-gray-100 dark:text-gray-500">
-                      <tr class="flex w-full">
-                          <th class="p-4 w-1/5">Nombre</th>
-                          <th class="p-4 w-1/5">Rol</th>
-                          <th class="p-4 w-1/5">Última actualización del Rol</th>
-                          <th class="p-4 w-1/5">Modificar</th>
-                          <th class="p-4 w-1/5">Eliminar</th>
-                      </tr>
-                  </thead>
-                  <tbody id="tabla" class="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full" style="height: 64vh;">
-                      <% data.forEach(function(item, index) { %>
-                          <% if (item.Nombre === "" || item.Eliminado === 1) { return; } %>
-                          <tr class="flex w-full mb-4 <%= index % 2 === 0 ? '' : 'bg-gray-50' %>">
-                              <td class="p-4 w-1/5">
-                                  <%= item.Nombre %>
-                              </td>
-                              <td class="p-4 w-1/5">
-                                  <select id="rol-<%= item.IDUsuario %>" onchange="cambiarRol('<%= item.IDUsuario %>')" class="px-4 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                      <% roles.forEach(function(rol) { %>
-                                          <option value="<%= rol.IDRol %>" <%= rol.IDRol == item.IDRol ? 'selected' : '' %>><%= rol.TipoRol %></option>
-                                      <% }); %>
-                                  </select>
-                              </td>
-                              <td class="p-4 w-1/5" style="padding-left: 70px;">
-                                  <%= item.FechaUsuarioRolActualizacion %>
-                              </td>
-                              <td class="p-4 w-1/5">
-                                  <button type="button" onclick="abrirModalModificarUsuario('<%= item.IDUsuario %>')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded">
-                                      Modificar
-                                  </button>
-                              </td>
-                              <td class="p-4 w-1/5">
-                                  <button type="button" onclick="eliminarUsuario('<%= item.IDUsuario %>')" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
-                                      Eliminar
-                                  </button>
-                              </td>
-                          </tr>
-                      <% }); %>
-                  </tbody>
-              </table>
-        </div>
+      <div class="flex flex-col h-full w-full">
+        <div class="flex w-full">
+            <table class="text-sm text-left text-gray-500 dark:text-gray-400 w-full">
+                <thead class=" flex w-full text-xs text-gray-700 uppercase bg-gray-100 dark:text-gray-500">
+                    <tr class="flex w-full">
+                        <th class="p-4 w-1/5">Nombre</th>
+                        <th class="p-4 w-1/5">Rol</th>
+                        <th class="p-4 w-1/5">Última actualización del Rol</th>
+                        <th class="p-4 w-1/5">Modificar</th>
+                        <th class="p-4 w-1/5">Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla" class="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full" style="height: 81vh;">
+                    <% data.forEach(function(item, index) { %>
+                        <% if (item.Nombre === "" || item.Eliminado === 1) { return; } %>
+                        <tr class="flex w-full mb-4 <%= index % 2 === 0 ? '' : 'bg-gray-50' %>">
+                            <td class="p-4 w-1/5">
+                                <%= item.Nombre %>
+                            </td>
+                            <td class="p-4 w-1/5">
+                                <select id="rol-<%= item.IDUsuario %>" onchange="cambiarRol('<%= item.IDUsuario %>')" class="px-4 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                    <% roles.forEach(function(rol) { %>
+                                        <option value="<%= rol.IDRol %>" <%= rol.IDRol == item.IDRol ? 'selected' : '' %>><%= rol.TipoRol %></option>
+                                    <% }); %>
+                                </select>
+                            </td>
+                            <td class="p-4 w-1/5" style="padding-left: 70px;">
+                                <%= item.FechaUsuarioRolActualizacion %>
+                            </td>
+                            <td class="p-4 w-1/5">
+                                <button type="button" onclick="abrirModalModificarUsuario('<%= item.IDUsuario %>')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded">
+                                    Modificar
+                                </button>
+                            </td>
+                            <td class="p-4 w-1/5">
+                                <button type="button" onclick="eliminarUsuario('<%= item.IDUsuario %>')" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
       </div>
     </div>
-
   </div>
-  
   </div>
 </div>
 

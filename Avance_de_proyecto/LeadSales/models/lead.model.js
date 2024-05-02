@@ -384,10 +384,15 @@ module.exports = class Lead {
         return db.execute('SELECT MAX(IDLead) as IDLead FROM leads;');
     }
 
-    static async fetchLeadsporEstado(IDVersion) {
-        return db.execute(`SELECT EstadoLada, COUNT(*) AS 'LeadsporEstado' 
-        FROM leads as L, Version_almacena_leads as V
-        WHERE L.IDLead = V.IDLead AND L.EstadoLada IS NOT NULL AND V.IDVersion = ?
-        GROUP BY EstadoLada;`, [IDVersion]);
+    static async fetchLeadsporEstado() {
+        return db.execute(`SELECT EstadoLada,
+        COUNT(*) AS 'LeadsporEstado' 
+        FROM leads GROUP BY EstadoLada;`);
+    }
+    static async fetchLeadsporEstadoPorVersion(versionID) {
+        return db.execute(`SELECT EstadoLada, COUNT(*) AS LeadsporEstado 
+        FROM version_almacena_leads 
+        JOIN leads ON version_almacena_leads.IDLead = leads.IDLead 
+        WHERE IDVersion = ? GROUP BY EstadoLada;`,[versionID]);
     }
 }
