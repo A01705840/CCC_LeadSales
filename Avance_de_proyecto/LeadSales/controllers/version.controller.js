@@ -12,23 +12,30 @@ const { todo } = require('node:test');
 
 
 function convertirFecha(fecha) {
-    // Dividir la fecha en día, mes y año
-    var partes = fecha.split('/');
-    var dia = partes[0];
-    var mes = partes[1];
-    var año = partes[2];
+    // Verificar si la variable fecha está definida y no es null
+    if (fecha && typeof fecha === 'string') {
+        // Dividir la fecha en día, mes y año
+        var partes = fecha.split('/');
+        var dia = partes[0];
+        var mes = partes[1];
+        var año = partes[2];
 
-    // Agregar ceros iniciales si el día o el mes tienen un solo dígito
-    if (dia.length === 1) {
-        dia = '0' + dia;
-    }
-    if (mes.length === 1) {
-        mes = '0' + mes;
-    }
+        // Agregar ceros iniciales si el día o el mes tienen un solo dígito
+        if (dia.length === 1) {
+            dia = '0' + dia;
+        }
+        if (mes.length === 1) {
+            mes = '0' + mes;
+        }
 
-    // Devolver la fecha en el nuevo formato
-    return año + '-' + mes + '-' + dia;
+        // Devolver la fecha en el nuevo formato
+        return año + '-' + mes + '-' + dia;
+    } else {
+        // Devolver null u otra indicación de que la fecha no es válida
+        return null;
+    }
 }
+
 const jsPDF = require('jspdf').jsPDF;
 const autoTable = require('jspdf-autotable');
 const Rol = require('../models/rol.model');
@@ -92,14 +99,96 @@ exports.post_historial = async (req, res, next) => {
     let exito;
     let falla;
     //let arrayBeforeNull = [];
-    let lastIDResult = await Lead.fetchlastID();
-    let lastID = Number(lastIDResult[0][0].IDLead);
-    //arrayIDLeads.push(lastID);
-    let i = 0;
+    let lastIDResult;
+    let lastID;
     if (req.file.mimetype == 'text/csv') {
         csv.parseFile(req.file.path)
             .on("data", async function (rowData) {
-                if (fila > 0) {
+                if (fila == 1) {
+                    fila++;
+                    if(todosPresentes){
+                        //arrayBeforeNull.push(rowData[posiciones[1]]);
+                    try {
+                        if (rowData[posiciones[8]] === 'TRUE') {
+                            rowData[posiciones[8]] = 1;
+                        } else if (rowData[posiciones[8]] == 'FALSE') {
+                            rowData[posiciones[8]] = 0;
+                        } if (rowData[posiciones[7]] =='Si') {
+                            rowData[posiciones[7]] = 1;
+                        } else if (rowData[posiciones[7]] == 'No') {
+                            rowData[posiciones[7]] = 0;
+                        }
+                        if (rowData[posiciones[1]]===''){
+                            rowData[posiciones[1]]=null;
+                        }
+                        else{
+                           rowData[posiciones[1]]= rowData[posiciones[1]].split(' ').join('');
+                        }
+                        rowData[posiciones[3]] = convertirFecha(rowData[posiciones[3]]);
+                        // Ejecutar ambas consultas y esperar a que se completen
+                        const [usuarioResult, leadResult, asignarRolResult] =await Promise.all([
+                            Usuario.guardar_nuevo(rowData[posiciones[0]]),
+                            Lead.guardar_nuevo(rowData[posiciones[0]], rowData[posiciones[1]], rowData[posiciones[2]], rowData[posiciones[3]], rowData[posiciones[4]], rowData[posiciones[5]], rowData[posiciones[6]], rowData[posiciones[7]], rowData[posiciones[8]])
+                        ]); 
+                        lastIDResult = await Lead.fetchlastID();
+                        lastID = Number(lastIDResult[0][0].IDLead);
+                    } catch (error) { console.log(error); }
+                    try {
+                        const patterns = {
+                            MXDIF: regexDIF,
+                            MXCHH: regexCHH,
+                            MXJAL: regexJAL,
+                            MXNLE: regexMXNLE,
+                            MXNPUE: regexMXNPUE,
+                            MXYUC: regexMXYUC,
+                            MXCOA: regexMXCOA,
+                            MXAGU: regexMXAGU,
+                            MXSON: regexMXSON,
+                            MXBCN: regexMXBCN,
+                            MXBCS: regexMXBCS,
+                            MXQUE: regexMXQUE,
+                            MXMIC: regexMXMIC,
+                            MXDUR: regexMXDUR,
+                            MXCHP: regexMXCHP,
+                            MXVER: regexMXVER,
+                            MXNAY: regexMXNAY,
+                            MXTAB: regexMXTAB,
+                            MXTAM: regexMXTAM,
+                            MXMOR: regexMXMOR,
+                            MXOAX: regexMXOAX,
+                            MXHID: regexMXHID,
+                            MXCAM: regexMXCAM,
+                            MXSLP: regexMXSLP,
+                            MXMEX: regexMXMEX,
+                            MXROO: regexMXROO,
+                            MXCOL: regexMXCOL,
+                            MXZAC: regexMXZAC,
+                            MXGUA: regexMXGUA,
+                            MXTLA: regexMXTLA,
+                            MXGRO: regexMXGRO,
+                            MXSIN: regexMXSIN
+                        };
+                    
+                        lastID++;
+                    
+                        let estadoEncontrado = null;
+                        for (const estado in patterns) {
+                            if (patterns[estado].test(rowData[posiciones[1]])) {
+                                estadoEncontrado = estado;
+                                break;
+                            }
+                        }
+                        if (estadoEncontrado) {
+                            Lead.guardar_estadolada(estadoEncontrado, lastID);
+                        }
+                    } catch (error) {
+                        console.log(error);
+                    }
+                    
+                    }
+                
+                }
+                if (fila > 1) {
                     if(todosPresentes){
                         //arrayBeforeNull.push(rowData[posiciones[1]]);
                     try {
@@ -125,85 +214,58 @@ exports.post_historial = async (req, res, next) => {
                             Lead.guardar_nuevo(rowData[posiciones[0]], rowData[posiciones[1]], rowData[posiciones[2]], rowData[posiciones[3]], rowData[posiciones[4]], rowData[posiciones[5]], rowData[posiciones[6]], rowData[posiciones[7]], rowData[posiciones[8]])
                         ]); 
                     } catch (error) { console.log(error); }
-
-                        //console.log(arrayBeforeNull);
-                        //console.log(arrayIDLeads);
-                            lastID = lastID + 1;
-                            console.log('LAST ID' + lastID);
-                            try {
-                                if (regexDIF.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXDIF', lastID);
-                                } else if (regexCHH.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXCHH', lastID);
-                                } else if (regexJAL.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXJAL', lastID);
-                                } else if (regexMXNLE.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXNLE', lastID);
-                                } else if (regexMXNPUE.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXNPUE', lastID);
-                                } else if (regexMXYUC.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXYUC', lastID);
-                                } else if (regexMXCOA.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXCOA', lastID);
-                                } else if (regexMXAGU.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXAGU', lastID);
-                                } else if (regexMXSON.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXSON', lastID);
-                                } else if (regexMXBCN.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXBCN', lastID);
-                                } else if (regexMXBCS.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXBCS', lastID);
-                                } else if (regexMXQUE.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXQUE', lastID);
-                                } else if (regexMXMIC.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXMIC', lastID);
-                                } else if (regexMXDUR.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXDUR', lastID);
-                                } else if (regexMXCHP.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXCHP', lastID);
-                                } else if (regexMXVER.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXVER', lastID);
-                                } else if (regexMXNAY.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXNAY', lastID);
-                                } else if (regexMXTAB.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXTAB', lastID);
-                                } else if (regexMXTAM.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXTAM', lastID);
-                                } else if (regexMXMOR.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXMOR', lastID);
-                                } else if (regexMXOAX.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXOAX', lastID);
-                                } else if (regexMXHID.test(rowData[posiciones[1]])){    
-                                    Lead.guardar_estadolada('MXHID', lastID);
-                                } else if (regexMXCAM.test(rowData[posiciones[1]])){        
-                                    Lead.guardar_estadolada('MXCAM', lastID);
-                                } else if (regexMXSLP.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXSLP', lastID);
-                                } else if (regexMXMEX.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXMEX', lastID);
-                                } else if (regexMXROO.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXROO', lastID);
-                                } else if (regexMXCOL.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXCOL', lastID);
-                                } else if (regexMXZAC.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXZAC', lastID);
-                                } else if (regexMXGUA.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXGUA', lastID);
-                                } else if (regexMXTLA.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXTLA', lastID);
-                                } else if (regexMXGRO.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXGRO', lastID);
-                                } else if (regexMXSIN.test(rowData[posiciones[1]])){
-                                    Lead.guardar_estadolada('MXSIN', lastID);
-                                } else {
-                                    console.log('No encontrado');
-                                }
-
-                        } catch (error) {
-                            console.log(error);
+                    try {
+                        const patterns = {
+                            MXDIF: regexDIF,
+                            MXCHH: regexCHH,
+                            MXJAL: regexJAL,
+                            MXNLE: regexMXNLE,
+                            MXNPUE: regexMXNPUE,
+                            MXYUC: regexMXYUC,
+                            MXCOA: regexMXCOA,
+                            MXAGU: regexMXAGU,
+                            MXSON: regexMXSON,
+                            MXBCN: regexMXBCN,
+                            MXBCS: regexMXBCS,
+                            MXQUE: regexMXQUE,
+                            MXMIC: regexMXMIC,
+                            MXDUR: regexMXDUR,
+                            MXCHP: regexMXCHP,
+                            MXVER: regexMXVER,
+                            MXNAY: regexMXNAY,
+                            MXTAB: regexMXTAB,
+                            MXTAM: regexMXTAM,
+                            MXMOR: regexMXMOR,
+                            MXOAX: regexMXOAX,
+                            MXHID: regexMXHID,
+                            MXCAM: regexMXCAM,
+                            MXSLP: regexMXSLP,
+                            MXMEX: regexMXMEX,
+                            MXROO: regexMXROO,
+                            MXCOL: regexMXCOL,
+                            MXZAC: regexMXZAC,
+                            MXGUA: regexMXGUA,
+                            MXTLA: regexMXTLA,
+                            MXGRO: regexMXGRO,
+                            MXSIN: regexMXSIN
+                        };
+                    
+                        lastID++;
+                    
+                        let estadoEncontrado = null;
+                        for (const estado in patterns) {
+                            if (patterns[estado].test(rowData[posiciones[1]])) {
+                                estadoEncontrado = estado;
+                                break;
+                            }
                         }
-                        //console.log(arrayBeforeNull);
-                        i = i + 1;
+                        if (estadoEncontrado) {
+                            Lead.guardar_estadolada(estadoEncontrado, lastID);
+                        }
+                    } catch (error) {
+                        console.log(error);
+                    }
+                    
                     }
                 
                 }
