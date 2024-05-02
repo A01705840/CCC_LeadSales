@@ -67,7 +67,7 @@ module.exports = class Usuario {
             SELECT funcion.Descripcion
             FROM rol_adquiere_funcion rf
             INNER JOIN usuario_tiene_rol utr ON rf.IDRol = utr.IDRol
-            INNER JOIN Usuario u ON utr.IDUsuario = u.IDUsuario
+            INNER JOIN usuario u ON utr.IDUsuario = u.IDUsuario
             INNER JOIN funcion ON funcion.IDFuncion = rf.IDFuncion
             WHERE u.username = ?;
         `, [username]);
