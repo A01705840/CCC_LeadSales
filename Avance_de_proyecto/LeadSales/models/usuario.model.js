@@ -10,7 +10,7 @@ module.exports = class Usuario {
         this.eliminado = mi_eliminado;
     }
 
-    save() {
+    async save() {
         return bcrypt.hash(this.password, 12)
         .then((password_cifrado) => {
             return db.execute(
@@ -98,9 +98,8 @@ module.exports = class Usuario {
         //const fechaCreate = date.now();
         return db.execute(`
         UPDATE usuario_tiene_rol 
-        SET IDRol=?,FechaUsuarioRolActualizacion=CURRENT_DATE
-        WHERE usuario_tiene_rol.IDUsuario = ?
-        AND usuario_tiene_rol.IDRol = 0;`, [IDRoles, idUsuario]);
+        SET IDRol = ?,FechaUsuarioRolActualizacion = CURRENT_DATE
+        WHERE usuario_tiene_rol.IDUsuario = ?;`, [IDRoles, idUsuario]);
         
     }
     static eliminar_usuario(id) {
@@ -108,7 +107,13 @@ module.exports = class Usuario {
     }
 
     static fetchOneID(username) {
-        return db.execute('Select IDUsuario from usuario WHERE UserName = ?', [username]);
+        return db.execute('Select IDUsuario from usuario WHERE UserName = ?', [username])
+            .then(([rows, fieldData]) => {
+                if (rows.length > 0) {
+                    return rows[0].IDUsuario;
+                }
+                throw new Error('No user found with this username');
+            });
     }
 
     static fetchById(id) {

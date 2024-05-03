@@ -137,8 +137,8 @@ module.exports = class Rol {
     static cambiarRol(idUsuario, idRol) {
         return db.execute(`
             UPDATE usuario_tiene_rol
-            SET IDRol = ?, FechaUsuarioRolActualizacion = CURRENT_DATE
-            WHERE IDUsuario = ?
+            SET usuario_tiene_rol.IDRol = ?, usuario_tiene_rol.FechaUsuarioRolActualizacion = CURRENT_DATE
+            WHERE usuario_tiene_rol.IDUsuario = ?
         `, [idRol, idUsuario])
         .then(() => {
             console.log('Rol cambiado con éxito');
@@ -147,7 +147,13 @@ module.exports = class Rol {
         });
     }
     static fetchOneID(Rol) {
-        return db.execute('Select IDRol from rol WHERE TipoRol = ?', [Rol]);
+        return db.execute('Select IDRol from rol WHERE TipoRol = ?', [Rol])
+            .then(([rows, fieldData]) => {
+                if (rows.length > 0) {
+                    return rows[0].IDRol;
+                }
+                throw new Error('No role found with this type');
+            });
     }
 }
     

@@ -23,7 +23,8 @@
             <label class="text-gray-800 dark:text-gray-200">Rol:</label>
             <select id="rol" name="rol" class="mt-2 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-500">
               <% roles.forEach(function(rol) { %>
-              <option value="<%= rol.IDRol %>" <%= rol.IDRol == 'ROL' ? 'selected' : '' %>><%= rol.TipoRol %></option>
+                <% console.log(rol.IDRol); %>
+              <option value="<%= rol.IDRol %>" <%= rol.IDRol == 'ROL' ? 'selected' : '' %>> <%= rol.TipoRol %></option>
               <% }); %>
             </select>
           </div>
