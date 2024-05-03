@@ -41,8 +41,7 @@ const autoTable = require('jspdf-autotable');
 const Rol = require('../models/rol.model');
 
 exports.get_historial = (req, res, next) => {
-    Version.fetch(req.params.IDVersion)
-    Version.fetch(req.params.IDUser)
+    Version.fetch()
         .then(([rows, fieldData]) => {
             res.render('historial', {
                 csrfToken: req.csrfToken,

@@ -42,7 +42,9 @@ module.exports = class Version {
     );
     }
     static fetchAll() {
-        return db.execute('Select * from version')
+        return db.execute(`SELECT * FROM version
+         JOIN usuario ON version.IDUsuario = usuario.IDUsuario;
+        `)
     }
     static fetch(id) {
         if (id) {

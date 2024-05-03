@@ -82,10 +82,11 @@
                 <table class="text-sm text-left text-gray-500 dark:text-gray-400 w-full">
                     <thead class=" flex w-full text-xs text-gray-700 uppercase bg-gray-100 dark:text-gray-500">
                         <tr class="flex w-full">
-                            <th class="p-4 w-1/4">Versión</th>
-                            <th class="p-4 w-1/4">Número de versión</th>
-                            <th class="p-4 w-1/4">Creador</th>
-                            <th class="p-4 w-1/4">Fecha de importación</th>
+                            <th class="p-4 w-1/5">Versión</th>
+                            <th class="p-4 w-1/5">Número de versión</th>
+                            <th class="p-4 w-1/5">Creador</th>
+                            <th class="p-4 w-1/5">Fecha de importación</th>
+                            <th class="p-4 w-1/5">Elimnar</th>
                         </tr>
                     </thead>
                 <!-- Remove the nasty inline CSS fixed height on production and replace it with a CSS class — this is just for demonstration purposes! -->
@@ -97,16 +98,16 @@
                             <% } else {%>
                                 <tr class="flex w-full mb-4 bg-gray-50">
                             <% } %>
-                                <td class="p-4 w-1/4">
+                                <td class="p-4 w-1/5">
                                     <%= version.NombreVersion %>
                                 </td>
-                                <td class="p-4 w-1/4">
+                                <td class="p-4 w-1/5">
                                     <%= version.IDVersion %>
                                 </td>
-                                <td class="p-4 w-1/4">
-                                    <%= version.IDUsuario %>
+                                <td class="p-4 w-1/5">
+                                    <%= version.Nombre %>
                                 </td>
-                                <td class="p-4 w-1/4">
+                                <td class="p-4 w-1/5">
                                     <%  let fechaActual = version.FechaCreacion;
                                         // Convertir la fecha a un objeto Date
                                         const fecha = new Date(fechaActual);
@@ -118,6 +119,10 @@
                                         const fechaFormateada = `${dia}/${mes}/${año}`;%>
                                     <%= fechaFormateada %>
                                 </td>
+                                <td class="p-4 w-1/5">
+                                <button id="deleteButton" onclick="eliminar(<%=version.IDVersion%>)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
+                                    Eliminar
+                                </button></td>
                             </tr>
                             <% row++ } %>
                     </tbody>
