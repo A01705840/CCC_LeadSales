@@ -1,20 +1,47 @@
-<%- include('includes/head.ejs', { username: username, permisos: permisos }) %>
+<%- include('includes/head.ejs',  {username: username,permisos: permisos}) %>
 
-<div class="flex flex-col justify-center items-center min-h-screen">
-  <div class="p-4 sm:ml-20 sm:mr-10 font-sans w-full max-w-screen-lg mx-auto">
-    <div class="flex flex-col justify-center p-4 border-2 border-gray-200 rounded-lg dark:border-gray-700 bg-slate-200">
-      <div class="inline-flex justify-between items-center">
-        <div class="flex space-x-2">
-          <!-- Aquí puedes agregar elementos adicionales si es necesario -->
-        </div>
-      </div>
-      <div class="flex justify-center sm:mt-4 p-1 border-1 border-gray-200 rounded-lg dark:border-gray-200 bg-white">
-        <div class="max-w-sm mx-auto text-center">
-          <h1 class="text-6xl font-bold text-gray-800 mb-8">Bienvenido a Charleads</h1>
-          <p class="text-xl text-gray-600 mb-8">¡Explora nuestras herramientas y visualiza tus leads de manera efectiva!</p>
-          
-        </div>
+<div class="p-4 sm:ml-20 sm:mr-10 font-sans">
+  <div class="flex flex-col justify-right p-4 border-2 border-gray-200 rounded-lg dark:border-gray-700 bg-slate-200">
+    <div class="inline-flex justify-between items-center">
+      <div class="flex space-x-2">
+        
+
       </div>
     </div>
+   
+
+      <div style=" margin: 0 auto; background-color: #DEE9FC; padding: 20px; border: 2px solid #CBD5E0; border-radius: 8px;">
+        <!-- Hero Section -->
+        <section class="bg-[#3F3DC2] text-white py-20 w-full">
+          <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-4">Gestiona tus Leads de manera eficiente con CharLeads</h2>
+            <p class="text-lg">Maximiza tus ventas, organiza tus clientes potenciales y haz crecer tu negocio.</p>
+          </div>
+        </section>
+      
+        <!-- Features Section -->
+        <section class="py-16">
+          <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-semibold mb-8">Características Principales</h2>
+            <br>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div class="p-8 bg-white rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold mb-4">Gestión de Leads</h3>
+                <p>Organiza tus leads de manera efectiva, sigue su progreso y cierra más ventas.</p>
+              </div>
+              <div class="p-8 bg-white rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold mb-4">Automatización</h3>
+                <p>Ahorra tiempo automatizando tareas repetitivas y enfócate en cerrar negocios.</p>
+              </div>
+              <div class="p-8 bg-white rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold mb-4">Reportes Detallados</h3>
+                <p>Accede a análisis detallados para mejorar tus estrategias de ventas.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+    </div>
   </div>
-</div>
+
