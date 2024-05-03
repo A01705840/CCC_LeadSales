@@ -135,16 +135,16 @@
                         <% } else {%>
                             <tr class="flex w-full mb-4 bg-gray-50">
                         <% } %>
-                            <td class="p-4 w-1/4">
+                            <td class="p-4 w-1/5">
                                 <%= version.NombreVersion %>
                             </td>
-                            <td class="p-4 w-1/4">
+                            <td class="p-4 w-1/5">
                                 <%= version.IDVersion %>
                             </td>
-                            <td class="p-4 w-1/4">
-                                <%= version.IDUsuario %>
+                            <td class="p-4 w-1/5">
+                                <%= version.Nombre %>
                             </td>
-                            <td class="p-4 w-1/4">
+                            <td class="p-4 w-1/5">
                                 <%  let fechaActual = version.FechaCreacion;
                                     // Convertir la fecha a un objeto Date
                                     const fecha = new Date(fechaActual);
@@ -156,6 +156,10 @@
                                     const fechaFormateada = `${dia}/${mes}/${año}`;%>
                                 <%= fechaFormateada %>
                             </td>
+                            <td class="p-4 w-1/5">
+                                <button id="deleteButton" onclick="eliminar(<%=version.IDVersion%>)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
+                                    Eliminar
+                            </button></td>
                         </tr>
                         <% row++ } %>
                 </tbody>

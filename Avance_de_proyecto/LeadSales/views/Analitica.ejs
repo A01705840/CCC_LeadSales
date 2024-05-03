@@ -793,17 +793,28 @@
                 const cantidadTotalLeads = data['cantidadTotalLeads'];
                 const cantidadLeadsOrganicos =  data['cantidadLeadsOrganicos'];
 
-                //Asignaciòn total de leads
-                document.getElementById('totalLeads').textContent = cantidadTotalLeads;
+                // Función para obtener el color en función del porcentaje
+                function getColorForPercentage(porcentaje) {
+                    if (porcentaje >= 75) {
+                        return 'text-blue-700';
+                    } else if (porcentaje >= 50) {
+                        return 'text-blue-500';
+                    } else if (porcentaje >= 25) {
+                        return 'text-blue-300';
+                    } else {
+                        return 'text-blue-100';
+                    }
+                }
 
                 // Calcular el porcentaje de leads orgánicos y actualizar el texto
                 const porcentajeLeadsOrganicos = (cantidadLeadsOrganicos / cantidadTotalLeads) * 100;
                 const porcentajeLeadsOrganicosElement = document.getElementById('porcentajeLeadsOrganicos');
                 porcentajeLeadsOrganicosElement.textContent = porcentajeLeadsOrganicos.toFixed(2) + '%';
-            
+
                 // Asignar una clase de color en función del porcentaje
                 porcentajeLeadsOrganicosElement.className = getColorForPercentage(porcentajeLeadsOrganicos);
                 porcentajeLeadsOrganicosElement.style.fontWeight = 'bold';
+                //----------texto------//
 
                 //Asignaciòn nuevos datos para el top seller
                 const topSeller = document.getElementById('topseller');
