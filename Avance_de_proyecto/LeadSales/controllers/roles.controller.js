@@ -221,7 +221,8 @@ exports.post_agregarEmpleado = async (request, response, next) => {
         //Rol.fetchAll();
         const idusuario = await Usuario.fetchOneID(request.body.username);
         //const idRol = await Rol.fetchOneID(request.body.rol);
-        await Usuario.establecer_rol(idusuario[0][0].IDUsuario, request.body.rol);
+        console.log(`idRol: ${request.body.rol}, idusuario: ${idusuario}`);
+        await Usuario.establecer_rol(request.body.rol, idusuario);
         Rol.fetchRolesWithUsers()
         .then(([rows, fieldData]) => {
             // Mapea los resultados para formatear la fecha
