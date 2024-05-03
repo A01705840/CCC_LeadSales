@@ -148,12 +148,12 @@
         const logoImg = new Image();
         logoImg.src = '/uploads/Charleads.png'; // Ruta del logo
         logoImg.onload = function() {
-            pdf.addImage(this, 'PNG', 40, 90, 140, 40);
+            pdf.addImage(this, 'PNG', 30, 90, 155, 40);
         }
         document.getElementById('openModalButtonPDF').addEventListener('click', () => {
             // Crear un objeto PDF
-                pdf.text("Reporte de Analiticas", 80, 140,  { fontSize: 40 });
-                
+                pdf.setFontSize(33);
+                pdf.text("Reporte de Analiticas", 60, 140);                
                 pdf.addPage()
                 const logoImg = new Image();
                 logoImg.src = '/uploads/Charleads.png'; // Ruta del logo
@@ -161,6 +161,7 @@
                 logoImg.onload = function() {
                 pdf.addImage(this, 'PNG', 160, 278, 35, 10);
                 }
+                pdf.setFontSize(20);
                 pdf.text("Total de Leads", 90, 15);
                 const pieChartEmbudoCanvas = document.getElementById('pieChartEmbudo');
                 const pieChartStatusCanvas = document.getElementById('pieChartStatus');
@@ -777,8 +778,10 @@
     .catch(error => console.error('Error en la solicitud fetch: ', error));
 });
 
+ // -----------  Descarggar pdf ------------------ //
 
-// -----------  CAMBIO De Versión  ------------------ 
+
+// -----------  CAMBIO De Versión  ------------------ //
 
     document.getElementById('IDVersionSeleccionada').addEventListener('change', function(event) {
         event.preventDefault(); // Evitar la recarga de la página
@@ -987,24 +990,5 @@ paths.forEach(function(path) {
 
             }).catch(error => console.error('Error en la solicitud fetch: ', error));
     });
-
-
-    // Event listener para el botón de descargar PDF
-    document.getElementById('openModalButton').addEventListener('click', () => {
-        // Capturar la imagen de las gráficas utilizando html2canvas
-        html2canvas(document.querySelector('.shadow-lg')).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
-
-            // Crear un objeto PDF
-            const pdf = new jsPDF('p', 'mm', 'a4');
-
-            // Agregar la imagen de las gráficas al PDF
-            pdf.addImage(imgData, 'PNG', 10, 10, 180, 160);
-
-            // Descargar el PDF
-            pdf.save('reporte.pdf');
-        });
-    });
-
 
 </script>
