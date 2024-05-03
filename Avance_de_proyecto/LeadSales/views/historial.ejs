@@ -86,7 +86,7 @@
                             <th class="p-4 w-1/5">Número de versión</th>
                             <th class="p-4 w-1/5">Creador</th>
                             <th class="p-4 w-1/5">Fecha de importación</th>
-                            <th class="p-4 w-1/5">Elimnar</th>
+                            <th class="p-4 w-1/5">Eliminar</th>
                         </tr>
                     </thead>
                 <!-- Remove the nasty inline CSS fixed height on production and replace it with a CSS class — this is just for demonstration purposes! -->
@@ -120,7 +120,7 @@
                                     <%= fechaFormateada %>
                                 </td>
                                 <td class="p-4 w-1/5">
-                                <button id="deleteButton" onclick="eliminar(<%=version.IDVersion%>)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
+                                <button id="<%= version.IDVersion %>"  onclick="eliminar(<%=version.IDVersion%>)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
                                     Eliminar
                                 </button></td>
                             </tr>
@@ -355,6 +355,21 @@ function indescargarhistorial() {
             a.download = 'historial.pdf';
             a.click();
         });
+    });
+}
+function eliminar(IDVersion){
+    fetch('/lead/Historial/Eliminar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({IDVersion: IDVersion }),
+    }).then(data => {
+        console.log('Success:', data);
+        window.location.href = '/lead/historial';
+    })
+    .catch((error) => {
+        console.error('Error:', error);
     });
 }
 

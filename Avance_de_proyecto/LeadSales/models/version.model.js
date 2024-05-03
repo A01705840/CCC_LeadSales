@@ -104,4 +104,15 @@ module.exports = class Version {
     static async Nombres(){
         return db.execute( `SELECT NombreVersion FROM version;`)
     }
+    static async delete(IDVersion) {
+        try {
+            await db.execute('DELETE FROM version_almacena_leads WHERE IDVersion = ?', [IDVersion]);
+            await db.execute('DELETE FROM version WHERE IDVersion = ?', [IDVersion]);
+            await db.execute(`DELETE FROM leads
+                              WHERE IDLead NOT IN (SELECT IDLead FROM version_almacena_leads)`);
+            return "Delete operations completed successfully.";
+        } catch (error) {
+            throw error;
+        }
+    }    
 }

@@ -350,3 +350,13 @@ exports.post_descargarhistorial = async (req, res, next) => {
 
     res.send(Buffer.from(pdf));
 };
+exports.post_eliminarversion = (req, res, next) => {
+    console.log("Version a eliminar ",req.body.IDVersion);
+    Version.delete(req.body.IDVersion)
+    .then(([rows,fieldData]) => {
+        res.redirect ('/lead/Historial');
+    }).catch((error) => {
+        console.log(error)
+        res.redirect ('/lead/Historial');
+    })
+};

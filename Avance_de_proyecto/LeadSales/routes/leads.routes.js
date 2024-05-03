@@ -28,6 +28,7 @@ router.get('/', LeadsController.get_root);
 
 router.get('/Historial', canViewHistorial, VersionController.get_historial);
 router.post('/Historial', canPostHistorial, VersionController.post_historial);
+router.post('/Historial/eliminar', canPostHistorial, VersionController.post_eliminarversion);
 router.post('/descargarhistorial', canDownloadHistorial, VersionController.post_descargarhistorial);
 
 
