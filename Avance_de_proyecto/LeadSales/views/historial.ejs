@@ -79,91 +79,92 @@
             <% if(versiones.length === 0) {%>
                 <p class="text-2xl text-gray-500 mt-48 mb-48">Importa tus primeros leads, para poder visualizar el historial.</p>
             <%  } else{ %> 
-            
-                <div class="container flex flex-col items-center h-full">
-
-                    <div class="container">
-                        <table class="text-sm text-left text-gray-500 dark:text-gray-400 w-full">
-                            <thead class=" flex w-full text-xs text-gray-700 uppercase bg-gray-100 dark:text-gray-500">
-                                <tr class="flex w-full">
-                                    <th class="p-4 w-1/4">Versión</th>
-                                    <th class="p-4 w-1/4">Número de versión</th>
-                                    <th class="p-4 w-1/4">Creador</th>
-                                    <th class="p-4 w-1/4">Fecha de importación</th>
-                                </tr>
-                            </thead>
-                        <!-- Remove the nasty inline CSS fixed height on production and replace it with a CSS class — this is just for demonstration purposes! -->
-                        <% if (versiones.length<5){%>
-                            <tbody class="bg-grey-light flex flex-col items-center justify-between  w-full">
-                                <% let row=0; for (let version of versiones) { %>
-                                    <% if(row%2==0){%>
-                                        <tr class="flex w-full mb-4">
-                                    <% } else {%>
-                                        <tr class="flex w-full mb-4 bg-gray-50">
-                                    <% } %>
-                                        <td class="p-4 w-1/4">
-                                            <%= version.NombreVersion %>
-                                        </td>
-                                        <td class="p-4 w-1/4">
-                                            <%= version.IDVersion %>
-                                        </td>
-                                        <td class="p-4 w-1/4">
-                                            <%= version.IDUsuario %>
-                                        </td>
-                                        <td class="p-4 w-1/4">
-                                            <%  let fechaActual = version.FechaCreacion;
-                                                // Convertir la fecha a un objeto Date
-                                                const fecha = new Date(fechaActual);
-                                                // Obtener día, mes y año
-                                                const dia = fecha.getDate().toString().padStart(2, '0');
-                                                const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // El mes comienza desde 0
-                                                const año = fecha.getFullYear();
-                                                // Crear la cadena en el formato deseado (dd/mm/yyyy)
-                                                const fechaFormateada = `${dia}/${mes}/${año}`;%>
-                                            <%= fechaFormateada %>
-                                        </td>
-                                    </tr>
-                                    <% row++ } %>
-                            </tbody>
-                        </table>
-                        <% } else  {%>    
-                        <tbody class="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full" style="height: 65vh;">
-                            <% let row=0; for (let version of versiones.reverse()) { %>
-                                <% if(row%2==0){%>
-                                    <tr class="flex w-full mb-4">
-                                <% } else {%>
-                                    <tr class="flex w-full mb-4 bg-gray-50">
-                                <% } %>
-                                    <td class="p-4 w-1/4">
-                                        <%= version.NombreVersion %>
-                                    </td>
-                                    <td class="p-4 w-1/4">
-                                        <%= version.IDVersion %>
-                                    </td>
-                                    <td class="p-4 w-1/4">
-                                        <%= version.IDUsuario %>
-                                    </td>
-                                    <td class="p-4 w-1/4">
-                                        <%  let fechaActual = version.FechaCreacion;
-                                            // Convertir la fecha a un objeto Date
-                                            const fecha = new Date(fechaActual);
-                                            // Obtener día, mes y año
-                                            const dia = fecha.getDate().toString().padStart(2, '0');
-                                            const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // El mes comienza desde 0
-                                            const año = fecha.getFullYear();
-                                            // Crear la cadena en el formato deseado (dd/mm/yyyy)
-                                            const fechaFormateada = `${dia}/${mes}/${año}`;%>
-                                        <%= fechaFormateada %>
-                                    </td>
-                                </tr>
-                                <% row++ } %>
-                        </tbody>
-                        </table>
-                        <% }%>
-
-                    </div>
-                </div>
-            
+                <table class="text-sm text-left text-gray-500 dark:text-gray-400 w-full">
+                    <thead class=" flex w-full text-xs text-gray-700 uppercase bg-gray-100 dark:text-gray-500">
+                        <tr class="flex w-full">
+                            <th class="p-4 w-1/5">Versión</th>
+                            <th class="p-4 w-1/5">Número de versión</th>
+                            <th class="p-4 w-1/5">Creador</th>
+                            <th class="p-4 w-1/5">Fecha de importación</th>
+                            <th class="p-4 w-1/5">Eliminar</th>
+                        </tr>
+                    </thead>
+                <!-- Remove the nasty inline CSS fixed height on production and replace it with a CSS class — this is just for demonstration purposes! -->
+                <% if (versiones.length<5){%>
+                    <tbody class="bg-grey-light flex flex-col items-center justify-between  w-full">
+                        <% let row=0; for (let version of versiones) { %>
+                            <% if(row%2==0){%>
+                                <tr class="flex w-full mb-4">
+                            <% } else {%>
+                                <tr class="flex w-full mb-4 bg-gray-50">
+                            <% } %>
+                                <td class="p-4 w-1/5">
+                                    <%= version.NombreVersion %>
+                                </td>
+                                <td class="p-4 w-1/5">
+                                    <%= version.IDVersion %>
+                                </td>
+                                <td class="p-4 w-1/5">
+                                    <%= version.Nombre %>
+                                </td>
+                                <td class="p-4 w-1/5">
+                                    <%  let fechaActual = version.FechaCreacion;
+                                        // Convertir la fecha a un objeto Date
+                                        const fecha = new Date(fechaActual);
+                                        // Obtener día, mes y año
+                                        const dia = fecha.getDate().toString().padStart(2, '0');
+                                        const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // El mes comienza desde 0
+                                        const año = fecha.getFullYear();
+                                        // Crear la cadena en el formato deseado (dd/mm/yyyy)
+                                        const fechaFormateada = `${dia}/${mes}/${año}`;%>
+                                    <%= fechaFormateada %>
+                                </td>
+                                <td class="p-4 w-1/5">
+                                <button id="<%= version.IDVersion %>"  onclick="eliminar(<%=version.IDVersion%>)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
+                                    Eliminar
+                                </button></td>
+                            </tr>
+                            <% row++ } %>
+                    </tbody>
+                </table>
+                <% } else  {%>    
+                <tbody class="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full" style="height: 78vh;">
+                    <% let row=0; for (let version of versiones.reverse()) { %>
+                        <% if(row%2==0){%>
+                            <tr class="flex w-full mb-4">
+                        <% } else {%>
+                            <tr class="flex w-full mb-4 bg-gray-50">
+                        <% } %>
+                            <td class="p-4 w-1/5">
+                                <%= version.NombreVersion %>
+                            </td>
+                            <td class="p-4 w-1/5">
+                                <%= version.IDVersion %>
+                            </td>
+                            <td class="p-4 w-1/5">
+                                <%= version.Nombre %>
+                            </td>
+                            <td class="p-4 w-1/5">
+                                <%  let fechaActual = version.FechaCreacion;
+                                    // Convertir la fecha a un objeto Date
+                                    const fecha = new Date(fechaActual);
+                                    // Obtener día, mes y año
+                                    const dia = fecha.getDate().toString().padStart(2, '0');
+                                    const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // El mes comienza desde 0
+                                    const año = fecha.getFullYear();
+                                    // Crear la cadena en el formato deseado (dd/mm/yyyy)
+                                    const fechaFormateada = `${dia}/${mes}/${año}`;%>
+                                <%= fechaFormateada %>
+                            </td>
+                            <td class="p-4 w-1/5">
+                                <button id="deleteButton" onclick="eliminar(<%=version.IDVersion%>)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
+                                    Eliminar
+                            </button></td>
+                        </tr>
+                        <% row++ } %>
+                </tbody>
+                </table>
+                <% }%>
             <% } %> 
         </div>      
 </div>
@@ -354,6 +355,21 @@ function indescargarhistorial() {
             a.download = 'historial.pdf';
             a.click();
         });
+    });
+}
+function eliminar(IDVersion){
+    fetch('/lead/Historial/Eliminar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({IDVersion: IDVersion }),
+    }).then(data => {
+        console.log('Success:', data);
+        window.location.href = '/lead/historial';
+    })
+    .catch((error) => {
+        console.error('Error:', error);
     });
 }
 

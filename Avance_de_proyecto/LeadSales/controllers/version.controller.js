@@ -41,8 +41,7 @@ const autoTable = require('jspdf-autotable');
 const Rol = require('../models/rol.model');
 
 exports.get_historial = (req, res, next) => {
-    Version.fetch(req.params.IDVersion)
-    Version.fetch(req.params.IDUser)
+    Version.fetch()
         .then(([rows, fieldData]) => {
             res.render('historial', {
                 csrfToken: req.csrfToken,
@@ -350,4 +349,14 @@ exports.post_descargarhistorial = async (req, res, next) => {
     res.setHeader('Content-Disposition', 'attachment; filename=historial.pdf');
 
     res.send(Buffer.from(pdf));
+};
+exports.post_eliminarversion = (req, res, next) => {
+    console.log("Version a eliminar ",req.body.IDVersion);
+    Version.delete(req.body.IDVersion)
+    .then(([rows,fieldData]) => {
+        res.redirect ('/lead/Historial');
+    }).catch((error) => {
+        console.log(error)
+        res.redirect ('/lead/Historial');
+    })
 };
